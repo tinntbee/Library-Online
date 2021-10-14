@@ -1,0 +1,239 @@
+.Sidebar {
+  position: fixed;
+  background: var(--white-color);
+  width: 62px;
+  height: 100vh;
+  max-height: 100vh;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  text-align: start;
+  z-index: 999;
+}
+
+.Sidebar:hover{
+    width: 240px;
+}
+
+.Sidebar .icon{
+  width: 14px;
+  height: 14px;
+  padding: 9px;
+  box-sizing: content-box;
+}
+
+.Sidebar-header{
+  height: 55px;
+  width: calc(240px + 62px);
+  margin: 12px 15px;
+}
+
+.Sidebar-body{
+  height: calc(100% - 79px);
+}
+
+.Sidebar:hover :where(.Sidebar-header-avatar){
+  margin-right: 12px;
+}
+
+.Sidebar-header-avatar{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 62px;
+  transition: margin-right 0.3s ease-in-out;
+}
+
+.Sidebar-header-fullName{
+  font-size: x-small;
+  font-weight: 600;
+}
+
+.Sidebar-header-mailAddress{
+  font-size: xx-small;
+  font-weight: 300;
+}
+
+.Sidebar-controls ul{
+  position: relative;
+}
+
+.Sidebar-control span{
+  margin-left: 62px;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.Sidebar:hover :where(.Sidebar-control span){
+  margin-left: 0;
+}
+
+.Sidebar-control{
+  width: calc(240px + 62px);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 12px 15px;
+}
+
+.Sidebar-control.active{
+  fill: var(--white-color);
+  color: var(--white-color);
+  font-weight: 600;
+}
+
+.Sidebar-control-active{
+  position: absolute;
+  width: calc(100% - 30px);
+  height: 32px;
+  background: var(--primary-color-orange);
+  border-radius: 10px;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  margin: 0 15px;
+}
+
+.Sidebar-tabs{
+  height: calc(100% - 218px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 10px 0;
+}
+
+.Sidebar-tabs::-webkit-scrollbar{
+  width: 0;
+}
+
+.Sidebar-tabs-list{
+  position: relative;
+}
+
+.Sidebar-tabs-title{
+  height: 54px;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.Sidebar-tabs-title p{
+  text-align: center;
+}
+
+.Sidebar:hover .Sidebar-tabs-title{
+  justify-content: left;
+  margin-left: 25px;
+}
+
+.Sidebar-tab{
+  width: calc(240px + 62px);
+  height: 54px;
+}
+
+.Sidebar-tab-thumbnail{
+  float: left;
+  width: 32px;
+  height: 32px;
+  background: red;
+  border-radius: 50%;
+  margin: 12px 30px 12px 15px;
+  transition: all 0.3s ease-in-out;
+}
+
+.Sidebar:hover .Sidebar-tab-thumbnail{
+  margin-left: 30px;
+  margin-right: 8px;
+}
+
+.Sidebar-tab .Sidebar-tab-description{
+  display: none;
+  white-space: nowrap; 
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
+.Sidebar-tab.active .Sidebar-tab-description{
+  display: block;
+}
+
+.Sidebar-tab a{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--text-gray50-color);
+}
+
+.Sidebar-tab-description{
+  font-size: xx-small;
+  /* transition: all 0.3s ease-in-out; */
+  font-style: italic;
+}
+
+.Sidebar-tab-title{
+  white-space: nowrap; 
+  max-width: 140px; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  /* transition: all 0.3s ease-in-out; */
+}
+
+.Sidebar-tab.active a{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--text-gray100-color);
+}
+
+.Sidebar-tab.active .Sidebar-tab-title{
+  font-weight: 700;
+}
+
+.Sidebar-tab-active{
+  position: absolute;
+  height: 54px;
+  width: calc(100% + 20px);
+  border-radius: 24px;
+  background: var(--base-gray-color);
+  top: calc(54px * var(--value));
+  left: 4px;
+  z-index: -1;
+  transition: all 0.3s ease-in-out;
+}
+
+.Sidebar-tab-active::before{
+  position: absolute;
+  content: "";
+  height: 54px;
+  width: calc(62px - 4px);
+  background: var(--white-color);
+  border-radius: 24px;
+  top: -100%;
+  left: 0;
+  box-shadow: 27px 27px var(--base-gray-color);
+  transition: all 0.3s ease-in-out;
+}
+
+.Sidebar-tab-active::after{
+  position: absolute;
+  content: "";
+  height: 54px;
+  width: calc(62px - 4px);
+  background: var(--white-color);
+  border-radius: 24px;
+  bottom: -100%;
+  left: 0;
+  box-shadow: 27px -27px var(--base-gray-color);
+  transition: all 0.3s ease-in-out;
+}
+
+.Sidebar:hover .Sidebar-tab-active{
+  left: 18px;
+  width: calc(100% - 18px*2);
+}
+
+.Sidebar:hover .Sidebar-tab-active::before, .Sidebar:hover .Sidebar-tab-active::after{
+  left: 100%;
+}

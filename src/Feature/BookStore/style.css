@@ -1,0 +1,32 @@
+.Bookstore{
+    height: 100vh;
+    position: relative;
+}
+
+.Bookstore-header{
+    height: 55px;
+    background: var(--white-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.Bookstore-header .hoa{
+    position: absolute;
+    font-size: medium;
+    color: var(--primary-color-orange);
+    font-weight: 700;
+    bottom: auto;
+    right: 20px;
+}
+
+.Bookstore-body{
+    height: calc(100% - 55px);
+    background: var(--base-gray-color);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
