@@ -1,0 +1,26 @@
+.Books-view-by-categories{
+    width: 100%;
+}
+
+.Books-view-by-categories-intro{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 70px;
+    position: relative;
+}
+
+.Books-view-by-categories-intro p{
+    font-size: 33px;
+    font-weight: 700;
+    color: var(--color);
+    text-align: left;
+}
+
+.Books-view-by-categories-intro .quote-icon{
+    min-width: 100px;
+    height: 72px;
+    fill: var(--color);
+    margin-bottom: 70px;
+}

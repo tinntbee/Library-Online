@@ -1,0 +1,24 @@
+.reply-comment{
+    margin-top: 10px;
+}
+
+.Reply-comment-content{
+    position: relative;
+}
+
+.Reply-comment-content::before{
+    content: "";
+    width: 3px;
+    height: 100%;
+    background: var(--base-gray-color);
+    position: absolute;
+    top: 0;
+    left: -20px;
+}
+
+.Reply-comment-content::after{
+    content: url('../../static/jpg/ReplyIcon.svg');
+    position: absolute;
+    top: -20px;
+    left: -30px;
+}

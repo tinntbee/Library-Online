@@ -1,0 +1,141 @@
+.Book-view-card {
+  width: 300px;
+  height: 380px;
+  min-width: 300px;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid var(--white-color);
+}
+
+.Book-view-card:hover {
+  border-color: var(--primary-color-orange);
+  border-radius: 10px;
+}
+
+.Book-view-card-thumbnail {
+  width: 220px;
+  height: 320px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 10px;
+  position: absolute;
+  top: 15px;
+  left: auto;
+  right: auto;
+  z-index: 1;
+  transition: all 0.3s ease-in-out;
+}
+
+.Book-view-card:hover .Book-view-card-thumbnail{
+    width: 240px;
+    height: 347px;
+    top: 8px;
+}
+
+.Book-view-card .Book-view-card-thumbnail::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    0deg,
+    var(--white-color) 0%,
+    rgba(254, 254, 254, 0) 60%
+  );
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  opacity: 0%;
+  transition: all 0.3s ease-in-out;
+}
+
+.Book-view-card:hover .Book-view-card-thumbnail::after {
+    opacity: 100%;
+}
+
+.Book-view-card-detail {
+  width: 220px;
+  font-size: small;
+  font-weight: 600;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 5px 0;
+  position: absolute;
+  bottom: 5px;
+  left: auto;
+  right: auto;
+  z-index: 3;
+}
+
+.Book-view-card-name {
+  color: var(--text-gray50-color);
+  text-align: start;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.3s ease-in-out;
+}
+
+.Book-view-card:hover .Book-view-card-name{
+    color: var(--text-gray100-color);
+    white-space: normal;
+    line-height: 15px;
+    height: 30px;
+}
+
+.Book-view-card-price {
+  width: 50px;
+  color: var(--primary-color-orange);
+  text-align: end;
+  font-weight: 800;
+}
+
+.Book-view-card-rate {
+  width: 40px;
+  position: absolute;
+  z-index: 3;
+  background: var(--primary-color-orange);
+  border-radius: 17px;
+  border: 2px solid var(--white-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  top: 30px;
+  right: 40px;
+  opacity: 0%;
+  transition: all 0.3s ease-in-out;
+}
+
+.Book-view-card:hover .Book-view-card-rate{
+    right: 10px;
+    opacity: 100%;
+}
+
+.Book-view-card-rate a {
+  color: var(--white-color);
+  font-size: x-small;
+  font-weight: 700;
+}
+
+.Book-view-card-rate .icon {
+  width: 20px;
+  height: 15px;
+  fill: var(--white-color);
+}
+
+.Book-view-card-rate .read-icon {
+  height: 10px;
+}
+
+.Book-view-card-rate .like-icon {
+  margin-top: 5px;
+}

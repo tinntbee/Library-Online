@@ -8,6 +8,13 @@
   overflow: hidden;
   text-align: start;
   z-index: 999;
+  border-right: 1px solid var(--base-gray-color);
+}
+
+@media(max-width: 480px) {
+  .Sidebar{
+    display: none;
+  }
 }
 
 .Sidebar:hover{

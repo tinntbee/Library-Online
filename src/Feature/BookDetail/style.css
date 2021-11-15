@@ -1,0 +1,279 @@
+.Book-detail-container {
+  width: 100%;
+  max-width: 1280px;
+  min-height: 875px;
+  background: var(--white-color);
+  border-radius: 10px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--gray-color);
+}
+
+.Book-information-top {
+  display: flex;
+  flex-direction: row;
+  min-height: 637px;
+  width: 100%;
+  border-bottom: 2px solid var(--base-gray-color);
+}
+
+.Book-information-top-left {
+  min-width: 478px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-right: 2px solid var(--base-gray-color);
+  padding-top: 30px;
+  position: relative;
+}
+
+.Book-information-top-right {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.Book-information-bottom {
+  width: 100%;
+  height: 100%;
+}
+
+.Book-thumbnail {
+  width: 340px;
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.Book-thumbnail::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-image: var(--book-thumbnail-url);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  border-radius: 10px;
+}
+
+.Book-thumbnail::after {
+  position: absolute;
+  content: "";
+  width: calc(100% + 40px);
+  height: 200px;
+  background-image: linear-gradient(#fff, #f9b700);
+  bottom: -20px;
+  left: -20px;
+  border-radius: 20px;
+  z-index: 1;
+}
+
+.Book-rate {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.Book-information-top-right .Book-title {
+  width: 100%;
+  min-height: 170px;
+  border-bottom: 2px solid var(--base-gray-color);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 30px;
+}
+
+.Book-information-top-right .Book-description {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.Book-information-top-right .Book-action {
+  width: 100%;
+  min-height: 100px;
+  border-top: 2px solid var(--base-gray-color);
+  padding-left: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.Book-rate > span {
+  margin-left: 40px;
+  color: var(--gray-color);
+  font-size: x-small;
+  font-weight: 600;
+}
+
+.Book-rate img {
+  border-radius: 50%;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.Rate-popup {
+  width: 45px;
+  position: absolute;
+  z-index: 3;
+  background: var(--primary-color-orange);
+  border-radius: 17px;
+  border: 2px solid var(--white-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  top: 80px;
+  left: 45px;
+  transition: all 0.3s ease-in-out;
+}
+
+.Rate-popup a {
+  color: var(--white-color);
+  font-size: x-small;
+  font-weight: 700;
+}
+
+.Rate-popup .icon {
+  width: 22px;
+  height: 20px;
+  fill: var(--white-color);
+}
+
+.Rate-popup .read-icon {
+  height: 14px;
+}
+
+.Rate-popup .like-icon {
+  margin-top: 20px;
+}
+
+.Book-title .Book-name {
+  font-size: large;
+  font-weight: 700;
+  color: var(--text-black-color);
+}
+
+.Book-title .Book-price {
+  font-size: large;
+  color: var(--primary-color-orange);
+  font-weight: 700;
+}
+
+.Book-title .Book-tags {
+  margin-top: 10px;
+}
+
+.Book-title .book-tag {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--white-color);
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-right: 10px;
+  background: var(--gray-color);
+  box-sizing: border-box;
+}
+
+.Book-description {
+  font-size: 0.8rem;
+  color: var(--gray-color);
+  text-align: left;
+  padding: 30px;
+}
+
+.Book-action button {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 15px 30px;
+  border-radius: 10px;
+  outline: none;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.Book-action__read-now {
+  background-image: linear-gradient(
+    to right,
+    var(--primary-color-orange) 0%,
+    var(--red-color) 51%,
+    var(--primary-color-orange) 100%
+  );
+  background-size: 200% auto;
+  color: var(--white-color);
+  border: none;
+  transition: all 0.3s linear;
+}
+
+.Book-action__read-now:hover {
+  background-position: 100%;
+}
+
+.Book-action__add-to-bookcase {
+  background: none;
+  border: 2px solid transparent;
+  color: var(--primary-color-orange);
+  transition: 0.3s all ease-in-out;
+}
+
+.Book-action__add-to-bookcase:hover {
+  border: 2px solid var(--primary-color-orange);
+}
+
+.Book-information-bottom {
+  padding: 30px 70px;
+  font-size: large;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.Book-quote {
+  width: 100%;
+  border: 1.5px dashed var(--text-gray50-color);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  position: relative;
+}
+
+.Book-quote::before {
+  content: url("../../static/jpg/QuoteIcon.svg");
+  position: absolute;
+  top: -15px;
+  left: -30px;
+}
+
+.Book-quote::after {
+  content: url("../../static/jpg/QuoteIcon.svg");
+  position: absolute;
+  bottom: -15px;
+  right: -30px;
+  transform: scaleX(-1);
+}
+
+.Book-quote p {
+  text-align: left;
+  color: var(--gray-color);
+}

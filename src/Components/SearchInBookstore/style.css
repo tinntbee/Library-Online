@@ -1,0 +1,52 @@
+.SearchInBookstore {
+  width: 44px;
+  height: 111px;
+  background: var(--text-gray100-color);
+  border-radius: 10px 10px 10px 34px;
+  position: fixed;
+  top: 75px;
+  right: 20px;
+  z-index: 998;
+  transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  overflow: hidden;
+}
+
+.SearchInBookstore.active {
+  top: 55px;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  opacity: 90%;
+  background: linear-gradient(
+    var(--text-gray100-color),
+    var(--base-gray-color)
+  );
+}
+
+.SearchInBookstore .icon {
+  width: 24px;
+  height: 24px;
+  fill: var(--white-color);
+  position: absolute;
+  right: 10px;
+}
+
+.SearchInBookstore .search-icon {
+  top: 10px;
+}
+
+.SearchInBookstore .tags-icon {
+  top: calc(10px * 3 + 24px);
+}
+
+@media (max-width: 480px) {
+  .SearchInBookstore {
+    width: 23px;
+    height: 60px;
+  }
+  .SearchInBookstore .icon {
+    width: 10px;
+    height: 10px;
+  }
+}

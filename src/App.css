@@ -3,8 +3,11 @@
   --base-gray-color: #E8E8E8;
   --text-gray50-color: #B5B5B5;
   --text-gray100-color: #9B9B9B;
+  --gray-color: #929292;
   --white-color: #FFFFFF;
   --small-font-size-14px: 1rem;
+  --text-black-color: #545454;
+  --red-color: #F95500;
 }
 
 *{
@@ -24,6 +27,7 @@ a{
   position: relative;
   background: var(--base-gray-color);
   font-size: 14px;
+  overflow: hidden;
 }
 
 .title{
@@ -31,4 +35,92 @@ a{
   font-size: large;
   font-weight: 700;
   color: var(--text-gray50-color);
+}
+
+.main-content {
+  height: 100vh;
+  width: 100%;
+  min-width: 350px;
+  position: relative;
+  padding-left: 62px;
+}
+
+.header {
+  width: calc(100% - 62px);
+  height: 55px;
+  background: var(--white-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 99;
+  border-bottom: 1px solid var(--base-gray-color);
+}
+
+.header .hoa {
+  position: absolute;
+  font-size: medium;
+  color: var(--primary-color-orange);
+  font-weight: 700;
+  bottom: auto;
+  right: 20px;
+}
+
+.body {
+  background: var(--base-gray-color);
+  width: 100%;
+  height: 100%;
+  padding-top: 55px;
+  position: relative;
+  overflow: hidden;
+}
+
+.body-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  padding: 20px 30px;
+}
+
+.go-top{
+  position: absolute;
+  bottom: -40px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--text-gray100-color);
+  z-index: 5;
+  transition: all 0.7s ease-in-out;
+  opacity: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.go-top.active{
+  bottom: 20px;
+  opacity: 100%;
+}
+
+.go-top .icon{
+  width: 20px;
+  height: 20px;
+  fill: var(--white-color);
+  transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  filter: drop-shadow(0 30px var(--white-color));
+  margin-top: -60px;
+  background: transparent;
+}
+
+.go-top:hover .icon{
+  margin-top: 0;
 }

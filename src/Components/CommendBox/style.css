@@ -1,0 +1,82 @@
+.Commend-box{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 2px solid var(--base-gray-color);
+    transition: all 0.3s ease-in-out;
+}
+
+.Commend-box-left{
+    width: 100%;
+    height: 100%;
+    padding: 20px 40px;
+}
+
+.Commend-box-right{
+    min-width: 340px;
+    border-left: 2px solid var(--base-gray-color);
+    padding: 30px;
+    text-align: left;
+    font-size: 0.8rem;
+}
+
+.Commend-box-right .user-avatar{
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    float: left;
+    margin-right: 10px;
+    margin-left: 20px;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.Commend-box-right .user-avatar::after{
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: green;
+    border: 4px solid var(--white-color);
+    position: absolute;
+    top: -3px;
+    right: -3px;
+}
+
+.Commend-box-right .user-information{
+    margin-bottom: 20px;
+}
+
+.Commend-box-right .user-information .full-name{
+    font-size: small;
+    font-weight: 700;
+}
+
+.Commend-box-right .user-information .id{
+    font-size: small;
+}
+
+.Commend-box-right .user-detail{
+    line-height: 25px;
+} 
+
+.Commend-box-right .user-detail .icon{
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    margin-bottom: -3px;
+}
+
+.Commend-box-right .user-detail .read-icon{
+    fill: var(--gray-color);
+}
+
+.Commend-box-right .user-detail .hoa-icon{
+    fill: var(--primary-color-orange);
+}
+
+.Commend-box-right .user-detail .check-icon{
+    fill: green;
+}

@@ -1,0 +1,54 @@
+.List-book-view {
+  margin: 20px 0;
+  background: var(--white-color);
+  border-radius: 10px;
+  width: 100%;
+}
+
+.List-book-view-header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.List-book-view-header p {
+  font-size: medium;
+  font-weight: 700;
+  color: var(--color);
+  padding: 10px 30px;
+  background: var(--white-color);
+  width: fit-content;
+  z-index: 2;
+}
+
+.List-book-view-body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 20px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  transition: all 0.4s ease-in-out;
+}
+
+.List-book-view-footer {
+  height: 30px;
+  width: 100%;
+  position: relative;
+  padding: 0 20px;
+}
+
+.List-book-view-position-scroll-bar {
+  height: 4px;
+  width: calc(100% - 40px);
+  position: absolute;
+  bottom: 50%;
+  z-index: 3;
+  background-image: linear-gradient(to right, var(--color), var(--color));
+  background-repeat: no-repeat;
+  background-position: left;
+  overflow: hidden;
+  transition: background-size 0.02s ease-in-out;
+}
