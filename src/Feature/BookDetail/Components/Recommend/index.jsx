@@ -1,202 +1,11 @@
 import React from "react";
-import ListBookHorizontal from "../../../../Components/ListBookHorizontal";
+import ListBookHorizontal from "../../../../components/ListBookHorizontal";
 import "./style.scss";
 
 Recommend.propTypes = {};
 
 function Recommend(props) {
-  const data = [
-    {
-      title: "KHOA HOC",
-      books: [
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-      ],
-    },
-    {
-      title: "VAT LY",
-      books: [
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-        {
-          nameBook: "Có hai con mèo ngồi bên cửa sổ",
-          path: "/book-detail",
-          thumbnailUrl:
-            "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
-          price: 34,
-          like: 94,
-          read: 45,
-        },
-      ],
-    },
-  ];
+  const {data} = props;
   return (
     <div className="Book-detail__container">
       <div className="Book-detail__header">
@@ -207,9 +16,9 @@ function Recommend(props) {
           return (
             <ListBookHorizontal
               key={index}
-              books={item.books}
-              title={"@" + item.title}
+              title={"@" + item.name}
               color={'#F9B700'}
+              data={item}
             />
           );
         })}

@@ -1,0 +1,141 @@
+.book-view-box {
+  width: 212px;
+  height: 308px;
+  border-radius: 10px;
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 5px;
+  position: relative;
+  margin-right: 10px;
+
+  & > .action {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: var(--black-background-55);
+    border-radius: 10px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    transition: all 0.2s linear;
+
+    & > .read {
+      display: none;
+      margin-left: 7px;
+
+      & > .read-icon {
+        width: 20px;
+        height: 20px;
+        fill: var(--white-color);
+      }
+    }
+
+    & > .checkbox {
+      display: none;
+
+      &.checked {
+        display: block !important;
+      }
+    }
+  }
+
+  &:hover {
+    & > .action {
+      & > .read {
+        display: block;
+      }
+      & > .checkbox {
+        display: block;
+      }
+    }
+  }
+}
+
+.create-note-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 340px;
+  height: 480px;
+  background: var(--white-color);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__title {
+    padding: 10px;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-black-color);
+  }
+
+  &__info {
+    flex-grow: 1;
+
+    & > .thumbnail-view {
+      width: 310px;
+      height: 310px;
+      border-radius: 10px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: relative;
+      margin-bottom: 15px;
+
+      & > .upload-file {
+        width: 34px;
+        height: 34px;
+        background: var(--white-color);
+        border-radius: 10px;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        & > input {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+  &__action {
+    height: 50px;
+
+    & > button{
+      font-size: 16px;
+      font-weight: 500;
+      padding: 5px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    & > .cancel{
+      border: none;
+      background: var(--white-color);
+      color: var(--text-gray100-color);
+    }
+
+    & > .create{
+      border: none;
+      background: var(--primary-color-orange);
+      color: var(--white-color);
+
+      &:disabled{
+        background: var(--text-gray100-color);
+      }
+    }
+  }
+}

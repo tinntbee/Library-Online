@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import bookActions from "../../redux/actions/bookActions";
 import QuoteIcon from "../../static/QuoteIcon";
 import ListBookHorizontal from "../ListBookHorizontal";
 import "./style.css";
@@ -6,26 +9,42 @@ import "./style.css";
 BooksViewByCategories.propTypes = {};
 
 function BooksViewByCategories(props) {
-  const {data} = props;
-  console.log(data);
+  const { data } = props;
+  const dispatch = useDispatch();
+  const books = useSelector((state) =>
+    state.bookStore.booksByTags.data.find((item) => item._id === 1)
+  );
+  useEffect(() => {
+    if (!books) {
+      
+    dispatch(bookActions.getBooksByTags(1));
+    }
+  }, []);
   return (
-    <div
-      className="Books-view-by-categories"
-      id={data.id}
-      style={{ "--color": data.color }}
-    >
-      <div className="Books-view-by-categories-intro">
-        <img alt="" src={data.thumbnail} />
-        <p>{data.quote}</p>
-        <QuoteIcon />
-      </div>
+    <>
+      {data && (
+        <div
+          className="Books-view-by-categories"
+          id={data._id}
+          style={{ "--color": data.color }}
+        >
+          <div className="Books-view-by-categories-intro">
+            <img alt="" src={data.thumbnail} />
+            <p>{data.quote}</p>
+            <QuoteIcon />
+          </div>
 
-      {data.listBooks.map((item,index)=>{
-        return (
-          <ListBookHorizontal books={item.books} key={index} title={item.title} />
-        )
-      })}
-    </div>
+          {data.tags.map((item, index) => {
+            return (
+              <ListBookHorizontal
+                key={index}
+                data={item}
+              />
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 }
 

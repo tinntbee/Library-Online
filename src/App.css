@@ -1,5 +1,6 @@
 :root{
   --primary-color-orange: #F9B700; 
+  --primary-color-blue: #185F74; 
   --base-gray-color: #E8E8E8;
   --text-gray50-color: #B5B5B5;
   --text-gray100-color: #9B9B9B;
@@ -8,6 +9,7 @@
   --small-font-size-14px: 1rem;
   --text-black-color: #545454;
   --red-color: #F95500;
+  --black-background-55: rgba(84, 84, 84, 0.55);
 }
 
 *{
@@ -123,4 +125,46 @@ a{
 
 .go-top:hover .icon{
   margin-top: 0;
+}
+
+.button-bee{
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 15px 30px;
+  border-radius: 10px;
+  outline: none;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.button-bee.small{
+  padding: 5px 10px;
+}
+
+.button-bee.contained{
+  background-image: linear-gradient(
+    to right,
+    var(--primary-color-orange) 0%,
+    var(--red-color) 51%,
+    var(--primary-color-orange) 100%
+  );
+  background-size: 200% auto;
+  color: var(--white-color);
+  border: none;
+  transition: all 0.3s linear;
+}
+
+.button-bee.contained:hover {
+  background-position: 100%;
+}
+
+.button-bee.outline{
+  background: none;
+  border: 2px solid transparent;
+  color: var(--primary-color-orange);
+  transition: 0.3s all ease-in-out;
+}
+
+.button-bee.outline:hover {
+  border: 2px solid var(--primary-color-orange);
 }
