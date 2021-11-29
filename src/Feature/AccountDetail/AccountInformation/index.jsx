@@ -1,6 +1,6 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import { FastField, FormikProvider, useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import imageAPI from "../../../api/imageAPI";
@@ -51,14 +51,14 @@ function AccountInformation(props) {
   const user = useSelector((state) => state.user);
   const [state, setState] = useState(user.user);
   const imageAvatarDefault = imageAPI.getAvatarDefaults();
-  const INITIAL_FORM_STATE = {
+  let INITIAL_FORM_STATE = {
     displayName: "beenek",
-    fullName: "Nguyễn Trung Tín",
+    fullName: state.name,
     faculty: "FIT",
     sex: "male",
-    email: "18110381@student.hcmute.edu.vn",
+    email: state.email,
     birthDay: "2000-09-27",
-    avatar: "",
+    avatar: state.avatar,
   };
   const FORM_VALIDATION = yup.object().shape({
     displayName: yup
@@ -90,6 +90,11 @@ function AccountInformation(props) {
       alert(JSON.stringify(values, null, 2));
     },
   });
+
+  useEffect(() => {
+    formik.values.fullName = user.user.name;
+    formik.values.email = user.user.email;
+  }, []);
   const classes = useStyles();
   const handleAvatarDefaultClick = (index) => {
     setState({

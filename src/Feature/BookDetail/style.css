@@ -179,6 +179,8 @@
 
 .Book-title .Book-tags {
   margin-top: 10px;
+  display: flex;
+  flex-direction: row;
 }
 
 .Book-title .book-tag {
@@ -241,7 +243,7 @@
   padding: 30px 70px;
   font-size: large;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }

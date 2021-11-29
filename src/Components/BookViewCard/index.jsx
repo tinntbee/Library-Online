@@ -9,7 +9,7 @@ BookViewCard.propTypes = {};
 function BookViewCard(props) {
   const { data } = props;
   return (
-    <Link to={`book-detail?id=${data._id}`} className="Book-view-card">
+    <Link to={`book-detail/${data._id}`} className="Book-view-card">
       <div
         className="Book-view-card-thumbnail"
         style={{ backgroundImage: `url(${data.image})` }}

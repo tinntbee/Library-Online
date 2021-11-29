@@ -3,14 +3,21 @@ import PropTypes from "prop-types";
 import GoogleLogin from "react-google-login";
 import "./style.scss";
 import { useHistory } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../../redux/actions/userActions";
 
 Login.propTypes = {};
 
 function Login(props) {
+  const dispatch = useDispatch();
   const history = useHistory();
+  const user = useSelector((state) => state.user);
   const responseGoogle = (res) => {
-    console.log(res);
-    history.push("/bookstore");
+    dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
+    if (user.loading === false) {
+      history.push("/account");
+    }
+    //history.push("/bookstore");
   };
   return (
     <div className="login">

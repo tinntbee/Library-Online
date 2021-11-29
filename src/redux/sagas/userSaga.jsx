@@ -19,19 +19,20 @@ function signInAPI() {
   return userDefault;
 }
 
-function* fetchUser(action) {
+function* SignInWithGoogle(action) {
   try {
     // const user = yield call(getUser);
-    const res = yield userAPI.getById(1);
+    const res = yield userAPI.signInWithGoogle(action.payload);
     yield delay(1000);
-    yield put({ type: "GET_USER_SUCCESS", user: res });
+    console.log(res);
+    yield put({ type: "SIGN_IN_WITH_GOOGLE_SUCCESS", res: res });
   } catch (e) {
-    yield put({ type: "GET_USER_FAILED", message: e.message });
+    yield put({ type: "SIGN_IN_WITH_GOOGLE_SUCCESS", message: e.message });
   }
 }
 
 function* userSaga() {
-  yield takeLatest("GET_USER", fetchUser);
+  yield takeLatest("SIGN_IN_WITH_GOOGLE", SignInWithGoogle);
 }
 
 export default userSaga;

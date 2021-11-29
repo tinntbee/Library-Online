@@ -2,7 +2,6 @@ import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getUser } from "../../redux/actions/user";
 import FlashcardIcon from "../../static/FlashcardIcon";
 import LibraryIcon from "../../static/LibraryIcon";
 import MusicIcon from "../../static/MusicIcon";
@@ -116,12 +115,6 @@ function SideBar(props) {
   const history = useHistory();
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (user.id === "") {
-      dispatch(getUser());
-    }
-  }, []);
 
   const tabClickHandle = (index) => {
     setState({

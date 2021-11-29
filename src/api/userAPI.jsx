@@ -9,6 +9,14 @@ const userAPI = {
     const url = `/users/${id}`;
     return axiosClient.get(url);
   },
+  signInWithGoogle: (param) => {
+    const url = `/accounts/login-google`;
+    return axiosClient({
+      method: "POST",
+      url: url,
+      data: param,
+    });
+  },
 };
 
 export default userAPI;

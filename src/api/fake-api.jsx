@@ -1337,10 +1337,11 @@ export const imageAvatarList = [
 export const books = [
   {
     _id: 1,
-    name: "Có hai con mèo ngồi bên cửa sổ",
+    name: "EINSTEIN Và Vũ trụ",
     image:
-      "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
+      "https://images.thuvienpdf.com/FTxes93cAK.webp",
     price: 34,
+    description: "description here",
     like: 94,
     dislike: 6,
     totalRead: 45,
@@ -1364,8 +1365,10 @@ export const books = [
     _id: 2,
     name: "Có hai con mèo ngồi bên cửa sổ",
     image:
-      "http://isach.info/images/story/cover/hai_con_meo_ngoi_ben_cua_so__nguyen_nhat_anh.jpg",
+      "https://images.thuvienpdf.com/lflbuEXwK6.webp",
     price: 34,
+    description: "<p>Tác giả: <b>Stephen hawking</b></p><p>Xuất bản: <b>2019</b></p><p>Tái bản: <b>2020</b></p><p>Nhà xuất bản: <b>Kim đồng</b></p>",
+    quote: "<b>Gia tốc</b> và <b>hấp dẫn</b> chỉ có thể tương đương với nhau nếu một vật thể có khối lượng lớn bẻ cong không thời gian, do đó bẻ cong cả lộ trình của các vật thể xung quanh nó ...",
     like: 94,
     dislike: 6,
     totalRead: 45,

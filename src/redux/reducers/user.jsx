@@ -1,7 +1,8 @@
 import * as type from "../types";
+//{ _id: "", name: "", email: "", nickname: "", avatar: "", hoa: 34 }
 
 const initialState = {
-  user: { id: "", name: "", email: "", nickname: "", avatar: "", hoa: 34 },
+  user: { _id: "", name: "", email: "", nickname: "", avatar: "", hoa: 34 },
   loading: false,
   error: "",
 };
@@ -29,6 +30,26 @@ export default function user(state = initialState, action) {
       };
 
     case type.GET_USER_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: "can't not get user, something's wrong!! :<",
+      };
+
+    case type.SIGN_IN_WITH_GOOGLE:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case type.SIGN_IN_WITH_GOOGLE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.res.user,
+      };
+
+    case type.SIGN_IN_WITH_GOOGLE_FAILED:
       return {
         ...state,
         loading: false,
