@@ -55,7 +55,7 @@ function SelectField(props) {
         dir="ltr"
       >
         {options.map((item, index) => {
-          return <MenuItem style={{ fontSize: 16, textAlign: "left" }} value={item.value}>{item.label}</MenuItem>;
+          return <MenuItem key={index} style={{ fontSize: 16, textAlign: "left" }} value={item.value}>{item.label}</MenuItem>;
         })}
       </CustomSelectField>
     </FormControl>

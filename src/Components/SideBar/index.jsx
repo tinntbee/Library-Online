@@ -9,6 +9,7 @@ import PomodoroIcon from "../../static/PomodoroIcon";
 import ReadIcon from "../../static/ReadIcon";
 import "./style.css";
 import { useHistory } from "react-router-dom";
+import { userActions } from "../../redux/actions/userActions";
 
 SideBar.propTypes = {};
 
@@ -112,6 +113,14 @@ function SideBar(props) {
     ],
   };
 
+  const pagesList = [
+    "reading-space",
+    "bookstore",
+    "bookcase",
+    "flash-card",
+    "pomodoro",
+  ];
+  const [pageCurrent, setPageCurrent] = useState("book-store");
   const history = useHistory();
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
@@ -132,43 +141,113 @@ function SideBar(props) {
     history.push("/account");
   };
 
+  const setLocationActive = (pathname) => {
+    for (const element of pagesList) {
+      if (pathname.includes(element)) {
+        setPageCurrent(element);
+        return;
+      }
+    }
+    setPageCurrent("none");
+  };
+  history.listen(function (location) {
+    setLocationActive(location.pathname);
+  });
+
+  useEffect(() => {
+    setLocationActive(window.location.pathname);
+    if (!user) {
+      dispatch(userActions.reSign());
+    }
+  }, []);
+
   return (
     <div className="Sidebar">
-      <div className="Sidebar-header" onClick={handleUserClick}>
-        <img className="Sidebar-header-avatar" src={user.avatar} alt="" />
-        <p className="Sidebar-header-fullName">{user.name}</p>
-        <p className="Sidebar-header-mailAddress">{user.email}</p>
+      <div className="Sidebar-header">
+        <div
+          className="Sidebar-header-avatar"
+          style={user && { backgroundImage: `url(${user.avatar})` }}
+          alt=""
+        />
+        {user ? (
+          <>
+            <p className="Sidebar-header-fullName" onClick={handleUserClick}>
+              {user && user.name}
+            </p>
+            <p className="Sidebar-header-mailAddress">{user && user.email}</p>
+          </>
+        ) : (
+          <button
+            className="Sidebar-header-login-btn button-bee contained"
+            onClick={() => {
+              history.replace("/login");
+            }}
+          >
+            Đăng nhập
+          </button>
+        )}
       </div>
       <div className="Sidebar-body">
         <div className="Sidebar-controls">
           <ul>
-            <li className="Sidebar-control active">
+            <li
+              className={classNames({
+                "Sidebar-control": true,
+                active: pageCurrent === "reading-space",
+              })}
+              onClick={() => history.replace("/reading-space")}
+            >
               <ReadIcon />
-              <Link to="/reading-space">
-                <span>Reading Space</span>
-              </Link>
+              <span>Reading Space</span>
             </li>
-            <li className="Sidebar-control">
+            <li
+              className={classNames({
+                "Sidebar-control": true,
+                active: pageCurrent === "bookstore",
+              })}
+              onClick={() => history.replace("/bookstore")}
+            >
               <LibraryIcon />
-              <Link to="/bookstore">
-                <span>Bookstore</span>
-              </Link>
+              <span>Bookstore</span>
             </li>
-            <li className="Sidebar-control">
+            <li
+              className={classNames({
+                "Sidebar-control": true,
+                active: pageCurrent === "bookcase",
+              })}
+              onClick={() => history.replace("/bookcase")}
+            >
               <MusicIcon />
-              <Link to="/bookcase">
-                <span>Bookcase</span>
-              </Link>
+              <span>Bookcase</span>
             </li>
-            <li className="Sidebar-control">
+            <li
+              className={classNames({
+                "Sidebar-control": true,
+                active: pageCurrent === "flash-card",
+              })}
+            >
               <FlashcardIcon />
               <span>Flashcard</span>
             </li>
-            <li className="Sidebar-control">
+            <li
+              className={classNames({
+                "Sidebar-control": true,
+                active: pageCurrent === "pomodoro",
+              })}
+              onClick={() => history.replace("/pomodoro")}
+            >
               <PomodoroIcon />
               <span>Pomodoro</span>
             </li>
-            <li className="Sidebar-control-active"></li>
+            <li
+              className={classNames({
+                "Sidebar-control-active": true,
+                hidden: pagesList.indexOf(pageCurrent) === -1,
+              })}
+              style={{
+                "--position": `${pagesList.indexOf(pageCurrent) * 44}px`,
+              }}
+            ></li>
           </ul>
         </div>
         <div className="Sidebar-tabs">

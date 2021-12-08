@@ -2,7 +2,8 @@ import * as type from "../types";
 //{ _id: "", name: "", email: "", nickname: "", avatar: "", hoa: 34 }
 
 const initialState = {
-  user: { _id: "", name: "", email: "", nickname: "", avatar: "", hoa: 34 },
+  user: undefined,
+  token: "",
   loading: false,
   error: "",
 };
@@ -43,10 +44,12 @@ export default function user(state = initialState, action) {
       };
 
     case type.SIGN_IN_WITH_GOOGLE_SUCCESS:
+      localStorage.setItem("token", action.res.token);
       return {
         ...state,
         loading: false,
         user: action.res.user,
+        token: action.res.token,
       };
 
     case type.SIGN_IN_WITH_GOOGLE_FAILED:
@@ -54,6 +57,40 @@ export default function user(state = initialState, action) {
         ...state,
         loading: false,
         error: "can't not get user, something's wrong!! :<",
+      };
+
+    case type.SIGN_OUT:
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        user: undefined,
+        token: "",
+      };
+
+    case type.RE_SIGN:
+      // let user = localStorage.getItem("user");
+      // if (user) {
+      //   user = JSON.parse(user);
+      // }
+      // let token = localStorage.getItem("token");
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case type.RE_SIGN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.res.user,
+      };
+
+    case type.RE_SIGN_FAILED:
+      //localStorage.removeItem("token");
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
       };
 
     default:

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import LikeIcon from "../../static/LikeIcon";
 import ReadIcon from "../../static/ReadIcon";
 import "./style.css";
@@ -8,8 +8,12 @@ BookViewCard.propTypes = {};
 
 function BookViewCard(props) {
   const { data } = props;
+  const history = useHistory();
   return (
-    <Link to={`book-detail/${data._id}`} className="Book-view-card">
+    <Link
+      to={`/book-detail/${data._id}`}
+      className="Book-view-card"
+    >
       <div
         className="Book-view-card-thumbnail"
         style={{ backgroundImage: `url(${data.image})` }}

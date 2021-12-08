@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ScrollContainer from "react-indiana-drag-scroll";
 import "./style.scss";
-import BookViewBox from "../BookVỉewBox";
+import BookViewBox from "../BookViewBox";
 import Checkbox from "@mui/material/Checkbox";
 import classNames from "classnames";
 
-BookcaseContainer.propTypes = {};
+BooksContainer.propTypes = {};
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-function BookcaseContainer(props) {
+function BooksContainer(props) {
   const data = [
     {
       _id: 1,
@@ -85,7 +85,11 @@ function BookcaseContainer(props) {
   };
 
   const handleCloseToolbar = () => {
-    setState({ ...state, showToolbar: false });
+    let newData = [...state.data];
+    newData.forEach((element) => {
+      element.checked = false;
+    });
+    setState({ ...state, showToolbar: false, data: [...newData] });
   };
 
   return (
@@ -145,4 +149,4 @@ function BookcaseContainer(props) {
   );
 }
 
-export default BookcaseContainer;
+export default BooksContainer;

@@ -50,5 +50,5 @@
   background-repeat: no-repeat;
   background-position: left;
   overflow: hidden;
-  transition: background-size 0.02s ease-in-out;
+  transition: all 0.02s ease-in-out;
 }

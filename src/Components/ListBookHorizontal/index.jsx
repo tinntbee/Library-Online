@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./style.css";
 import BookViewCard from "../BookViewCard";
 import ScrollContainer from "react-indiana-drag-scroll";
@@ -10,9 +10,8 @@ import bookActions from "../../redux/actions/bookActions";
 ListBookHorizontal.propTypes = {};
 
 function ListBookHorizontal(props) {
-  const {data} = props;
+  const { data } = props;
   const _idTag = data._id;
-  console.log(_idTag);
   const booksByTags = useSelector((state) =>
     state.bookStore.booksByTags.data.find((item) => item._id === _idTag)
   );
@@ -22,21 +21,19 @@ function ListBookHorizontal(props) {
       dispatch(bookActions.getBooksByTags(_idTag));
     }
   }, []);
-  const scrollRef = React.createRef();
+  const scrollRef = useRef();
   const [state, setState] = useState({ positionScroll: 0 });
 
-  onscroll = () => {
+  const onscroll = () => {
     const scrollLeft = scrollRef.current.scrollLeft;
     const scrollWidth = scrollRef.current.container.current.scrollWidth;
     const offsetWidth = scrollRef.current.container.current.offsetWidth;
     const positionScroll = scrollLeft / (scrollWidth - offsetWidth);
+    console.log({positionScroll});
     setState({ positionScroll: positionScroll * 100 });
   };
   return (
-    <div
-      id={data._id}
-      className="List-book-view"
-    >
+    <div id={data._id} className="List-book-view">
       <div className="List-book-view-header">
         <p>{"#" + data.name.toUpperCase()}</p>
       </div>

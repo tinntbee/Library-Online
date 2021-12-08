@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import * as yup from "yup";
 import imageAPI from "../../../api/imageAPI";
 import { storage } from "../../../service/firebase";
+import { filesService } from "../../../service/firebase/filesService";
 import {
   AccountInformationContainer,
   AvatarContainer,
@@ -45,21 +46,45 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+const sexOptions = [
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+];
+const facultyOptions = [
+  { value: "FIT", label: "Công nghệ thông tin" },
+  { value: "UEL", label: "Kinh tế" },
+];
 
 function AccountInformation(props) {
+  const classes = useStyles();
   const yesterday = new Date(Date.now() - 86400000);
   const user = useSelector((state) => state.user);
-  const [state, setState] = useState(user.user);
-  const imageAvatarDefault = imageAPI.getAvatarDefaults();
-  let INITIAL_FORM_STATE = {
+
+  const [data, setData] = useState({
+    _id: "1",
+    displayName: "",
+    fullName: "",
+    faculty: "",
+    sex: "",
+    email: "",
+    birthDay: "2000-09-27",
+    avatar: "",
+    avatarGoogle: "",
+  });
+
+  const [state, setState] = useState({
     displayName: "beenek",
-    fullName: state.name,
+    fullName: "",
     faculty: "FIT",
     sex: "male",
-    email: state.email,
+    email: "",
     birthDay: "2000-09-27",
-    avatar: state.avatar,
-  };
+    avatar: "",
+  });
+
+  const imageAvatarDefault = imageAPI.getAvatarDefaults();
+
+  let INITIAL_FORM_STATE = { ...data };
   const FORM_VALIDATION = yup.object().shape({
     displayName: yup
       .string("Tên hiển thị với người dùng khác")
@@ -75,14 +100,6 @@ function AccountInformation(props) {
       .required(),
     avatar: yup.string(),
   });
-  const sexOptions = [
-    { value: "male", label: "Male" },
-    { value: "female", label: "Female" },
-  ];
-  const facultyOptions = [
-    { value: "FIT", label: "Công nghệ thông tin" },
-    { value: "UEL", label: "Kinh tế" },
-  ];
   const formik = useFormik({
     initialValues: INITIAL_FORM_STATE,
     validationSchema: FORM_VALIDATION,
@@ -92,54 +109,49 @@ function AccountInformation(props) {
   });
 
   useEffect(() => {
-    formik.values.fullName = user.user.name;
-    formik.values.email = user.user.email;
+    //fetchAccount
   }, []);
-  const classes = useStyles();
+
   const handleAvatarDefaultClick = (index) => {
     setState({
       ...state,
       avatar: imageAvatarDefault[index].url,
     });
   };
+
   const handleAvatarGoogleClick = () => {
     setState({
       ...state,
-      avatar: user.user.avatar,
+      avatar: data.avatarGoogle,
     });
   };
-  const handleAvatarInputChange = (e) => {
+
+  const handleAvatarInputChange = async (e) => {
     const acceptedImageTypes = ["image/gif", "image/jpeg", "image/png"];
     if (acceptedImageTypes.includes(e.target.files[0].type)) {
-      const uploadTask = storage
-        .ref(`public/avatar-image/user_${user.user._id}`)
-        .put(e.target.files[0]);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {},
-        (error) => {
-          console.log(error);
+      const pathName = "public/avatar-image/";
+      const fileName = `user_${data._id}`;
+      filesService.uploadFile(
+        pathName,
+        fileName,
+        e.target.files[0],
+        (url) => {
+          setState({
+            ...state,
+            avatar: url.toString(),
+          });
         },
-        () => {
-          storage
-            .ref("public/avatar-image")
-            .child(`user_${user.user._id}`)
-            .getDownloadURL()
-            .then((url) => {
-              setState({
-                ...state,
-                avatar: url.toString(),
-              });
-            });
+        (progress) => {
+          console.log("Upload is " + progress + "% done");
         }
       );
     }
   };
   const handleFormSubmit = () => {
-    formik.values.avatar =
-      state.avatar === "" ? user.user.avatar : state.avatar;
+    formik.values.avatar = state.avatar === "" ? state.avatar : state.avatar;
     formik.handleSubmit();
   };
+  
   return (
     <AccountInformationContainer>
       <Title>
@@ -152,7 +164,7 @@ function AccountInformation(props) {
           <p className="part">Avatar</p>
           <div
             className="avatar"
-            style={user && { backgroundImage: `url(${user.user.avatar})` }}
+            style={user && { backgroundImage: `url(${state.avatar})` }}
           >
             <div
               className="avatar-checked"
@@ -165,7 +177,7 @@ function AccountInformation(props) {
             </div>
             <div
               className="avatar-box"
-              style={user && { backgroundImage: `url(${user.user.avatar})` }}
+              style={user && { backgroundImage: `url(${state.avatar})` }}
               onClick={handleAvatarGoogleClick}
             />
 

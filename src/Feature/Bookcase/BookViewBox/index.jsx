@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Checkbox from "@mui/material/Checkbox";
 import "./style.scss";
-import { Fade, IconButton, Modal, TextField } from "@mui/material";
+import {
+  CircularProgress,
+  Fade,
+  IconButton,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ReadIcon from "../../../static/ReadIcon";
 import classNames from "classnames";
+import { Box } from "@mui/system";
 
 BookViewBox.propTypes = {};
 
@@ -97,6 +105,32 @@ function BookViewBox(props) {
           }}
           onChange={handleCheckBoxChange}
         />
+      </div>
+      <div className="detail">
+        <Box sx={{ position: "relative", display: "inline-flex" }}>
+          <CircularProgress
+            sx={{ color: "#fff" }}
+            variant="determinate"
+            value={40}
+          />
+          <Box
+            sx={{
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              position: "absolute",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography variant="caption" component="div" color="#FFF">
+              {`${40}%`}
+            </Typography>
+          </Box>
+        </Box>
+        <p className="name">Vũ trụ trong vỏ hạt dẻ</p>
       </div>
     </div>
   );

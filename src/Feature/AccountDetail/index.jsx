@@ -5,17 +5,32 @@ import TagFavorites from "./TagFavorites";
 import AccountInformation from "./AccountInformation";
 import MyBooks from "./MyBooks";
 import Report from "./Report";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import { userActions } from "../../redux/actions/userActions";
 
 AccountDetailFeature.propTypes = {};
 
 function AccountDetailFeature(props) {
-  const hoa = useSelector((state) => state.user.user.hoa);
+  const user = useSelector((state) => state.user.user);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(userActions.signOut());
+    history.replace("/login");
+  };
   return (
     <AccountDetail className="main-content">
       <Header>
         <p className="title">ABOUT MEE</p>
-        <p className="hoa">${hoa}</p>
+        {user && (
+          <button
+            className="logout button-bee contained"
+            onClick={handleLogout}
+          >
+            Đăng xuất
+          </button>
+        )}
       </Header>
       <Body>
         <BodyContent>

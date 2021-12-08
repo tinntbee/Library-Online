@@ -33,13 +33,14 @@ export const Header = styled.div`
   z-index: 99;
   border-bottom: 1px solid var(--base-gray-color);
 
-  & > .hoa {
+  & > .logout {
     position: absolute;
-    font-size: medium;
-    color: var(--primary-color-orange);
+    font-size: 14px !important;
     font-weight: 700;
     bottom: auto;
     right: 20px;
+    padding: 5px 8px!important;
+
   }
 `;
 

@@ -4,7 +4,56 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: scroll;
+    overflow-y: auto;
+    padding-top: 55px;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+
+    & > .thumbnail-change-actions {
+      position: fixed;
+      top: 0px;
+      right: 0;
+      width: 100%;
+      height: 55px;
+      background: #e8e8e84d;
+      z-index: 9;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 10px;
+      transition: all 0.4s ease-in-out;
+
+      &.active {
+        top: 55px;
+      }
+
+      & > button {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--white-color);
+        padding: 5px 15px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        margin: 0 5px;
+        cursor: pointer;
+
+        &:hover {
+          filter: brightness(95%);
+        }
+      }
+
+      & > .cancel {
+        background: #e8e8e84d;
+      }
+
+      & > .save {
+        background: var(--primary-color-orange);
+      }
+    }
 
     & > .thumbnail {
       height: 600px;
@@ -13,7 +62,7 @@
       background-repeat: no-repeat;
       background-size: cover;
       position: fixed;
-      top: 0;
+      top: 55px;
       left: 0;
       z-index: 1;
     }
@@ -73,9 +122,17 @@
           outline: none;
           background-position: center;
           background-repeat: no-repeat;
+          overflow: hidden;
 
-          &:hover{
-              filter: brightness(90%);
+          & > input {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+          }
+
+          &:hover {
+            filter: brightness(90%);
           }
         }
       }

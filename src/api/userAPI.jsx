@@ -17,6 +17,13 @@ const userAPI = {
       data: param,
     });
   },
+  reSign: (param) => {
+    const url = "/accounts/resign";
+    return axiosClient({
+      method: "GET",
+      url: url,
+    });
+  },
 };
 
 export default userAPI;

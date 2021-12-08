@@ -9,6 +9,8 @@
   margin: 5px;
   position: relative;
   margin-right: 10px;
+  overflow: hidden;
+  cursor: pointer;
 
   & > .action {
     display: flex;
@@ -41,6 +43,29 @@
     }
   }
 
+  & > .detail {
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    left: 0;
+    bottom: -60px;
+    background: var(--primary-color-blue);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+    transition: all 0.3s ease-in-out;
+
+    & > .name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white-color);
+      text-align: right;
+      margin-left: 10px;
+    }
+  }
+
   &:hover {
     & > .action {
       & > .read {
@@ -49,6 +74,10 @@
       & > .checkbox {
         display: block;
       }
+    }
+
+    & > .detail {
+      bottom: 0;
     }
   }
 }
@@ -114,7 +143,7 @@
   &__action {
     height: 50px;
 
-    & > button{
+    & > button {
       font-size: 16px;
       font-weight: 500;
       padding: 5px 15px;
@@ -122,18 +151,18 @@
       cursor: pointer;
     }
 
-    & > .cancel{
+    & > .cancel {
       border: none;
       background: var(--white-color);
       color: var(--text-gray100-color);
     }
 
-    & > .create{
+    & > .create {
       border: none;
       background: var(--primary-color-orange);
       color: var(--white-color);
 
-      &:disabled{
+      &:disabled {
         background: var(--text-gray100-color);
       }
     }

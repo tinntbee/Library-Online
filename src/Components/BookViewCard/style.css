@@ -9,7 +9,7 @@
   align-items: center;
   position: relative;
   transition: all 0.3s ease-in-out;
-  border: 1px solid var(--white-color);
+  border: 1px solid transparent;
 }
 
 .Book-view-card:hover {
@@ -127,15 +127,15 @@
 }
 
 .Book-view-card-rate .icon {
-  width: 20px;
-  height: 15px;
+  width: 20px!important;
+  height: 15px!important;
   fill: var(--white-color);
 }
 
 .Book-view-card-rate .read-icon {
-  height: 10px;
+  height: 10px!important;
 }
 
 .Book-view-card-rate .like-icon {
-  margin-top: 5px;
+  margin-top: 5px!important;
 }
