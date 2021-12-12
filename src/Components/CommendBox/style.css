@@ -7,8 +7,7 @@
 }
 
 .Commend-box-left{
-    width: 100%;
-    height: 100%;
+    flex-grow: 1;
     padding: 20px 40px;
 }
 

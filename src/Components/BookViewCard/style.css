@@ -32,10 +32,10 @@
   transition: all 0.3s ease-in-out;
 }
 
-.Book-view-card:hover .Book-view-card-thumbnail{
-    width: 240px;
-    height: 347px;
-    top: 8px;
+.Book-view-card:hover .Book-view-card-thumbnail {
+  width: 240px;
+  height: 347px;
+  top: 8px;
 }
 
 .Book-view-card .Book-view-card-thumbnail::after {
@@ -56,7 +56,7 @@
 }
 
 .Book-view-card:hover .Book-view-card-thumbnail::after {
-    opacity: 100%;
+  opacity: 100%;
 }
 
 .Book-view-card-detail {
@@ -66,6 +66,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   margin: 5px 0;
   position: absolute;
   bottom: 5px;
@@ -78,16 +79,17 @@
   color: var(--text-gray50-color);
   text-align: start;
   white-space: nowrap;
+  line-height: 22px;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: all 0.3s ease-in-out;
 }
 
-.Book-view-card:hover .Book-view-card-name{
-    color: var(--text-gray100-color);
-    white-space: normal;
-    line-height: 15px;
-    height: 30px;
+.Book-view-card:hover .Book-view-card-name {
+  color: var(--text-gray100-color);
+  white-space: normal;
+  max-lines: 2;
+  /* height: 30px; */
 }
 
 .Book-view-card-price {
@@ -115,9 +117,9 @@
   transition: all 0.3s ease-in-out;
 }
 
-.Book-view-card:hover .Book-view-card-rate{
-    right: 10px;
-    opacity: 100%;
+.Book-view-card:hover .Book-view-card-rate {
+  right: 10px;
+  opacity: 100%;
 }
 
 .Book-view-card-rate a {
@@ -127,15 +129,15 @@
 }
 
 .Book-view-card-rate .icon {
-  width: 20px!important;
-  height: 15px!important;
+  width: 20px !important;
+  height: 15px !important;
   fill: var(--white-color);
 }
 
 .Book-view-card-rate .read-icon {
-  height: 10px!important;
+  height: 10px !important;
 }
 
 .Book-view-card-rate .like-icon {
-  margin-top: 5px!important;
+  margin-top: 5px !important;
 }

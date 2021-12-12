@@ -21,7 +21,7 @@ function CommendBox(props) {
             style={{
               "--status": 1,
               backgroundImage:
-                "url(https://scontent.fvca1-3.fna.fbcdn.net/v/t1.6435-9/243027416_3138938306431058_4725055277341185435_n.jpg?_nc_cat=111&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=ZqjxB11SllIAX9kazMi&_nc_ht=scontent.fvca1-3.fna&oh=d970ccb0fd93f7b46e6623068d012d1a&oe=6197CD34)",
+                "url(https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/240581367_3138938299764392_2228439304544764616_n.jpg?_nc_cat=101&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=tPUB3fnIlA8AX90MaV5&tn=yNwWdXyL0_83m3M_&_nc_ht=scontent.fvca1-4.fna&oh=218f4291773bed8308637f6592590a28&oe=61B583ED)",
             }}
           />
           <p className="full-name">Nguyễn Trung Tín</p>

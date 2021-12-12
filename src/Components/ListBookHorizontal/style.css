@@ -3,6 +3,7 @@
   background: var(--white-color);
   border-radius: 10px;
   width: 100%;
+  overflow: hidden;
 }
 
 .List-book-view-header {
@@ -26,7 +27,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin: 10px 20px;
   overflow-y: hidden;
   overflow-x: auto;

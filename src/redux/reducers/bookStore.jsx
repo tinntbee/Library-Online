@@ -39,6 +39,7 @@ export default function bookStore(state = initialState, action) {
       return { ...state, booksSlide: { ...state.booksSlide, loading: true } };
 
     case type.GET_BOOKS_SLIDE_SUCCESS:
+      console.log(action.data);
       return {
         ...state,
         booksSlide: {

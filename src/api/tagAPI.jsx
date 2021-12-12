@@ -3,7 +3,8 @@ import { TagsByCategories } from "./fake-api";
 
 const tagAPI = {
   getAllTagsByCategories: (params) => {
-    return TagsByCategories;
+    const url = "/categories";
+    return axiosClient.get(url);
   },
 };
 

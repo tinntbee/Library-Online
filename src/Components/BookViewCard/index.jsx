@@ -10,10 +10,7 @@ function BookViewCard(props) {
   const { data } = props;
   const history = useHistory();
   return (
-    <Link
-      to={`/book-detail/${data._id}`}
-      className="Book-view-card"
-    >
+    <Link to={`/book-detail/${data._id}`} className="Book-view-card">
       <div
         className="Book-view-card-thumbnail"
         style={{ backgroundImage: `url(${data.image})` }}
@@ -29,7 +26,11 @@ function BookViewCard(props) {
         </Link>
         <Link to="#">
           <LikeIcon />
-          <p>{(data.like / (data.like + data.dislike)) * 100}</p>
+          <p>
+            {data.like + data.dislike > 0
+              ? (data.like / (data.like + data.dislike)) * 100
+              : "-"}
+          </p>
         </Link>
       </div>
     </Link>

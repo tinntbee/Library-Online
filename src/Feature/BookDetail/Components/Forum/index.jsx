@@ -2,13 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CommendBox from "../../../../components/CommendBox";
 import SendIcon from "../../../../static/SendIcon";
+import YourComment from "../YourComment";
 import "./style.scss";
 
 Forum.propTypes = {};
 
 function Forum(props) {
   const handleReply = () => {
-      console.log("reply");
+    console.log("reply");
   };
 
   return (
@@ -24,16 +25,16 @@ function Forum(props) {
           </select>
         </div>
       </div>
-      <div className="Book-comment__content">
-        <CommendBox handleReply={handleReply} data={{ tag: "Like" }} />
-        <CommendBox data={{ tag: "Dislike" }} />
+      <div className="Book-comment__your-comment">
+        <p>Ý kiến của bạn</p>
+        <YourComment />
       </div>
-      <div className="Book-comment__editor active">
-        <div className="Book-comment__avatar"></div>
-        <input type="Book-comment__text" />
-        <Link href="#">
-          <SendIcon />
-        </Link>
+      <div className="Book-comment__content">
+        <p>Các bàn luận khác </p>
+        <div>
+          <CommendBox handleReply={handleReply} data={{ tag: "Like" }} />
+          <CommendBox data={{ tag: "Dislike" }} />
+        </div>
       </div>
     </div>
   );

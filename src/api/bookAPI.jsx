@@ -9,19 +9,21 @@ const bookAPI = {
     return axiosClient.get(url, { params });
   },
   getById: (id) => {
-    const url = `/books/${id}`;
+    const url = `/books/detail/${id}`;
     return axiosClient.get(url);
   },
   getBooksSlide: () => {
     //handle API
-    return booksSlide;
+    const url = "/books/slide";
+    return axiosClient.get(url);
   },
   getBooksForYou: () => {
     //handle API
     return booksForYou;
   },
   getBooksByTags: (id) => {
-    return booksByTags.find((item) => item._id === id);
+    const url = `/books/bookByTag/${id}`;
+    return axiosClient.get(url);
   },
   getBook: (params) => {
     const delayDemo = async () => {

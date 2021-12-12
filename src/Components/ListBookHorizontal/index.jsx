@@ -12,6 +12,7 @@ ListBookHorizontal.propTypes = {};
 function ListBookHorizontal(props) {
   const { data } = props;
   const _idTag = data._id;
+  console.log(_idTag);
   const booksByTags = useSelector((state) =>
     state.bookStore.booksByTags.data.find((item) => item._id === _idTag)
   );
@@ -29,7 +30,7 @@ function ListBookHorizontal(props) {
     const scrollWidth = scrollRef.current.container.current.scrollWidth;
     const offsetWidth = scrollRef.current.container.current.offsetWidth;
     const positionScroll = scrollLeft / (scrollWidth - offsetWidth);
-    console.log({positionScroll});
+    console.log({ positionScroll });
     setState({ positionScroll: positionScroll * 100 });
   };
   return (

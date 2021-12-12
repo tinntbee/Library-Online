@@ -14,12 +14,12 @@ function BooksViewByCategories(props) {
   const books = useSelector((state) =>
     state.bookStore.booksByTags.data.find((item) => item._id === 1)
   );
-  useEffect(() => {
-    if (!books) {
+  // useEffect(() => {
+  //   if (!books) {
       
-    dispatch(bookActions.getBooksByTags(1));
-    }
-  }, []);
+  //   dispatch(bookActions.getBooksByTags(data._id));
+  //   }
+  // }, []);
   return (
     <>
       {data && (

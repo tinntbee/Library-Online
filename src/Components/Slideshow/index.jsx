@@ -70,7 +70,7 @@ function Slideshow(props) {
         return (
           <div
             key={index}
-            style={{ backgroundImage: `url(${item.imageUrl})` }}
+            style={{ backgroundImage: `url(${item.image})` }}
             className={"SlideItem SlidePosition-" + state[index]}
             onClick={() => {
               slideItemClickHandle(state[index]);

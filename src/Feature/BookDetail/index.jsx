@@ -12,27 +12,34 @@ import ToTopIcon from "../../static/ToTopIcon";
 import Forum from "./Components/Forum";
 import Recommend from "./Components/Recommend";
 import "./style.css";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useHistory, useParams } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
 
 BookDetail.propTypes = {};
 
 function BookDetail(props) {
+  const history = useHistory();
   const { id } = useParams();
-  console.log({ id });
+  const [_id, set_id] = useState(id);
   const [state, setState] = useState({ loading: true, data: {} });
+
+  const fetchBook = async () => {
+    try {
+      setState({ ...state, loading: true });
+      const res = await bookAPI.getById(_id);
+      setState({ ...state, loading: false, data: res });
+    } catch (e) {
+      console.log({ e });
+    }
+  };
+
   useEffect(() => {
-    const fetchBook = async () => {
-      try {
-        const params = { _id: id };
-        const res = await bookAPI.getBook(params);
-        setState({ ...state, loading: false, data: res });
-      } catch (e) {
-        console.log({ e });
-      }
-    };
     fetchBook();
-  }, []);
+  }, [_id]);
+
+  history.listen(function (location) {
+    set_id(location.pathname.substring(13));
+  });
 
   const [buttonScrollTop, setButtonScrollTop] = useState(false);
   const toggleVisible = () => {
@@ -89,9 +96,11 @@ function BookDetail(props) {
                             <Link to="#">
                               <LikeIcon />
                               <p>
-                                {(state.data.like /
-                                  (state.data.like + state.data.dislike)) *
-                                  100}
+                                {state.data.like + state.data.dislike > 0
+                                  ? (state.data.like /
+                                      (state.data.like + state.data.dislike)) *
+                                    100
+                                  : "-"}
                               </p>
                             </Link>
                           </div>
@@ -197,9 +206,7 @@ function BookDetail(props) {
                         variant="rectangular"
                       />
                     ) : (
-                      <>
-                        {state.data.description}
-                      </>
+                      <>{state.data.description}</>
                     )}
                   </div>
                   <div className="Book-action">

@@ -1,0 +1,115 @@
+.your-comment {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  &__left {
+    flex-grow: 1;
+    padding: 20px 40px;
+
+    & > .Comment {
+      position: relative;
+      margin-bottom: 10px;
+
+      & > .Comment-content {
+        height: 137px !important;
+        background-image: linear-gradient(#f9b70018, #fff70423);
+        padding: 0;
+
+        & > textarea {
+          width: 100%;
+          height: 100%;
+          background: none;
+          border: none;
+          resize: none;
+          padding: 10px 15px;
+          border-radius: 10px;
+
+          &:focus {
+            outline: 1px solid var(--primary-color-orange);
+          }
+        }
+      }
+
+      & > .btn-send {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--white-color);
+        background: var(--primary-color-orange);
+        padding: 3px 10px;
+        border-radius: 10px;
+        outline: none;
+        border: none;
+        position: absolute;
+        right: 0;
+        bottom: -10px;
+      }
+    }
+  }
+  &__right {
+    min-width: 357px;
+    border-left: 2px solid var(--primary-color-orange);
+    padding: 30px;
+    text-align: left;
+    font-size: 0.8rem;
+
+    & > .user-information {
+      margin-bottom: 20px;
+
+      & > .user-avatar {
+        height: 45px;
+        width: 45px;
+        border-radius: 50%;
+        float: left;
+        margin-right: 10px;
+        margin-left: 20px;
+        position: relative;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        &::after {
+          content: "";
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: green;
+          border: 4px solid var(--white-color);
+          position: absolute;
+          top: -3px;
+          right: -3px;
+        }
+      }
+      & > .full-name {
+        font-size: small;
+        font-weight: 700;
+      }
+      & > .id {
+        font-size: small;
+      }
+    }
+
+    & > .user-detail {
+      line-height: 25px;
+
+      & .icon {
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        margin-bottom: -3px;
+      }
+
+      & .read-icon {
+        fill: var(--gray-color);
+      }
+
+      & .hoa-icon {
+        fill: var(--primary-color-orange);
+      }
+
+      & .check-icon {
+        fill: green;
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@
   min-height: 875px;
   background: var(--white-color);
   border-radius: 10px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   overflow: hidden;

@@ -24,6 +24,10 @@ const userAPI = {
       url: url,
     });
   },
+  getAccountInfo: () => {
+    const url = "/accounts";
+    return axiosClient.get(url);
+  },
 };
 
 export default userAPI;

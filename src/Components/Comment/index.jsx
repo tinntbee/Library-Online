@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./style.css";
+import "./style.scss";
 import RateLikeDislike from "../RateLikeDislike";
 import ReplyIcon from "../../static/LikeIcon copy";
 import ReplyComment from "../ReplyComment";
@@ -9,11 +9,14 @@ Comment.propTypes = {};
 
 function Comment(props) {
   const [replyVisible, setReplyVisible] = useState(false);
+  const [yourReplyVisible, setYourReplyVisible] = useState(false);
   function showReplyHandle() {
     setReplyVisible(!replyVisible);
   }
-  const { data, handleReply } = props;
-  console.log(data);
+  const { data } = props;
+  const handleReply = () => {
+    setYourReplyVisible(!yourReplyVisible);
+  };
   return (
     <div className="Comment">
       <p className={"Comment-tag " + data.tag.toLowerCase()}>
@@ -33,7 +36,7 @@ function Comment(props) {
           <RateLikeDislike />
         </div>
         <div className="Comment-footer-right">
-          <p onClick={handleReply}>Phản hồi</p>
+          <p onClick={handleReply}>{yourReplyVisible ? "Hủy" : "Phản hồi"}</p>
           <div className="dot" />
           {!replyVisible ? (
             <>
@@ -46,10 +49,22 @@ function Comment(props) {
           <p>Bình luận ngày 21/10/2021</p>
         </div>
       </div>
-      <div style={{"--reply-length": 2}} className={classNames({
-        "reply-comments": true,
-        "active": replyVisible
-      })}>
+
+      {yourReplyVisible && (
+        <div className="your-reply">
+          <p>Trả lời @Trungtin</p>
+          <dìv className="your-reply__content">
+            <textarea>Phản hồi</textarea>
+            <button className="btn-send">Đăng tải</button>
+          </dìv>
+        </div>
+      )}
+
+      <div
+        className={classNames({
+          "reply-comments": true,
+        })}
+      >
         {replyVisible ? (
           <>
             <ReplyComment />

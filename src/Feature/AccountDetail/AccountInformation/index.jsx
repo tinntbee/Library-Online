@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import imageAPI from "../../../api/imageAPI";
+import userAPI from "../../../api/userAPI";
 import { storage } from "../../../service/firebase";
 import { filesService } from "../../../service/firebase/filesService";
 import {
@@ -65,26 +66,24 @@ function AccountInformation(props) {
     displayName: "",
     fullName: "",
     faculty: "",
-    sex: "",
+    gender: "",
     email: "",
-    birthDay: "2000-09-27",
+    dob: "2000-09-27",
     avatar: "",
     avatarGoogle: "",
   });
 
   const [state, setState] = useState({
-    displayName: "beenek",
-    fullName: "",
-    faculty: "FIT",
-    sex: "male",
-    email: "",
-    birthDay: "2000-09-27",
-    avatar: "",
+    displayName: data.displayName,
+    fullName: data.fullName,
+    faculty: data.faculty,
+    sex: data.gender,
+    email: data.email,
+    birthDay: data.dob,
+    avatar: data.avatar,
   });
 
   const imageAvatarDefault = imageAPI.getAvatarDefaults();
-
-  let INITIAL_FORM_STATE = { ...data };
   const FORM_VALIDATION = yup.object().shape({
     displayName: yup
       .string("Tên hiển thị với người dùng khác")
@@ -101,15 +100,26 @@ function AccountInformation(props) {
     avatar: yup.string(),
   });
   const formik = useFormik({
-    initialValues: INITIAL_FORM_STATE,
+    initialValues: state,
     validationSchema: FORM_VALIDATION,
+    enableReinitialize: true,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
   });
 
+  //fetchAccount
+  const fetchAccount = async () => {
+    await userAPI.getAccountInfo().then((account) => {
+      if (account) {
+        setState({ ...state, ...account });
+      }
+    });
+  };
+
   useEffect(() => {
-    //fetchAccount
+    fetchAccount();
+    console.log({ data });
   }, []);
 
   const handleAvatarDefaultClick = (index) => {
@@ -151,7 +161,7 @@ function AccountInformation(props) {
     formik.values.avatar = state.avatar === "" ? state.avatar : state.avatar;
     formik.handleSubmit();
   };
-  
+
   return (
     <AccountInformationContainer>
       <Title>
