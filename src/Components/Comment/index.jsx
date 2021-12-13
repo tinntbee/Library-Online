@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./style.scss";
 import RateLikeDislike from "../RateLikeDislike";
 import ReplyIcon from "../../static/LikeIcon copy";
@@ -8,6 +8,7 @@ import classNames from "classnames";
 Comment.propTypes = {};
 
 function Comment(props) {
+  const yourReplyInputRef = useRef();
   const [replyVisible, setReplyVisible] = useState(false);
   const [yourReplyVisible, setYourReplyVisible] = useState(false);
   function showReplyHandle() {
@@ -17,6 +18,11 @@ function Comment(props) {
   const handleReply = () => {
     setYourReplyVisible(!yourReplyVisible);
   };
+  useEffect(() => {
+    if (yourReplyInputRef.current) {
+      yourReplyInputRef.current.focus();
+    }
+  }, [yourReplyVisible]);
   return (
     <div className="Comment">
       <p className={"Comment-tag " + data.tag.toLowerCase()}>
@@ -54,7 +60,7 @@ function Comment(props) {
         <div className="your-reply">
           <p>Trả lời @Trungtin</p>
           <dìv className="your-reply__content">
-            <textarea>Phản hồi</textarea>
+            <textarea ref={yourReplyInputRef}>Phản hồi</textarea>
             <button className="btn-send">Đăng tải</button>
           </dìv>
         </div>

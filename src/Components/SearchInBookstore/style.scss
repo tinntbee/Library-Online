@@ -64,6 +64,7 @@
     & > .tags-icon {
       position: absolute;
       top: 10px;
+      cursor: pointer;
       right: 10px;
     }
 
@@ -89,12 +90,14 @@
       overflow-x: hidden;
       overflow-y: auto;
       opacity: 0;
+      visibility: hidden;
 
       & > .tag {
         width: 100%;
         border-radius: 10px;
         text-align: left;
         padding: 5px 10px;
+        cursor: pointer;
 
         &:hover {
           background: var(--base-gray-color);
@@ -112,10 +115,12 @@
 
       & > .tags-title {
         opacity: 1;
+        visibility: visible;
       }
 
       & > .tags-list {
         opacity: 1;
+        visibility: visible;
       }
     }
   }
@@ -157,6 +162,7 @@
           background: var(--white-color);
           border: none;
           border-radius: 10px;
+          cursor: pointer;
 
           &:focus {
             border: none;
@@ -172,7 +178,7 @@
       margin-top: 20px;
       display: flex;
       flex-direction: row;
-      justify-content: space-evenly;
+      justify-content: flex-start;
       flex-wrap: wrap;
       overflow-x: hidden;
       overflow-y: auto;

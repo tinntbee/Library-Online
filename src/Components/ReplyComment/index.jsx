@@ -24,8 +24,6 @@ function ReplyComment(props) {
           <RateLikeDislike />
         </div>
         <div className="Comment-footer-right">
-          <p>Phản hồi</p>
-          <div className="dot" />
           <p>Bình luận ngày 21/10/2021</p>
         </div>
       </div>

@@ -21,9 +21,9 @@ function BookViewBox(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const { data, handleCheckBoxOnChange, index } = props;
+  const { data, handleCheckBoxOnChange, index, checked } = props;
   const handleCheckBoxChange = (e) => {
-    handleCheckBoxOnChange({ index: index, checked: !data.checked });
+    handleCheckBoxOnChange({ index: index, isChecked: !checked });
   };
   const [createNoteForm, setCreateNoteForm] = useState({
     thumbnailFile: null,
@@ -94,9 +94,9 @@ function BookViewBox(props) {
         <Checkbox
           className={classNames({
             checkbox: true,
-            checked: data.checked,
+            checked: checked,
           })}
-          checked={data.checked}
+          checked={checked}
           sx={{
             color: "#FFFFFF",
             "&.Mui-checked": {

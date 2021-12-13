@@ -77,19 +77,42 @@ function BooksContainer(props) {
     showToolbar: false,
     data: data,
   });
+  const [checked, setChecked] = useState(Array(data.length).fill(false));
   const handleCheckBoxOnChange = (value) => {
-    console.log(value);
-    let newData = [...state.data];
-    newData[value.index].checked = value.checked;
-    setState({ ...state, showToolbar: true, data: [...newData] });
+    let newChecked = [...checked];
+    newChecked[value.index] = value.isChecked;
+    setChecked([...newChecked]);
+    if (!state.showToolbar) {
+      setState({
+        ...state,
+        showToolbar: true,
+      });
+    }
+    console.log({ newChecked });
+  };
+  const calculateCheckAll = (newChecked) => {
+    return newChecked.reduce(
+      (accumulator, currentValue) => accumulator && currentValue
+    );
+  };
+  const calculateIndeterminate = (newChecked) => {
+    return (
+      newChecked.reduce(
+        (accumulator, currentValue) => accumulator || currentValue
+      ) ^
+      newChecked.reduce(
+        (accumulator, currentValue) => accumulator && currentValue
+      )
+    );
   };
 
   const handleCloseToolbar = () => {
-    let newData = [...state.data];
-    newData.forEach((element) => {
-      element.checked = false;
-    });
-    setState({ ...state, showToolbar: false, data: [...newData] });
+    setChecked(Array(data.length).fill(false));
+    setState({ ...state, showToolbar: false });
+  };
+
+  const handleCheckAllChange = (e) => {
+    setChecked(Array(data.length).fill(e.target.checked));
   };
 
   return (
@@ -111,13 +134,18 @@ function BooksContainer(props) {
         <div className="tools-bar">
           <Checkbox
             {...label}
-            defaultChecked
+            checked={calculateCheckAll(checked)}
+            indeterminate={calculateIndeterminate(checked)}
             sx={{
               color: "#FFFFFF",
               "&.Mui-checked": {
                 color: "#FFFFFF",
               },
+              "&.MuiCheckbox-indeterminate": {
+                color: "#FFFFFF",
+              },
             }}
+            onChange={handleCheckAllChange}
           />
           <div className="delete">
             <img alt="" src="icons/delete-orange.svg" />
@@ -138,6 +166,7 @@ function BooksContainer(props) {
                     key={index}
                     index={index}
                     data={item}
+                    checked={checked[index]}
                     handleCheckBoxOnChange={handleCheckBoxOnChange}
                   />
                 );

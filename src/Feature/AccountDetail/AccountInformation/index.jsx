@@ -5,14 +5,13 @@ import { useSelector } from "react-redux";
 import * as yup from "yup";
 import imageAPI from "../../../api/imageAPI";
 import userAPI from "../../../api/userAPI";
-import { storage } from "../../../service/firebase";
 import { filesService } from "../../../service/firebase/filesService";
 import {
   AccountInformationContainer,
   AvatarContainer,
   Content,
   InformationContainer,
-  Title,
+  Title
 } from "../style";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
@@ -51,47 +50,33 @@ const sexOptions = [
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
 ];
-const facultyOptions = [
-  { value: "FIT", label: "Công nghệ thông tin" },
-  { value: "UEL", label: "Kinh tế" },
-];
+const facultyOptions = [{ value: "FIT", label: "Công nghệ thông tin" }];
 
 function AccountInformation(props) {
   const classes = useStyles();
   const yesterday = new Date(Date.now() - 86400000);
   const user = useSelector((state) => state.user);
 
-  const [data, setData] = useState({
+  const [state, setState] = useState({
     _id: "1",
     displayName: "",
-    fullName: "",
+    name: "",
     faculty: "",
     gender: "",
     email: "",
-    dob: "2000-09-27",
+    dob: "",
     avatar: "",
     avatarGoogle: "",
-  });
-
-  const [state, setState] = useState({
-    displayName: data.displayName,
-    fullName: data.fullName,
-    faculty: data.faculty,
-    sex: data.gender,
-    email: data.email,
-    birthDay: data.dob,
-    avatar: data.avatar,
   });
 
   const imageAvatarDefault = imageAPI.getAvatarDefaults();
   const FORM_VALIDATION = yup.object().shape({
     displayName: yup
       .string("Tên hiển thị với người dùng khác")
-      .trim()
-      .required("Trường này là bắc buộc"),
-    fullName: yup.string("Tên đầy đủ").required("Trường này là bắc buộc"),
-    sex: yup.string("Giới tính của bạn").required("Trường này là bắc buộc"),
-    faculty: yup.string("Khoa đang học").required("Trường này là bắc buộc"),
+      .trim(),
+    name: yup.string("Tên đầy đủ").required(),
+    gender: yup.string("Giới tính của bạn").required(),
+    faculty: yup.string("Khoa đang học").required(),
     email: yup.string("Sử dụng mail sinh viên").email().required(),
     birthDay: yup
       .date()
@@ -111,6 +96,7 @@ function AccountInformation(props) {
   //fetchAccount
   const fetchAccount = async () => {
     await userAPI.getAccountInfo().then((account) => {
+      // alert(JSON.stringify(account, null, 2));
       if (account) {
         setState({ ...state, ...account });
       }
@@ -119,7 +105,6 @@ function AccountInformation(props) {
 
   useEffect(() => {
     fetchAccount();
-    console.log({ data });
   }, []);
 
   const handleAvatarDefaultClick = (index) => {
@@ -132,33 +117,30 @@ function AccountInformation(props) {
   const handleAvatarGoogleClick = () => {
     setState({
       ...state,
-      avatar: data.avatarGoogle,
+      avatar: state.avatarGoogle,
     });
   };
 
   const handleAvatarInputChange = async (e) => {
     const acceptedImageTypes = ["image/gif", "image/jpeg", "image/png"];
     if (acceptedImageTypes.includes(e.target.files[0].type)) {
-      const pathName = "public/avatar-image/";
-      const fileName = `user_${data._id}`;
-      filesService.uploadFile(
-        pathName,
-        fileName,
-        e.target.files[0],
-        (url) => {
-          setState({
-            ...state,
-            avatar: url.toString(),
-          });
-        },
-        (progress) => {
-          console.log("Upload is " + progress + "% done");
-        }
-      );
+      const pathName = `public/user-${state._id}/`;
+      const fileName = `avatar-${Date.now()}`;
+      try {
+        const url = await filesService.uploadTaskPromise(
+          pathName + fileName,
+          e.target.files[0]
+        );
+        setState({
+          ...state,
+          avatar: url.toString(),
+        });
+      } catch (e) {
+        console.log({ e });
+      }
     }
   };
   const handleFormSubmit = () => {
-    formik.values.avatar = state.avatar === "" ? state.avatar : state.avatar;
     formik.handleSubmit();
   };
 
@@ -187,7 +169,7 @@ function AccountInformation(props) {
             </div>
             <div
               className="avatar-box"
-              style={user && { backgroundImage: `url(${state.avatar})` }}
+              style={user && { backgroundImage: `url(${state.avatarGoogle})` }}
               onClick={handleAvatarGoogleClick}
             />
 
@@ -212,22 +194,22 @@ function AccountInformation(props) {
                 <Grid item xs={8} className={classes.field}>
                   <FastField
                     component={InputField}
-                    name="fullName"
-                    label="Full name"
+                    name="name"
+                    label="Họ và tên"
                   />
                 </Grid>
                 <Grid item xs={4} className={classes.field}>
                   <FastField
                     component={InputField}
                     name="displayName"
-                    label="Display Name"
+                    label="Tên hiển thị"
                   />
                 </Grid>
                 <Grid item xs={8} className={classes.field}>
                   <FastField
                     component={InputField}
                     name="email"
-                    label="Email"
+                    label="Địa chỉ email"
                     disabled
                   />
                 </Grid>
@@ -236,7 +218,7 @@ function AccountInformation(props) {
                   <FastField
                     component={InputField}
                     name="birthDay"
-                    label="Birthday"
+                    label="Ngày Sinh"
                     type="date"
                   />
                 </Grid>
@@ -244,15 +226,15 @@ function AccountInformation(props) {
                   <FastField
                     component={SelectField}
                     name="faculty"
-                    label="Faculty"
+                    label="Khoa"
                     options={facultyOptions}
                   />
                 </Grid>
                 <Grid item xs={4} className={classes.field}>
                   <FastField
                     component={SelectField}
-                    name="sex"
-                    label="Sex"
+                    name="gender"
+                    label="Giới tính"
                     options={sexOptions}
                   />
                 </Grid>

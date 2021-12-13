@@ -28,10 +28,7 @@ function PomodoroMode(props) {
 
   const handleSecondChange = (value) => {
     if (stateTimeStep.isRun === false) {
-      if (
-        parseInt(stateTimeStep.minute) === 120 ||
-        parseInt(value) < 0
-      )
+      if (parseInt(stateTimeStep.minute) === 120 || parseInt(value) < 0)
         value = 0;
       if (parseInt(value) > 59) value = 59;
       setStateTimeStep({ ...stateTimeStep, second: value });
@@ -52,6 +49,13 @@ function PomodoroMode(props) {
   }
 
   useEffect(() => {
+    document.addEventListener("visibilitychange", (event) => {
+      if (document.visibilityState === "visible") {
+      } else {
+        setStateTimeStep({ ...stateTimeStep, isRun: false });
+        resetTimeout();
+      }
+    });
     resetTimeout();
     if (stateTimeStep.isRun) {
       timeoutRef.current = setTimeout(() => {

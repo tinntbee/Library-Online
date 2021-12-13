@@ -62,4 +62,27 @@ export const filesService = {
       console.log("upload fail");
     }
   },
+  uploadTaskPromise: async (path, file) => {
+    return new Promise(function (resolve, reject) {
+      const storageRef = storage.ref(path);
+      const uploadTask = storageRef.put(file);
+      uploadTask.on(
+        "state_changed",
+        function (snapshot) {
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        function error(err) {
+          console.log("error", err);
+          reject();
+        },
+        function complete() {
+          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
+  },
 };

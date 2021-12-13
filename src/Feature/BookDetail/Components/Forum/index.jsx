@@ -1,7 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import CommendBox from "../../../../components/CommendBox";
-import SendIcon from "../../../../static/SendIcon";
 import YourComment from "../YourComment";
 import "./style.scss";
 
