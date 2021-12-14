@@ -1,7 +1,8 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import { FastField, FormikProvider, useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import * as yup from "yup";
 import imageAPI from "../../../api/imageAPI";
 import userAPI from "../../../api/userAPI";
@@ -11,10 +12,14 @@ import {
   AvatarContainer,
   Content,
   InformationContainer,
-  Title
+  Title,
 } from "../style";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import axiosClient from "../../../api/axiosClient";
+import { snackBarActions } from "../../../redux/actions/snackBarActions";
 
 AccountInformation.propTypes = {};
 
@@ -53,13 +58,15 @@ const sexOptions = [
 const facultyOptions = [{ value: "FIT", label: "Công nghệ thông tin" }];
 
 function AccountInformation(props) {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const classes = useStyles();
   const yesterday = new Date(Date.now() - 86400000);
   const user = useSelector((state) => state.user);
 
   const [state, setState] = useState({
     _id: "1",
-    displayName: "",
+    nickname: "",
     name: "",
     faculty: "",
     gender: "",
@@ -68,20 +75,16 @@ function AccountInformation(props) {
     avatar: "",
     avatarGoogle: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const imageAvatarDefault = imageAPI.getAvatarDefaults();
   const FORM_VALIDATION = yup.object().shape({
-    displayName: yup
-      .string("Tên hiển thị với người dùng khác")
-      .trim(),
+    nickname: yup.string("Tên hiển thị với người dùng khác").trim(),
     name: yup.string("Tên đầy đủ").required(),
     gender: yup.string("Giới tính của bạn").required(),
     faculty: yup.string("Khoa đang học").required(),
     email: yup.string("Sử dụng mail sinh viên").email().required(),
-    birthDay: yup
-      .date()
-      .max(yesterday, "please enter your day of birth")
-      .required(),
+    dob: yup.date().max(yesterday, "please enter your day of birth").required(),
     avatar: yup.string(),
   });
   const formik = useFormik({
@@ -89,18 +92,79 @@ function AccountInformation(props) {
     validationSchema: FORM_VALIDATION,
     enableReinitialize: true,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
+      fetchUpdateAccount(values);
     },
   });
 
   //fetchAccount
   const fetchAccount = async () => {
-    await userAPI.getAccountInfo().then((account) => {
-      // alert(JSON.stringify(account, null, 2));
-      if (account) {
-        setState({ ...state, ...account });
-      }
-    });
+    setLoading(true);
+    await userAPI
+      .getAccountInfo()
+      .then((account) => {
+        // alert(JSON.stringify(account, null, 2));
+        if (account) {
+          setState({
+            ...state,
+            _id: account._id,
+            name: account.name,
+            nickname: account.nickname,
+            avatar: account.avatar,
+            dob: account.dob.slice(0, 10),
+            email: account.email,
+            gender: account.gender,
+            faculty: account.faculty,
+            avatarGoogle: account.avatarGoogle,
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 403) {
+          setLoading(false);
+          dispatch(
+            snackBarActions.open({
+              variant: "warning",
+              message: "Bạn cần đăng nhập để tiếp tục ^^",
+            })
+          );
+          history.replace("/login");
+        }
+      });
+  };
+
+  const fetchUpdateAccount = async (data) => {
+    const { nickname, faculty, name, avatar, dob, gender } = data;
+    const url = "/accounts";
+    setLoading(true);
+    axiosClient
+      .put(url, {
+        nickname,
+        faculty,
+        name,
+        avatar,
+        dob,
+        gender,
+      })
+      .then((res) => {
+        // console.log({ res });
+        setLoading(false);
+        dispatch(
+          snackBarActions.open({
+            variant: "success",
+            message: "Đã lưu các cập nhật ^^",
+          })
+        );
+      })
+      .catch((e) =>
+        dispatch(
+          snackBarActions.open({
+            variant: "error",
+            message: "Có lỗi sảy ra :<",
+          })
+        )
+      );
   };
 
   useEffect(() => {
@@ -146,6 +210,12 @@ function AccountInformation(props) {
 
   return (
     <AccountInformationContainer>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Title>
         <p>
           <b>INFORMATION</b>
@@ -201,7 +271,7 @@ function AccountInformation(props) {
                 <Grid item xs={4} className={classes.field}>
                   <FastField
                     component={InputField}
-                    name="displayName"
+                    name="nickname"
                     label="Tên hiển thị"
                   />
                 </Grid>
@@ -217,7 +287,7 @@ function AccountInformation(props) {
                 <Grid item xs={4} className={classes.field}>
                   <FastField
                     component={InputField}
-                    name="birthDay"
+                    name="dob"
                     label="Ngày Sinh"
                     type="date"
                   />

@@ -23,7 +23,7 @@ function* SignInWithGoogle(action) {
   try {
     // const user = yield call(getUser);
     const res = yield userAPI.signInWithGoogle(action.payload);
-    // yield delay(1000);
+    yield delay(1000);
     // console.log(res);
     yield put({ type: "SIGN_IN_WITH_GOOGLE_SUCCESS", res: res });
   } catch (e) {
@@ -33,13 +33,9 @@ function* SignInWithGoogle(action) {
 
 function* ReSign(action) {
   try {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const res = yield userAPI.reSign();
-      yield put({ type: "RE_SIGN_SUCCESS", res: res });
-    } else {
-      yield put({ type: "RE_SIGN_FAILED", message: "Bạn chưa đăng nhập!" });
-    }
+    // const token = localStorage.getItem("token");
+    const res = yield userAPI.reSign();
+    yield put({ type: "RE_SIGN_SUCCESS", res: res });
   } catch (e) {
     yield put({ type: "RE_SIGN_FAILED", message: e.message });
   }

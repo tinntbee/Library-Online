@@ -9,6 +9,7 @@ import AccountDetailFeature from "./feature/AccountDetail";
 import Login from "./feature/Login";
 import Bookcase from "./feature/Bookcase";
 import Pomodoro from "./feature/Pomodoro";
+import SnackbarCustom from "./components/SnackbarCustom";
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
         <Route path="/bookcase" component={Bookcase} exact />
         <Route path="/pomodoro" component={Pomodoro} exact />
       </Switch>
+
+      {/* NOTE: snackbar */}
+      <SnackbarCustom />
     </div>
   );
 }

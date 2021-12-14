@@ -5,6 +5,7 @@ import "./style.scss";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../redux/actions/userActions";
+import { useEffect } from "react";
 
 Login.propTypes = {};
 
@@ -14,11 +15,13 @@ function Login(props) {
   const user = useSelector((state) => state.user);
   const responseGoogle = (res) => {
     dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
-    if (user.loading === false) {
-      history.push("/account");
-    }
     //history.push("/bookstore");
   };
+  useEffect(() => {
+    if (user.loading === false && user.error === "" && user.user) {
+      history.replace("/account");
+    }
+  }, [user]);
   return (
     <div className="login">
       <div

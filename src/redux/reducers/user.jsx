@@ -3,7 +3,6 @@ import * as type from "../types";
 
 const initialState = {
   user: undefined,
-  token: "",
   loading: false,
   error: "",
 };
@@ -44,12 +43,10 @@ export default function user(state = initialState, action) {
       };
 
     case type.SIGN_IN_WITH_GOOGLE_SUCCESS:
-      localStorage.setItem("token", action.res.token);
       return {
         ...state,
         loading: false,
         user: action.res.user,
-        token: action.res.token,
       };
 
     case type.SIGN_IN_WITH_GOOGLE_FAILED:
@@ -60,11 +57,9 @@ export default function user(state = initialState, action) {
       };
 
     case type.SIGN_OUT:
-      localStorage.removeItem("token");
       return {
         ...state,
         user: undefined,
-        token: "",
       };
 
     case type.RE_SIGN:

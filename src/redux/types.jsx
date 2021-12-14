@@ -27,3 +27,6 @@ export const SIGN_OUT = "SIGN_OUT";
 export const RE_SIGN = "RE_SIGN";
 export const RE_SIGN_SUCCESS = "RE_SIGN_SUCCESS";
 export const RE_SIGN_FAILED = "RE_SIGN_FAILED";
+
+export const SNACK_BAR_OPEN = "SNACK_BAR_OPEN";
+export const SNACK_BAR_CLOSE = "SNACK_BAR_CLOSE";

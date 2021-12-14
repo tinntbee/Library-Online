@@ -8,6 +8,7 @@ import Report from "./Report";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { userActions } from "../../redux/actions/userActions";
+import axiosClient from "../../api/axiosClient";
 
 AccountDetailFeature.propTypes = {};
 
@@ -16,6 +17,8 @@ function AccountDetailFeature(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const handleLogout = () => {
+    const url = "/accounts/logout";
+    axiosClient.get(url);
     dispatch(userActions.signOut());
     history.replace("/login");
   };
