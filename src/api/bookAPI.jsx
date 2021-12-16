@@ -1,7 +1,6 @@
-import { delay } from "@redux-saga/core/effects";
 import { sleep } from "../utils/apiUtil";
 import axiosClient from "./axiosClient";
-import { books, booksByTags, booksForYou, booksSlide } from "./fake-api";
+import { books, booksForYou } from "./fake-api";
 
 const bookAPI = {
   getAll: (params) => {
@@ -32,6 +31,18 @@ const bookAPI = {
       return books.find((item) => item._id === parseInt(params._id));
     };
     return delayDemo();
+  },
+  likeReact: (_id) => {
+    const url = "/books/reacts/" + _id;
+    return axiosClient.post(url, { react: 1 });
+  },
+  removeReact: (_id) => {
+    const url = "/books/reacts/" + _id;
+    return axiosClient.post(url, { react: 0 });
+  },
+  dislikeReact: (_id) => {
+    const url = "/books/reacts/" + _id;
+    return axiosClient.post(url, { react: -1 });
   },
 };
 

@@ -18,10 +18,15 @@ function Login(props) {
     //history.push("/bookstore");
   };
   useEffect(() => {
-    if (user.loading === false && user.error === "" && user.user) {
-      history.replace("/account");
+    if (user.loading === false && !user.error && user.user) {
+      console.log({ history });
+      if (history.action !== "POP") {
+        history.goBack();
+      } else {
+        history.replace("/account");
+      }
     }
-  }, [user]);
+  }, [user, history]);
   return (
     <div className="login">
       <div

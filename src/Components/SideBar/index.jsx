@@ -180,7 +180,7 @@ function SideBar(props) {
           <button
             className="Sidebar-header-login-btn button-bee contained"
             onClick={() => {
-              history.replace("/login");
+              history.push("/login");
             }}
           >
             Đăng nhập

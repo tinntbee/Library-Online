@@ -1,25 +1,26 @@
 import { Grid, makeStyles } from "@material-ui/core";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import { FastField, FormikProvider, useFormik } from "formik";
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import * as yup from "yup";
+import axiosClient from "../../../api/axiosClient";
 import imageAPI from "../../../api/imageAPI";
 import userAPI from "../../../api/userAPI";
+import { userActions } from "../../../redux/actions/userActions";
 import { filesService } from "../../../service/firebase/filesService";
 import {
   AccountInformationContainer,
   AvatarContainer,
   Content,
   InformationContainer,
-  Title,
+  Title
 } from "../style";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import axiosClient from "../../../api/axiosClient";
-import { snackBarActions } from "../../../redux/actions/snackBarActions";
 
 AccountInformation.propTypes = {};
 
@@ -59,10 +60,11 @@ const facultyOptions = [{ value: "FIT", label: "Công nghệ thông tin" }];
 
 function AccountInformation(props) {
   const history = useHistory();
-  const dispatch = useDispatch();
   const classes = useStyles();
+  const dispatch = useDispatch();
   const yesterday = new Date(Date.now() - 86400000);
   const user = useSelector((state) => state.user);
+  const { enqueueSnackbar } = useSnackbar();
 
   const [state, setState] = useState({
     _id: "1",
@@ -123,13 +125,8 @@ function AccountInformation(props) {
       .catch((error) => {
         if (error.response && error.response.status === 403) {
           setLoading(false);
-          dispatch(
-            snackBarActions.open({
-              variant: "warning",
-              message: "Bạn cần đăng nhập để tiếp tục ^^",
-            })
-          );
-          history.replace("/login");
+          enqueueSnackbar("Bạn cần phải đăng nhập", { variant: "warning" });
+          history.push("/login");
         }
       });
   };
@@ -150,20 +147,11 @@ function AccountInformation(props) {
       .then((res) => {
         // console.log({ res });
         setLoading(false);
-        dispatch(
-          snackBarActions.open({
-            variant: "success",
-            message: "Đã lưu các cập nhật ^^",
-          })
-        );
+        enqueueSnackbar("Cập nhật thành công", { variant: "success" });
+        dispatch(userActions.reSign())
       })
       .catch((e) =>
-        dispatch(
-          snackBarActions.open({
-            variant: "error",
-            message: "Có lỗi sảy ra :<",
-          })
-        )
+        enqueueSnackbar("Có lỗi đã sảy ra :<", { variant: "error" })
       );
   };
 

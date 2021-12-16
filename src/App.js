@@ -10,6 +10,7 @@ import Login from "./feature/Login";
 import Bookcase from "./feature/Bookcase";
 import Pomodoro from "./feature/Pomodoro";
 import SnackbarCustom from "./components/SnackbarCustom";
+import BackdropLoading from "./components/BackdropLoading";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
 
       {/* NOTE: snackbar */}
       <SnackbarCustom />
+      <BackdropLoading />
     </div>
   );
 }

@@ -119,6 +119,7 @@ function SearchInBookstore(props) {
                   onClick={() => {
                     setState({ ...state, tagId: item._id, tagName: item.name });
                     setShowTagsBox(false);
+                    setVisible(true);
                   }}
                 >
                   {item.name}

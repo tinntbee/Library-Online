@@ -1,7 +1,11 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import axiosClient from "../../api/axiosClient";
 import bookAPI from "../../api/bookAPI";
+import bookActions from "../../redux/actions/bookActions";
+import { commentActions } from "../../redux/actions/commentAction";
 import ToTopIcon from "../../static/ToTopIcon";
 import BookInfo from "./Components/BookInfo";
 import Forum from "./Components/Forum";
@@ -14,20 +18,14 @@ function BookDetail(props) {
   const history = useHistory();
   const { id } = useParams();
   const [_id, set_id] = useState(id);
-  const [state, setState] = useState({ loading: true, data: {} });
 
-  const fetchBook = async () => {
-    try {
-      setState({ ...state, loading: true });
-      const res = await bookAPI.getById(_id);
-      setState({ ...state, loading: false, data: res });
-    } catch (e) {
-      console.log({ e });
-    }
-  };
+  const dispatch = useDispatch();
+  const bookDetail = useSelector((state) => state.bookDetail.book);
+
 
   useEffect(() => {
-    fetchBook();
+    dispatch(bookActions.getBookDetail(_id));
+    dispatch(commentActions.get(_id));
   }, [_id]);
 
   history.listen(function (location) {
@@ -62,15 +60,15 @@ function BookDetail(props) {
             onScroll={() => toggleVisible()}
             ref={scrollTopRef}
           >
-            <BookInfo state={state} />
+            <BookInfo state={bookDetail} />
 
-            {!state.loading ? (
+            {!bookDetail.loading && (
               <>
                 <Forum />
 
-                <Recommend data={state.data.tags} />
+                <Recommend data={bookDetail.data.tags} />
               </>
-            ) : null}
+            )}
           </div>
           <div
             onClick={() => onClickHandle()}

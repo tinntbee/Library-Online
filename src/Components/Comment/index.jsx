@@ -4,64 +4,177 @@ import RateLikeDislike from "../RateLikeDislike";
 import ReplyIcon from "../../static/LikeIcon copy";
 import ReplyComment from "../ReplyComment";
 import classNames from "classnames";
+import axiosClient from "../../api/axiosClient";
+import commentAPI from "../../api/commentAPI";
+import replyAPI from "../../api/replyAPI";
 
 Comment.propTypes = {};
 
 function Comment(props) {
+  const [data, setData] = useState(props.data);
+  const [replies, setReplies] = useState([]);
   const yourReplyInputRef = useRef();
   const [replyVisible, setReplyVisible] = useState(false);
   const [yourReplyVisible, setYourReplyVisible] = useState(false);
+  const [state, setState] = useState({ content: "Quan điểm của mình..." });
+
+  async function fetchReplies(commentId) {
+    const url = "/replies/getRepliesByCommentId/" + commentId;
+    axiosClient
+      .get(url)
+      .then((res) => {
+        setReplies(res);
+      })
+      .catch((e) => console.log({ e }));
+  }
+
   function showReplyHandle() {
     setReplyVisible(!replyVisible);
   }
-  const { data } = props;
   const handleReply = () => {
     setYourReplyVisible(!yourReplyVisible);
+  };
+  const likeClickHandle = async () => {
+    if (data.react == 1) {
+      await commentAPI.removeReact(data._id).then((res) => {
+        setData({
+          ...data,
+          totalLike: res.totalLike,
+          totalDislike: res.totalDislike,
+          react: 0,
+        });
+      });
+    } else {
+      await commentAPI.likeReact(data._id).then((res) => {
+        setData({
+          ...data,
+          totalLike: res.totalLike,
+          totalDislike: res.totalDislike,
+          react: 1,
+        });
+      });
+    }
+  };
+  const dislikeClickHandle = async () => {
+    if (data.react == -1) {
+      await commentAPI.removeReact(data._id).then((res) => {
+        setData({
+          ...data,
+          totalLike: res.totalLike,
+          totalDislike: res.totalDislike,
+          react: 0,
+        });
+      });
+    } else {
+      await commentAPI.dislikeReact(data._id).then((res) => {
+        setData({
+          ...data,
+          totalLike: res.totalLike,
+          totalDislike: res.totalDislike,
+          react: -1,
+        });
+      });
+    }
+  };
+  const handleSubmitClick = async () => {
+    await replyAPI
+      .post({ content: state.content, commentId: data._id })
+      .then((res) => {
+        let repliesList = [...data.replies];
+        repliesList.unshift(res._id);
+        console.log({ repliesList });
+        setData({
+          ...data,
+          replies: [...repliesList],
+        });
+
+        setState({ ...state, content: "" });
+        setYourReplyVisible(false);
+        setReplyVisible(true);
+        replyAPI.get(res._id).then((res) => {
+          let newReplies = [...replies];
+          newReplies.splice(0, 0, {
+            ...res,
+          });
+          setReplies([...newReplies]);
+        });
+      })
+      .catch((e) => console.log({ e }));
   };
   useEffect(() => {
     if (yourReplyInputRef.current) {
       yourReplyInputRef.current.focus();
     }
   }, [yourReplyVisible]);
+  useEffect(() => {
+    if (replyVisible) {
+      fetchReplies(data._id);
+    }
+  }, [replyVisible]);
   return (
     <div className="Comment">
-      <p className={"Comment-tag " + data.tag.toLowerCase()}>
-        <b>{data.tag}</b>
+      <p
+        className={
+          "Comment-tag " +
+          (data.type === 1 ? "like" : data.type === -1 ? "dislike" : "")
+        }
+      >
+        <b>{data.type === 1 ? "like" : data.type === -1 ? "dislike" : ""}</b>
       </p>
       <div className="Comment-content">
-        <p>
-          Các cành lá khá độc lập với nhau và có thể tóm được sau khi đọc xong
-          phần thân chính. Chúng liên quan đến những vấn đề tôi đã nghiên cứu
-          trong khoảng thời gian từ sau khi xuất bản cuốn Lược sử về thời gian
-          đến nay.
-        </p>
+        <p>{data.content}</p>
       </div>
       <div className="Comment-footer">
         <div className="Comment-footer-left">
           <p>Đánh giá</p>
-          <RateLikeDislike />
+          {
+            <RateLikeDislike
+              rate={{
+                like: data.totalLike,
+                dislike: data.totalDislike,
+                react: data.react,
+              }}
+              likeClickHandle={likeClickHandle}
+              dislikeClickHandle={dislikeClickHandle}
+            />
+          }
         </div>
         <div className="Comment-footer-right">
           <p onClick={handleReply}>{yourReplyVisible ? "Hủy" : "Phản hồi"}</p>
           <div className="dot" />
-          {!replyVisible ? (
-            <>
-              <ReplyIcon /> <p onClick={showReplyHandle}>Xem 13 Phản hồi</p>
-            </>
+          {data.replies.length > 0 ? (
+            !replyVisible ? (
+              <>
+                <ReplyIcon />{" "}
+                <p onClick={showReplyHandle}>
+                  {data.replies.length + " Phản hồi"}
+                </p>
+              </>
+            ) : (
+              <p onClick={showReplyHandle}>Thu gọn</p>
+            )
           ) : (
-            <p onClick={showReplyHandle}>Thu gọn</p>
+            <p>Chưa có phản hồi</p>
           )}
           <div className="dot" />
-          <p>Bình luận ngày 21/10/2021</p>
+          <p>Bình luận ngày {data.createdAt}</p>
         </div>
       </div>
 
       {yourReplyVisible && (
         <div className="your-reply">
-          <p>Trả lời @Trungtin</p>
+          <p>Trả lời @{data.user.nickname ? data.nickname : data.user.name}</p>
           <dìv className="your-reply__content">
-            <textarea ref={yourReplyInputRef}>Phản hồi</textarea>
-            <button className="btn-send">Đăng tải</button>
+            <textarea
+              ref={yourReplyInputRef}
+              value={state.content}
+              onChange={(e) => {
+                setState({ ...state, content: e.target.value });
+              }}
+            ></textarea>
+            <button className="btn-send" onClick={handleSubmitClick}>
+              Đăng tải
+            </button>
           </dìv>
         </div>
       )}
@@ -71,13 +184,12 @@ function Comment(props) {
           "reply-comments": true,
         })}
       >
-        {replyVisible ? (
+        {replies && replyVisible && (
           <>
-            <ReplyComment />
-            <ReplyComment />
+            {replies.map((item, index) => {
+              return <ReplyComment data={item} key={item._id} />;
+            })}
           </>
-        ) : (
-          ""
         )}
       </div>
     </div>

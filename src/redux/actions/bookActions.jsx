@@ -28,6 +28,13 @@ const bookActions = {
       payload: id,
     };
   },
+
+  getBookDetail: (_id) => {
+    return {
+      type: type.GET_BOOK_DETAIL,
+      payload: _id,
+    };
+  },
 };
 
 export default bookActions;

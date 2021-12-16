@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import axiosClient from "../../../../api/axiosClient";
+import userAPI from "../../../../api/userAPI";
 import CommendBox from "../../../../components/CommendBox";
 import YourComment from "../YourComment";
 import "./style.scss";
@@ -6,10 +10,11 @@ import "./style.scss";
 Forum.propTypes = {};
 
 function Forum(props) {
-  const handleReply = () => {
-    console.log("reply");
-  };
-
+  const forum = useSelector((state) => state.bookDetail.forum);
+  const [comments, setComments] = useState();
+  useEffect(() => {
+    setComments({ ...forum });
+  }, [forum]);
   return (
     <div className="Book-detail__container">
       <div className="Book-detail__header">
@@ -30,8 +35,10 @@ function Forum(props) {
       <div className="Book-comment__content">
         <p>Các bàn luận khác </p>
         <div>
-          <CommendBox handleReply={handleReply} data={{ tag: "Like" }} />
-          <CommendBox data={{ tag: "Dislike" }} />
+          {comments?.data &&
+            comments.data.map((item, index) => {
+              return <CommendBox key={item._id} data={item} />;
+            })}
         </div>
       </div>
     </div>

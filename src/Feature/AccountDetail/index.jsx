@@ -20,7 +20,7 @@ function AccountDetailFeature(props) {
     const url = "/accounts/logout";
     axiosClient.get(url);
     dispatch(userActions.signOut());
-    history.replace("/login");
+    history.push("/login");
   };
   return (
     <AccountDetail className="main-content">

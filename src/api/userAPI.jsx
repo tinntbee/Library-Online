@@ -28,6 +28,10 @@ const userAPI = {
     const url = "/accounts";
     return axiosClient.get(url);
   },
+  getUserInfoForForum: (bookId) => {
+    const url = "/accounts/getUserInfoForForum/" + bookId;
+    return axiosClient.get(url);
+  },
 };
 
 export default userAPI;

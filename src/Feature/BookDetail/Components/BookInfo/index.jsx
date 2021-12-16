@@ -1,5 +1,6 @@
 import Skeleton from "@mui/material/Skeleton";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import RateLikeDislike from "../../../../components/RateLikeDislike";
 import FacebookIcon from "../../../../static/jpg/Facebook.png";
@@ -12,7 +13,8 @@ import BookViewIntro from "../BookViewIntro";
 BookInfo.propTypes = {};
 
 function BookInfo(props) {
-  const { state } = props;
+  const state = useSelector((state) => state.bookDetail.book);
+
   return (
     <div className="Book-information-container Book-detail-container">
       <div className="Book-information-top">
@@ -25,11 +27,11 @@ function BookInfo(props) {
                   "--book-thumbnail-url": `url(${state.data.image})`,
                 }}
               >
-                <BookViewIntro/>
+                <BookViewIntro />
               </div>
 
               <div className="Book-rate">
-                <RateLikeDislike />
+                {/* <RateLikeDislike /> */}
                 <span>Share:</span>
                 <img alt="share on facebook" src={FacebookIcon} />
                 <img alt="share on message" src={MessageIcon} />
@@ -191,9 +193,16 @@ function BookInfo(props) {
         ) : (
           <div className="Book-quote">
             <p>
-              <b>Gia tốc</b> và <b>hấp dẫn</b> chỉ có thể tương đương với nhau
-              nếu một vật thể có khối lượng lớn bẻ cong không thời gian, do đó
-              bẻ cong cả lộ trình của các vật thể xung quanh nó ...
+              {state.data.quote ? (
+                state.data.quote
+              ) : (
+                <>
+                  <b>Gia tốc</b> và <b>hấp dẫn</b> chỉ có thể tương đương với
+                  nhau nếu một vật thể có khối lượng lớn bẻ cong không thời
+                  gian, do đó bẻ cong cả lộ trình của các vật thể xung quanh nó
+                  ...
+                </>
+              )}
             </p>
           </div>
         )}

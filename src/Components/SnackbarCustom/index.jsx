@@ -4,12 +4,17 @@ import Snackbar from "@mui/material/Snackbar";
 import { useDispatch, useSelector } from "react-redux";
 import MuiAlert from "@mui/material/Alert";
 import { snackBarActions } from "../../redux/actions/snackBarActions";
+import Slide from '@mui/material/Slide';
 
 SnackbarCustom.propTypes = {};
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+function SlideTransition(props) {
+  return <Slide {...props} direction="up" />;
+}
 
 function SnackbarCustom(props) {
   const dispatch = useDispatch();
@@ -26,6 +31,7 @@ function SnackbarCustom(props) {
       open={snackBar.open}
       autoHideDuration={snackBar.autoHideDuration}
       onClose={handleClose}
+      TransitionComponent={SlideTransition}
     >
       <Alert
         onClose={handleClose}

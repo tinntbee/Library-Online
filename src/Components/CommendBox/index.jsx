@@ -8,40 +8,42 @@ import "./style.css";
 CommendBox.propTypes = {};
 
 function CommendBox(props) {
-  const { data, handleReply } = props;
+  const { data } = props;
   return (
     <div className="Commend-box">
       <div className="Commend-box-left">
-        <Comment handleReply={handleReply} data={data} />
+        {data && <Comment data={data} />}
       </div>
       <div className="Commend-box-right">
         <div className="user-information">
           <div
             className="user-avatar"
             style={{
-              "--status": 1,
-              backgroundImage:
-                "url(https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/240581367_3138938299764392_2228439304544764616_n.jpg?_nc_cat=101&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=tPUB3fnIlA8AX90MaV5&tn=yNwWdXyL0_83m3M_&_nc_ht=scontent.fvca1-4.fna&oh=218f4291773bed8308637f6592590a28&oe=61B583ED)",
+              "--status": 0,
+              backgroundImage: `url(${data.user.avatar})`,
             }}
           />
-          <p className="full-name">Nguyễn Trung Tín</p>
-          <p className="id">@trungtin27</p>
+          <p className="full-name">
+            {data.user.nickname ? data.user.nickname : data.user.name}
+          </p>
+          {"@" + data.user.email.substring(0, data.user.email.lastIndexOf("@"))}
         </div>
         <div className="user-detail">
           <p>
             <ReadIcon />
-            Đã đọc: 8 quyển sách
+            Đã đọc: {data.user.totalBooks} quyển sách
           </p>
 
           <p>
             <HoaIcon />
-            Tích lũy: 100 hoa
+            Tích lũy: {data.user.hoa} hoa
           </p>
-
-          <p>
-            <CheckIcon />
-            <b>Đã đọc quyển sách này</b>
-          </p>
+          {data.user.isRead && (
+            <p>
+              <CheckIcon />
+              <b>Đã đọc quyển sách này</b>
+            </p>
+          )}
         </div>
       </div>
     </div>

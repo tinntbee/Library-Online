@@ -1,30 +1,79 @@
-import React from "react";
+import React, { useState } from "react";
+import replyAPI from "../../api/replyAPI";
 import RateLikeDislike from "../RateLikeDislike";
 import "./style.css";
 
 ReplyComment.propTypes = {};
 
 function ReplyComment(props) {
+  const { data } = props;
+  const [reply, setReply] = useState(data);
+  const likeClickHandle = async () => {
+    if (reply.react == 1) {
+      await replyAPI.removeReact(reply._id).then((res) => {
+        setReply({
+          ...reply,
+          totalLike: res.totalLike,
+          totalDislike: res.totalDislike,
+          react: 0,
+        });
+      });
+    } else {
+      await replyAPI.likeReact(reply._id).then((res) => {
+        setReply({
+          ...reply,
+          totalLike: res.totalLike,
+          totalDislike: res.totalDislike,
+          react: 1,
+        });
+      });
+    }
+  };
+  const dislikeClickHandle = async () => {
+    if (reply.react == -1) {
+      await replyAPI.removeReact(reply._id).then((res) => {
+        setReply({
+          ...reply,
+          totalLike: res.totalLike,
+          totalDislike: res.totalDislike,
+          react: 0,
+        });
+      });
+    } else {
+      await replyAPI.dislikeReact(reply._id).then((res) => {
+        setReply({
+          ...reply,
+          totalLike: res.totalLike,
+          totalDislike: res.totalDislike,
+          react: -1,
+        });
+      });
+    }
+  };
   return (
     <div className="reply-comment">
       <p className="Reply-comment-user">
-        <b>Huỳnh Vy </b>@huynhvy
+        <b>{reply.user.nickname ? reply.user.nickname : reply.user.name} </b>
+        {"@" + reply.user.email.substring(0, reply.user.email.lastIndexOf("@"))}
       </p>
       <div className="Reply-comment-content Comment-content">
-        <p>
-          Các cành lá khá độc lập với nhau và có thể tóm được sau khi đọc xong
-          phần thân chính. Chúng liên quan đến những vấn đề tôi đã nghiên cứu
-          trong khoảng thời gian từ sau khi xuất bản cuốn Lược sử về thời gian
-          đến nay.
-        </p>
+        <p>{reply.content}</p>
       </div>
       <div className="Comment-footer">
         <div className="Comment-footer-left">
           <p>Đánh giá</p>
-          <RateLikeDislike />
+          <RateLikeDislike
+            rate={{
+              like: reply.totalLike,
+              dislike: reply.totalDislike,
+              react: reply.react,
+            }}
+            likeClickHandle={likeClickHandle}
+            dislikeClickHandle={dislikeClickHandle}
+          />
         </div>
         <div className="Comment-footer-right">
-          <p>Bình luận ngày 21/10/2021</p>
+          <p>Bình luận ngày {reply.createdAt}</p>
         </div>
       </div>
     </div>

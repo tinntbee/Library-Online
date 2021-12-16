@@ -1,37 +1,48 @@
+import classNames from "classnames";
 import React from "react";
 import DislikeIcon from "../../static/DislikeIcon";
 import LikeIcon from "../../static/LikeIcon";
-import "./style.css";
+import "./style.scss";
 
 RateLikeDislike.propTypes = {};
 
 function RateLikeDislike(props) {
-  const data = {
-    like: 330,
-    dislike: 34,
-    likeClickHandle: () => {
-      console.log("like click");
-    },
-    dislikeClickHandle: () => {
-      console.log("dislike click");
-    },
-  };
+  const { rate, likeClickHandle, dislikeClickHandle } = props;
   return (
-    <div
-      className="Rate-like-dislike"
-      style={{
-        "--rate-value": (data.like / (data.like + data.dislike)) * 100 + "%",
-      }}
-    >
-      <div className="Rate-like" onClick={data.likeClickHandle}>
-        <LikeIcon />
-        <span>{data.like}</span>
-      </div>
-      <div className="Rate-dislike" onClick={data.dislikeClickHandle}>
-        <DislikeIcon />
-        <span>{data.dislike}</span>
-      </div>
-    </div>
+    <>
+      {rate && (
+        <div
+          className="Rate-like-dislike"
+          style={{
+            "--rate-value":
+              rate.dislike + rate.like > 0
+                ? (rate.like / (rate.like + rate.dislike)) * 100 + "%"
+                : "0%",
+          }}
+        >
+          <div
+            className={classNames({
+              "Rate-like": true,
+              react: rate.react == 1,
+            })}
+            onClick={likeClickHandle}
+          >
+            <LikeIcon />
+            <span>{rate.like}</span>
+          </div>
+          <div
+            className={classNames({
+              "Rate-dislike": true,
+              react: rate.react == -1,
+            })}
+            onClick={dislikeClickHandle}
+          >
+            <DislikeIcon />
+            <span>{rate.dislike}</span>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
