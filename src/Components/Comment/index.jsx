@@ -126,7 +126,6 @@ function Comment(props) {
       </div>
       <div className="Comment-footer">
         <div className="Comment-footer-left">
-          <p>Đánh giá</p>
           {
             <RateLikeDislike
               rate={{
@@ -157,7 +156,7 @@ function Comment(props) {
             <p>Chưa có phản hồi</p>
           )}
           <div className="dot" />
-          <p>Bình luận ngày {data.createdAt}</p>
+          <p>{data.createdAt}</p>
         </div>
       </div>
 

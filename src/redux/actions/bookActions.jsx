@@ -35,6 +35,13 @@ const bookActions = {
       payload: _id,
     };
   },
+
+  changeBookDetail: (data) => {
+    return {
+      type: type.CHANGE_BOOK_DETAIL,
+      payload: data,
+    };
+  },
 };
 
 export default bookActions;

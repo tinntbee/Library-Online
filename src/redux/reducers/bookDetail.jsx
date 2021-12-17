@@ -28,6 +28,11 @@ export default function bookDetail(state = initialState, action) {
         ...state,
         book: { ...state.book, loading: false, error: action.data },
       };
+    case type.CHANGE_BOOK_DETAIL:
+      return {
+        ...state,
+        book: { ...state.book, data: action.payload },
+      };
     case type.GET_COMMENTS:
       return { ...state, forum: { ...state.forum, loading: true, data: [] } };
     case type.GET_COMMENTS_SUCCESS:

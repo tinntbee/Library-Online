@@ -1,22 +1,118 @@
 import Skeleton from "@mui/material/Skeleton";
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import bookAPI from "../../../../api/bookAPI";
 import RateLikeDislike from "../../../../components/RateLikeDislike";
+import bookActions from "../../../../redux/actions/bookActions";
 import FacebookIcon from "../../../../static/jpg/Facebook.png";
 import LinkIcon from "../../../../static/jpg/Link.png";
 import MessageIcon from "../../../../static/jpg/Message.png";
 import LikeIcon from "../../../../static/LikeIcon";
 import ReadIcon from "../../../../static/ReadIcon";
 import BookViewIntro from "../BookViewIntro";
+import ConformDialog from "../ConfirmDialog";
 
 BookInfo.propTypes = {};
 
 function BookInfo(props) {
-  const state = useSelector((state) => state.bookDetail.book);
-
+  const book = useSelector((state) => state.bookDetail.book);
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
+  const [state, setState] = useState(book);
+  const [confirmDialog, setConfirmDialog] = useState({
+    open: false,
+    handleSubmit: undefined,
+  });
+  const likeClickHandle = async () => {
+    const data = state.data;
+    if (data.react == 1) {
+      await bookAPI.removeReact(data._id).then((res) => {
+        setState({
+          ...state,
+          data: {
+            ...state.data,
+            totalLike: res.totalLike,
+            totalDislike: res.totalDislike,
+            react: 0,
+          },
+        });
+      });
+    } else {
+      await bookAPI.likeReact(data._id).then((res) => {
+        setState({
+          ...state,
+          data: {
+            ...state.data,
+            totalLike: res.totalLike,
+            totalDislike: res.totalDislike,
+            react: 1,
+          },
+        });
+      });
+    }
+  };
+  const dislikeClickHandle = async () => {
+    const data = state.data;
+    if (data.react == -1) {
+      await bookAPI.removeReact(data._id).then((res) => {
+        setState({
+          ...state,
+          data: {
+            ...state.data,
+            totalLike: res.totalLike,
+            totalDislike: res.totalDislike,
+            react: 0,
+          },
+        });
+      });
+    } else {
+      await bookAPI.dislikeReact(data._id).then((res) => {
+        setState({
+          ...state,
+          data: {
+            ...state.data,
+            totalLike: res.totalLike,
+            totalDislike: res.totalDislike,
+            react: -1,
+          },
+        });
+      });
+    }
+  };
+  const handleAddToBookcaseClick = () => {
+    setConfirmDialog({ ...confirmDialog, open: true });
+  };
+  const handleReadNowClick = () => {
+    setConfirmDialog({ ...confirmDialog, open: true });
+  };
+  useEffect(() => {
+    setState(book);
+  }, [book]);
+  useEffect(() => {
+    dispatch(bookActions.changeBookDetail(state.data));
+  }, [state.data]);
   return (
     <div className="Book-information-container Book-detail-container">
+      {user && (
+        <ConformDialog
+          open={confirmDialog.open}
+          handleClose={() =>
+            setConfirmDialog({ ...confirmDialog, open: false })
+          }
+          handleSubmit={confirmDialog.handleSubmit}
+          data={{
+            _id: book.data._id,
+            image: book.data.image,
+            name: book.data.name,
+            price: book.data.price,
+            hoa: user.hoa,
+            isHad: false,
+          }}
+        />
+      )}
       <div className="Book-information-top">
         <div className="Book-information-top-left">
           {!state.loading ? (
@@ -27,11 +123,25 @@ function BookInfo(props) {
                   "--book-thumbnail-url": `url(${state.data.image})`,
                 }}
               >
-                <BookViewIntro />
+                {state.data.linkIntro && (
+                  <BookViewIntro
+                    data={{
+                      linkIntro: state.data.linkIntro,
+                    }}
+                  />
+                )}
               </div>
 
               <div className="Book-rate">
-                {/* <RateLikeDislike /> */}
+                <RateLikeDislike
+                  rate={{
+                    like: state.data.totalLike,
+                    dislike: state.data.totalDislike,
+                    react: state.data.react,
+                  }}
+                  likeClickHandle={likeClickHandle}
+                  dislikeClickHandle={dislikeClickHandle}
+                />
                 <span>Share:</span>
                 <img alt="share on facebook" src={FacebookIcon} />
                 <img alt="share on message" src={MessageIcon} />
@@ -45,10 +155,12 @@ function BookInfo(props) {
                     <Link to="#">
                       <LikeIcon />
                       <p>
-                        {state.data.like + state.data.dislike > 0
-                          ? (state.data.like /
-                              (state.data.like + state.data.dislike)) *
-                            100
+                        {state.data.totalLike + state.data.totalDislike > 0
+                          ? (state.data.totalLike /
+                              (state.data.totalLike +
+                                state.data.totalDislike)) *
+                              100 +
+                            "%"
                           : "-"}
                       </p>
                     </Link>
@@ -153,12 +265,17 @@ function BookInfo(props) {
             )}
           </div>
           <div className="Book-action">
-            <button className="Book-action__read-now" disabled={state.loading}>
+            <button
+              className="Book-action__read-now button-bee contained"
+              disabled={state.loading}
+              onClick={handleReadNowClick}
+            >
               READ NOW
             </button>
             <button
-              className="Book-action__add-to-bookcase"
+              className="Book-action__add-to-bookcase button-bee outline"
               disabled={state.loading}
+              onClick={handleAddToBookcaseClick}
             >
               ADD TO BOOKCASE
             </button>

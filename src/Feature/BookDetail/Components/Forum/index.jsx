@@ -11,20 +11,43 @@ Forum.propTypes = {};
 
 function Forum(props) {
   const forum = useSelector((state) => state.bookDetail.forum);
+  const [filter, setFilter] = useState("all");
   const [comments, setComments] = useState();
   useEffect(() => {
-    setComments({ ...forum });
-  }, [forum]);
+    switch (filter) {
+      case "like":
+        setComments({
+          ...forum,
+          data: [...forum.data].filter((item) => item.type == 1),
+        });
+        break;
+      case "dislike":
+        setComments({
+          ...forum,
+          data: [...forum.data].filter((item) => item.type == -1),
+        });
+        break;
+      default:
+        setComments({ ...forum });
+        break;
+    }
+  }, [filter, forum]);
   return (
     <div className="Book-detail__container">
       <div className="Book-detail__header">
         <p className="Book-detail__title">FORUM</p>
         <div className="filters">
           <p>Filter by</p>
-          <select className="filter-selection">
-            <option>Tích cực</option>
-            <option>Tiêu cực</option>
-            <option>Mới nhất</option>
+          <select
+            className="filter-selection"
+            value={filter}
+            onChange={(e) => {
+              setFilter(e.target.value);
+            }}
+          >
+            <option value="all">Tất cả</option>
+            <option value="like">Tích cực</option>
+            <option value="dislike">Tiêu cực</option>
           </select>
         </div>
       </div>

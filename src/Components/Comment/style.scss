@@ -64,7 +64,7 @@
   border-radius: 10px;
   padding: 10px 15px;
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 17px;
 }
 
 .Comment-footer {
@@ -84,6 +84,7 @@
   cursor: pointer;
   transition: 0.2s all ease-in-out;
   font-weight: 500;
+  color: var(--text-gray50-color);
 }
 
 .Comment-footer-right p:hover {
@@ -175,7 +176,7 @@
       background: var(--primary-color-orange);
       position: absolute;
       top: 0;
-      left: -20px;
+      left: -15px;
     }
   }
 }

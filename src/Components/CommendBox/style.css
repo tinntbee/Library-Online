@@ -46,6 +46,7 @@
 
 .Commend-box-right .user-information{
     margin-bottom: 20px;
+    color: var(--text-black-color);
 }
 
 .Commend-box-right .user-information .full-name{

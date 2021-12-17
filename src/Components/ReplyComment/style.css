@@ -13,12 +13,16 @@
     background: var(--base-gray-color);
     position: absolute;
     top: 0;
-    left: -20px;
+    left: -15px;
 }
-
+/* 
 .Reply-comment-content::after{
     content: url('../../static/jpg/ReplyIcon.svg');
     position: absolute;
     top: -20px;
     left: -30px;
+} */
+
+.Reply-comment-user{
+    margin-bottom: 5px;
 }

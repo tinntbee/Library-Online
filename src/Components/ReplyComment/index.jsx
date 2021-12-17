@@ -61,7 +61,6 @@ function ReplyComment(props) {
       </div>
       <div className="Comment-footer">
         <div className="Comment-footer-left">
-          <p>Đánh giá</p>
           <RateLikeDislike
             rate={{
               like: reply.totalLike,
@@ -73,7 +72,7 @@ function ReplyComment(props) {
           />
         </div>
         <div className="Comment-footer-right">
-          <p>Bình luận ngày {reply.createdAt}</p>
+          <p>{reply.createdAt}</p>
         </div>
       </div>
     </div>

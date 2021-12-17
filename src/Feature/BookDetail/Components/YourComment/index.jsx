@@ -1,5 +1,6 @@
 import { useSnackbar } from "notistack";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axiosClient from "../../../../api/axiosClient";
@@ -15,6 +16,7 @@ import "./style.scss";
 YourComment.propTypes = {};
 
 function YourComment(props) {
+  const history = useHistory();
   const book = useSelector((state) => state.bookDetail.book.data);
   const dispatch = useDispatch();
   const [state, setState] = useState({
@@ -70,7 +72,7 @@ function YourComment(props) {
   }, []);
   return (
     <>
-      {user && (
+      {user ? (
         <div className="your-comment">
           <div className="your-comment__left">
             <div className="Comment">
@@ -144,6 +146,13 @@ function YourComment(props) {
             </div>
           </div>
         </div>
+      ) : (
+        <button
+          className="Sidebar-header-login-btn button-bee contained"
+          onClick={() => history.push("/login")}
+        >
+          Đăng nhập để tiếp tục
+        </button>
       )}
     </>
   );
