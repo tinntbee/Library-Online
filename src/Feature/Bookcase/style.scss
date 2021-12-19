@@ -65,6 +65,7 @@
       top: 55px;
       left: 0;
       z-index: 1;
+      transition: all 0.3s linear;
     }
 
     &::before {
@@ -90,7 +91,7 @@
         z-index: 5;
 
         & > .intro {
-          height: 95px;
+          min-height: 95px;
           width: 285px;
           background: var(--white-color);
           border-radius: 10px;

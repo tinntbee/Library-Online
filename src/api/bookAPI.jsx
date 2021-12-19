@@ -44,6 +44,18 @@ const bookAPI = {
     const url = "/books/reacts/" + _id;
     return axiosClient.post(url, { react: -1 });
   },
+  getBooksInBookcase: () => {
+    const url = "/bookcases/books";
+    return axiosClient.get(url);
+  },
+  buyBook: (bookId) => {
+    const url = "/bookcases/buyBook";
+    return axiosClient.post(url, { bookId: bookId });
+  },
+  buyBookAndReadNow: (bookId) => {
+    const url = "/bookcases/buyBookAndReadNow";
+    return axiosClient.post(url, { ookId: bookId });
+  },
 };
 
 export default bookAPI;

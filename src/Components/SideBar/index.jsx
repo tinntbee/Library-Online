@@ -10,108 +10,17 @@ import ReadIcon from "../../static/ReadIcon";
 import "./style.css";
 import { useHistory } from "react-router-dom";
 import { userActions } from "../../redux/actions/userActions";
+import noteAction from "../../redux/actions/noteAction";
 
 SideBar.propTypes = {};
 
 function SideBar(props) {
-  const data = {
-    accountInfo: {
-      avatarURL:
-        "https://scontent.fvca1-3.fna.fbcdn.net/v/t1.6435-9/243027416_3138938306431058_4725055277341185435_n.jpg?_nc_cat=111&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=qFuOHPJoZF8AX-OL5i2&_nc_ht=scontent.fvca1-3.fna&oh=bf52b87ccfb78acdb46e7f70dcfbe730&oe=618BEFB4",
-      fullName: "Nguyễn Trung Tín",
-      mailAddress: "trungtin27132000@gmail.com",
-    },
-    notes: [
-      {
-        thumbnail:
-          "https://cdn0.fahasa.com/media/flashmagazine/images/page_images/vu_tru_trong_vo_hat_de_tai_ban_2017/2020_05_27_17_21_23_1-390x510.JPG",
-        title: "Vũ trụ trong vỏ hạt dẻ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-      {
-        thumbnail:
-          "https://vnwriter.net/wp-content/uploads/2017/11/sach-co-hai-con-meo-ngoi-ben-cua-so.jpg",
-        title: "Có 2 con mèo ngồi bên cửa sổ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-    ],
-    flashcards: [
-      {
-        thumbnail:
-          "https://cdn0.fahasa.com/media/flashmagazine/images/page_images/vu_tru_trong_vo_hat_de_tai_ban_2017/2020_05_27_17_21_23_1-390x510.JPG",
-        title: "Vũ trụ trong vỏ hạt dẻ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-      {
-        thumbnail:
-          "https://vnwriter.net/wp-content/uploads/2017/11/sach-co-hai-con-meo-ngoi-ben-cua-so.jpg",
-        title: "Có 2 con mèo ngồi bên cửa sổ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-      {
-        thumbnail:
-          "https://cdn0.fahasa.com/media/flashmagazine/images/page_images/vu_tru_trong_vo_hat_de_tai_ban_2017/2020_05_27_17_21_23_1-390x510.JPG",
-        title: "Vũ trụ trong vỏ hạt dẻ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-      {
-        thumbnail:
-          "https://vnwriter.net/wp-content/uploads/2017/11/sach-co-hai-con-meo-ngoi-ben-cua-so.jpg",
-        title: "Có 2 con mèo ngồi bên cửa sổ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-    ],
-    books: [
-      {
-        thumbnail:
-          "https://cdn0.fahasa.com/media/flashmagazine/images/page_images/vu_tru_trong_vo_hat_de_tai_ban_2017/2020_05_27_17_21_23_1-390x510.JPG",
-        title: "Vũ trụ trong vỏ hạt dẻ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-      {
-        thumbnail:
-          "https://vnwriter.net/wp-content/uploads/2017/11/sach-co-hai-con-meo-ngoi-ben-cua-so.jpg",
-        title: "Có 2 con mèo ngồi bên cửa sổ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-      {
-        thumbnail:
-          "https://cdn0.fahasa.com/media/flashmagazine/images/page_images/vu_tru_trong_vo_hat_de_tai_ban_2017/2020_05_27_17_21_23_1-390x510.JPG",
-        title: "Vũ trụ trong vỏ hạt dẻ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-      {
-        thumbnail:
-          "https://vnwriter.net/wp-content/uploads/2017/11/sach-co-hai-con-meo-ngoi-ben-cua-so.jpg",
-        title: "Có 2 con mèo ngồi bên cửa sổ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-      {
-        thumbnail:
-          "https://cdn0.fahasa.com/media/flashmagazine/images/page_images/vu_tru_trong_vo_hat_de_tai_ban_2017/2020_05_27_17_21_23_1-390x510.JPG",
-        title: "Vũ trụ trong vỏ hạt dẻ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-      {
-        thumbnail:
-          "https://vnwriter.net/wp-content/uploads/2017/11/sach-co-hai-con-meo-ngoi-ben-cua-so.jpg",
-        title: "Có 2 con mèo ngồi bên cửa sổ",
-        description: "Vũ trụ trong vỏ hạt dẻ - stephen hawking",
-        path: "#",
-      },
-    ],
-  };
+  const notes = useSelector((state) => state.notes);
+  const [data, setData] = useState({
+    notes: { notes: [], loading: false },
+    flashcards: [],
+    books: [],
+  });
 
   const pagesList = [
     "reading-space",
@@ -155,11 +64,16 @@ function SideBar(props) {
   });
 
   useEffect(() => {
+    dispatch(noteAction.getNotesActive());
     setLocationActive(window.location.pathname);
     if (!user) {
       dispatch(userActions.reSign());
     }
   }, []);
+
+  useEffect(() => {
+    setData({ ...data, notes: notes });
+  }, [notes]);
 
   return (
     <div className="Sidebar">
@@ -257,7 +171,7 @@ function SideBar(props) {
               <p>NOTES</p>
             </li>
 
-            {data.notes.map((item, index) => {
+            {data.notes.notes?.map((item, index) => {
               return (
                 <li
                   key={index}
@@ -267,7 +181,7 @@ function SideBar(props) {
                   })}
                 >
                   <Link
-                    to={item.path}
+                    to={"/reading-space"}
                     onClick={() => {
                       tabClickHandle(index + 1);
                     }}
@@ -275,12 +189,12 @@ function SideBar(props) {
                     <img
                       alt=""
                       className="Sidebar-tab-thumbnail"
-                      src={item.thumbnail}
+                      src={item.image}
                     />
                     <div>
-                      <p className="Sidebar-tab-title">{item.title}</p>
+                      <p className="Sidebar-tab-title">{item.name}</p>
                       <p className="Sidebar-tab-description">
-                        {item.description}
+                        {item.book.name}
                       </p>
                     </div>
                   </Link>
@@ -289,83 +203,97 @@ function SideBar(props) {
             })}
 
             {/* flashcard */}
-            <li className="Sidebar-tabs-title">
-              <p>FLASH CARDS</p>
-            </li>
-
-            {data.flashcards.map((item, index) => {
-              return (
-                <li
-                  key={index}
-                  className={classNames({
-                    "Sidebar-tab": true,
-                    active: index === state.tab - 2 - data.notes.length,
-                  })}
-                >
-                  <Link
-                    to={item.path}
-                    onClick={() => {
-                      tabClickHandle(index + 2 + data.notes.length);
-                    }}
-                  >
-                    <img
-                      alt=""
-                      className="Sidebar-tab-thumbnail"
-                      src={item.thumbnail}
-                    />
-                    <div>
-                      <p className="Sidebar-tab-title">{item.title}</p>
-                      <p className="Sidebar-tab-description">
-                        {item.description}
-                      </p>
-                    </div>
-                  </Link>
+            {data.flashcards.length > 0 && (
+              <>
+                <li className="Sidebar-tabs-title">
+                  <p>FLASH CARDS</p>
                 </li>
-              );
-            })}
+                <>
+                  {data.flashcards.map((item, index) => {
+                    return (
+                      <li
+                        key={index}
+                        className={classNames({
+                          "Sidebar-tab": true,
+                          active: index === state.tab - 2 - data.notes.length,
+                        })}
+                      >
+                        <Link
+                          to={item.path}
+                          onClick={() => {
+                            tabClickHandle(index + 2 + data.notes.length);
+                          }}
+                        >
+                          <img
+                            alt=""
+                            className="Sidebar-tab-thumbnail"
+                            src={item.thumbnail}
+                          />
+                          <div>
+                            <p className="Sidebar-tab-title">{item.title}</p>
+                            <p className="Sidebar-tab-description">
+                              {item.description}
+                            </p>
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </>
+              </>
+            )}
 
             {/* books */}
-            <li className="Sidebar-tabs-title">
-              <p>BOOKS</p>
-            </li>
-
-            {data.books.map((item, index) => {
-              return (
-                <li
-                  key={index}
-                  className={classNames({
-                    "Sidebar-tab": true,
-                    active:
-                      index ===
-                      state.tab -
-                        3 -
-                        data.notes.length -
-                        data.flashcards.length,
-                  })}
-                >
-                  <Link
-                    to={item.path}
-                    onClick={() => {
-                      tabClickHandle(
-                        index + 3 + data.notes.length + data.flashcards.length
-                      );
-                    }}
-                  >
-                    <img
-                      alt=""
-                      className="Sidebar-tab-thumbnail"
-                      src={item.thumbnail}
-                    />
-                    <div>
-                      <p className="Sidebar-tab-title">{item.title}</p>
-                      <p className="Sidebar-tab-description">
-                        {item.description}
-                      </p>
-                    </div>
-                  </Link>
+            {data.flashcards.length > 0 && (
+              <>
+                <li className="Sidebar-tabs-title">
+                  <p>BOOKS</p>
                 </li>
-              );
-            })}
+
+                <>
+                  {data.books.map((item, index) => {
+                    return (
+                      <li
+                        key={index}
+                        className={classNames({
+                          "Sidebar-tab": true,
+                          active:
+                            index ===
+                            state.tab -
+                              3 -
+                              data.notes.length -
+                              data.flashcards.length,
+                        })}
+                      >
+                        <Link
+                          to={item.path}
+                          onClick={() => {
+                            tabClickHandle(
+                              index +
+                                3 +
+                                data.notes.length +
+                                data.flashcards.length
+                            );
+                          }}
+                        >
+                          <img
+                            alt=""
+                            className="Sidebar-tab-thumbnail"
+                            src={item.thumbnail}
+                          />
+                          <div>
+                            <p className="Sidebar-tab-title">{item.title}</p>
+                            <p className="Sidebar-tab-description">
+                              {item.description}
+                            </p>
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </>
+              </>
+            )}
 
             <li
               style={{ "--value": state.tab }}

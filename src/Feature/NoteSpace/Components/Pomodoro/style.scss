@@ -1,0 +1,170 @@
+.ReadingSpace__PomodoroMode {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: 90px;
+  right: 5px;
+  opacity: 1;
+
+  & > .pomodoro-default {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  & > .progress {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+
+  &:hover {
+    .progress {
+      left: -130px;
+      transform: scale(1.5);
+    }
+
+    & > .box {
+      width: 260px;
+      height: 190px;
+    }
+  }
+
+  & > .progress .track,
+  .progress .fill {
+    fill: transparent;
+    stroke-width: 50;
+    transform: translate(290px, 800px) rotate(-120deg);
+    cursor: pointer;
+  }
+  & > .progress .track {
+    stroke: transparent;
+  }
+  & > .progress .fill {
+    stroke: var(--primary-color-orange);
+    stroke-linecap: round;
+    stroke-dasharray: 2160;
+    stroke-dashoffset: calc(((100 - var(--data-progress)) / 100) * 2160);
+    transition: stroke-dashoffset 0.3s;
+  }
+  & > .noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+  }
+
+  & > .box {
+    width: 0;
+    height: 0;
+    background: var(--white-color);
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    box-shadow: 0 3px 6px var(--text-gray50-color);
+    overflow: hidden;
+
+    & > .box__title {
+      position: absolute;
+      top: 15px;
+      font-size: 16px;
+      color: var(--text-gray100-color);
+      width: 100%;
+    }
+
+    & > button {
+      height: 29px;
+      width: 9px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      outline: none;
+      border: none;
+      background-color: transparent;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+      &:hover{
+        filter: brightness(80%);
+      }
+    }
+
+    & > .previous-pomodoro-image {
+      background-image: url("../../../../static/jpg/previous-pomodoro-image.svg");
+      left: 60px;
+    }
+
+    & > .next-pomodoro-image {
+      background-image: url("../../../../static/jpg/next-pomodoro-image.svg");
+      right: 60px;
+    }
+
+    & > .set-time {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: absolute;
+      bottom: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--text-gray100-color);
+
+      & > input {
+        font-size: 27px;
+        line-height: 27px;
+        font-weight: 700;
+        outline: none;
+        border: none;
+        text-align: right;
+        color: var(--text-gray100-color);
+      }
+
+      & > .two-dots {
+        font-size: 27px;
+        line-height: 27px;
+        font-weight: 700;
+        margin: -5px 5px 0 5px;
+      }
+
+      & > input {
+        border-bottom: 2px solid var(--white-color);
+        transition: all 0.3s linear;
+
+        &:focus {
+          border-bottom: 2px solid var(--text-gray50-color);
+          text-align: center;
+        }
+      }
+
+      & > .second {
+        width: 50px;
+      }
+
+      & > .minute {
+        width: 60px;
+      }
+
+      & > .unit {
+        margin-bottom: -5px;
+        font-size: 12px;
+      }
+    }
+  }
+}

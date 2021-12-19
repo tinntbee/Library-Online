@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Checkbox from "@mui/material/Checkbox";
+import { useHistory } from "react-router-dom";
 import "./style.scss";
 import {
   CircularProgress,
@@ -13,31 +14,80 @@ import {
 import ReadIcon from "../../../static/ReadIcon";
 import classNames from "classnames";
 import { Box } from "@mui/system";
+import { useSelector } from "react-redux";
+import { filesService } from "../../../service/firebase/filesService";
+import { useSnackbar } from "notistack";
+import noteAPI from "../../../api/noteAPI";
 
 BookViewBox.propTypes = {};
 
 function BookViewBox(props) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+  const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
   const { data, handleCheckBoxOnChange, index, checked } = props;
+  const [open, setOpen] = React.useState(false);
+  const [createNoteForm, setCreateNoteForm] = useState({
+    file: null,
+    url: data.book.image,
+    title: "",
+  });
+  const user = useSelector((state) => state.user.user);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setCreateNoteForm({
+      file: null,
+      url: data.book.image,
+      title: "",
+    });
+  };
+
   const handleCheckBoxChange = (e) => {
     handleCheckBoxOnChange({ index: index, isChecked: !checked });
   };
-  const [createNoteForm, setCreateNoteForm] = useState({
-    thumbnailFile: null,
-    thumbnailUrl: data.image,
-    title: "",
-  });
+
+  const handleThumbnailChange = (e) => {
+    var file = e.target.files[0];
+    var url = URL.createObjectURL(file);
+    setCreateNoteForm({ ...createNoteForm, url: url, file: file });
+    return () => URL.revokeObjectURL(url);
+  };
   const handleTitleCreateNoteChange = (e) => {
     setCreateNoteForm({ ...createNoteForm, title: e.target.value });
   };
-  const handleCreateNewNote = () => {};
+  const handleCreateNewNote = async () => {
+    //NOTE: save image if have
+    let url = createNoteForm.url;
+    if (createNoteForm.file) {
+      const path = `/public/user-${user._id}/note-image/${Date.now()}`;
+      const file = createNoteForm.file;
+      const acceptedImageTypes = ["image/gif", "image/jpeg", "image/png"];
+      if (acceptedImageTypes.includes(file.type)) {
+        url = await filesService.uploadTaskPromise(path, file);
+      }
+    }
+    noteAPI
+      .createNote({
+        name: createNoteForm.title,
+        book: data.book._id,
+        image: url,
+      })
+      .then((res) => {
+        setOpen(false);
+        enqueueSnackbar("Tạo Note mới thành công", {
+          variant: "success",
+        });
+      })
+      .catch((e) => {
+        setOpen(false);
+        console.log({ e });
+        enqueueSnackbar("Có lỗi đã sảy ra :<", { variant: "error" });
+      });
+  };
   return (
     <div
       className="book-view-box"
-      style={{ backgroundImage: `url(${data.image})` }}
+      style={{ backgroundImage: `url(${data.book.image})` }}
     >
       <Modal
         open={open}
@@ -52,14 +102,14 @@ function BookViewBox(props) {
               <div
                 className="thumbnail-view"
                 style={{
-                  backgroundImage: `url(${data.image})`,
+                  backgroundImage: `url(${createNoteForm.url})`,
                 }}
               >
                 <div
                   className="upload-file"
                   style={{ backgroundImage: "url(icons/camera.svg)" }}
                 >
-                  <input type="file" />
+                  <input type="file" onChange={handleThumbnailChange} />
                 </div>
               </div>
               <TextField
@@ -78,7 +128,7 @@ function BookViewBox(props) {
               </button>
               <button
                 className="create"
-                onClick={handleCreateNewNote}
+                onClick={createNoteForm.title && handleCreateNewNote}
                 disabled={!createNoteForm.title}
               >
                 Tạo
@@ -106,12 +156,15 @@ function BookViewBox(props) {
           onChange={handleCheckBoxChange}
         />
       </div>
-      <div className="detail">
+      <div
+        className="detail"
+        onClick={() => history.push(`/book-detail/${data.book._id}`)}
+      >
         <Box sx={{ position: "relative", display: "inline-flex" }}>
           <CircularProgress
             sx={{ color: "#fff" }}
             variant="determinate"
-            value={40}
+            value={data.progress}
           />
           <Box
             sx={{
@@ -126,11 +179,11 @@ function BookViewBox(props) {
             }}
           >
             <Typography variant="caption" component="div" color="#FFF">
-              {`${40}%`}
+              {`${data.progress}%`}
             </Typography>
           </Box>
         </Box>
-        <p className="name">Vũ trụ trong vỏ hạt dẻ</p>
+        <p className="name">{data.book.name}</p>
       </div>
     </div>
   );

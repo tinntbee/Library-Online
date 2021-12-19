@@ -1,7 +1,8 @@
 import Checkbox from "@mui/material/Checkbox";
 import classNames from "classnames";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
+import noteAPI from "../../../api/noteAPI";
 import NotesViewBox from "../NotesViewBox";
 import "./style.scss";
 
@@ -23,60 +24,12 @@ function NotesContainer(props) {
       image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
       checked: false,
     },
-    {
-      _id: 1,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 2,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 1,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 2,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 1,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 2,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 1,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 2,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
   ];
   const [state, setState] = useState({
     showToolbar: false,
-    data: data,
+    data: [],
   });
-  const [checked, setChecked] = useState(Array(data.length).fill(false));
+  const [checked, setChecked] = useState([false]);
   const handleCheckBoxOnChange = (value) => {
     let newChecked = [...checked];
     newChecked[value.index] = value.isChecked;
@@ -90,29 +43,45 @@ function NotesContainer(props) {
     console.log({ newChecked });
   };
   const calculateCheckAll = (newChecked) => {
-    return newChecked.reduce(
-      (accumulator, currentValue) => accumulator && currentValue
-    );
+    return checked.length > 0
+      ? newChecked.reduce(
+          (accumulator, currentValue) => accumulator && currentValue
+        )
+      : false;
   };
   const calculateIndeterminate = (newChecked) => {
-    return (
-      newChecked.reduce(
-        (accumulator, currentValue) => accumulator || currentValue
-      ) ^
-      newChecked.reduce(
-        (accumulator, currentValue) => accumulator && currentValue
-      )
-    );
+    return checked.length > 0
+      ? newChecked.reduce(
+          (accumulator, currentValue) => accumulator || currentValue
+        ) ^
+          newChecked.reduce(
+            (accumulator, currentValue) => accumulator && currentValue
+          )
+      : false;
   };
 
   const handleCloseToolbar = () => {
-    setChecked(Array(data.length).fill(false));
+    setChecked(Array(state.data.length).fill(false));
     setState({ ...state, showToolbar: false });
   };
 
   const handleCheckAllChange = (e) => {
-    setChecked(Array(data.length).fill(e.target.checked));
+    setChecked(Array(state.data.length).fill(e.target.checked));
   };
+
+  const fetchData = () => {
+    noteAPI
+      .getNotesInBookcase()
+      .then((res) => {
+        setState({ ...state, data: res });
+      })
+      .catch((e) => {
+        console.log({ e });
+      });
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="container">

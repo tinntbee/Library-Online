@@ -1,83 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ScrollContainer from "react-indiana-drag-scroll";
 import "./style.scss";
 import BookViewBox from "../BookViewBox";
 import Checkbox from "@mui/material/Checkbox";
 import classNames from "classnames";
+import bookAPI from "../../../api/bookAPI";
 
 BooksContainer.propTypes = {};
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 function BooksContainer(props) {
-  const data = [
-    {
-      _id: 1,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 2,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 1,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 2,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 1,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 2,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 1,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 2,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 1,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 2,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-  ];
   const [state, setState] = useState({
     showToolbar: false,
-    data: data,
+    data: null,
   });
-  const [checked, setChecked] = useState(Array(data.length).fill(false));
+  const [checked, setChecked] = useState([false]);
   const handleCheckBoxOnChange = (value) => {
     let newChecked = [...checked];
     newChecked[value.index] = value.isChecked;
@@ -88,7 +27,6 @@ function BooksContainer(props) {
         showToolbar: true,
       });
     }
-    console.log({ newChecked });
   };
   const calculateCheckAll = (newChecked) => {
     return newChecked.reduce(
@@ -107,13 +45,28 @@ function BooksContainer(props) {
   };
 
   const handleCloseToolbar = () => {
-    setChecked(Array(data.length).fill(false));
+    setChecked(Array(state.data.length).fill(false));
     setState({ ...state, showToolbar: false });
   };
 
   const handleCheckAllChange = (e) => {
-    setChecked(Array(data.length).fill(e.target.checked));
+    setChecked(Array(state.data.length).fill(e.target.checked));
   };
+
+  const fetchData = async () => {
+    bookAPI
+      .getBooksInBookcase()
+      .then((res) => {
+        setChecked(Array(res.length).fill(false));
+        setState({ ...state, data: res });
+      })
+      .catch((e) => {
+        console.log({ e });
+      });
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="container">

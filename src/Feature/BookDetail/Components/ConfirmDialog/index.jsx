@@ -1,6 +1,7 @@
 import { Fade, Modal } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
+import { Link } from "react-router-dom";
 import "./style.scss";
 
 ConfirmDialog.propTypes = {
@@ -22,7 +23,7 @@ ConfirmDialog.defaultProps = {
 };
 
 function ConfirmDialog(props) {
-  const { data, open, handleClose } = props;
+  const { data, open, handleClose, handleSubmit } = props;
   console.log({ data });
   return (
     <Modal
@@ -51,7 +52,13 @@ function ConfirmDialog(props) {
                 </p>
                 {data.isHad ? (
                   <p className="message">
-                    <i>Bé đã được bạn rước về tủ sách rồi đó !!</i>
+                    <i>
+                      Bé đã được bạn rước về{" "}
+                      <Link to="/bookcase">
+                        <u>tủ sách</u>
+                      </Link>{" "}
+                      rồi đó !!
+                    </i>
                   </p>
                 ) : data.price == 0 ? (
                   <p className="message">
@@ -72,7 +79,10 @@ function ConfirmDialog(props) {
                   Hủy
                 </button>
                 {!data.isHad && data.price <= data.hoa && (
-                  <button className="buy button-bee contained">
+                  <button
+                    className="buy button-bee contained"
+                    onClick={handleSubmit}
+                  >
                     Thanh toán
                   </button>
                 )}

@@ -6,12 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import bookAPI from "../../../../api/bookAPI";
 import RateLikeDislike from "../../../../components/RateLikeDislike";
+import backdropLoadingAction from "../../../../redux/actions/backdropLoadingAction";
 import bookActions from "../../../../redux/actions/bookActions";
 import FacebookIcon from "../../../../static/jpg/Facebook.png";
 import LinkIcon from "../../../../static/jpg/Link.png";
 import MessageIcon from "../../../../static/jpg/Message.png";
 import LikeIcon from "../../../../static/LikeIcon";
 import ReadIcon from "../../../../static/ReadIcon";
+import { useSnackbar } from "notistack";
 import BookViewIntro from "../BookViewIntro";
 import ConformDialog from "../ConfirmDialog";
 
@@ -21,11 +23,28 @@ function BookInfo(props) {
   const book = useSelector((state) => state.bookDetail.book);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const [state, setState] = useState(book);
   const [confirmDialog, setConfirmDialog] = useState({
     open: false,
-    handleSubmit: undefined,
   });
+  const handleBuySubmit = async () => {
+    setConfirmDialog({ ...confirmDialog, open: false });
+    dispatch(backdropLoadingAction.setLoading(true));
+
+    bookAPI
+      .buyBook(book.data._id)
+      .then((res) => {
+        dispatch(backdropLoadingAction.setLoading(false));
+        enqueueSnackbar("Thêm vào tủ sách thành công", {
+          variant: "success",
+        });
+        dispatch(bookActions.changeBookDetail({ ...book.data, isHad: true }));
+      })
+      .catch((e) => {
+        dispatch(backdropLoadingAction.setLoading(false));
+      });
+  };
   const likeClickHandle = async () => {
     const data = state.data;
     if (data.react == 1) {
@@ -102,14 +121,14 @@ function BookInfo(props) {
           handleClose={() =>
             setConfirmDialog({ ...confirmDialog, open: false })
           }
-          handleSubmit={confirmDialog.handleSubmit}
+          handleSubmit={handleBuySubmit}
           data={{
             _id: book.data._id,
             image: book.data.image,
             name: book.data.name,
             price: book.data.price,
             hoa: user.hoa,
-            isHad: false,
+            isHad: book.data.isHad,
           }}
         />
       )}

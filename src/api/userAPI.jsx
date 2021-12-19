@@ -32,6 +32,14 @@ const userAPI = {
     const url = "/accounts/getUserInfoForForum/" + bookId;
     return axiosClient.get(url);
   },
+  getBookcase: () => {
+    const url = "/bookcases";
+    return axiosClient.get(url);
+  },
+  putChangeCover: (cover) => {
+    const url = "/accounts/changeCover";
+    return axiosClient.put(url, { cover: cover });
+  },
 };
 
 export default userAPI;

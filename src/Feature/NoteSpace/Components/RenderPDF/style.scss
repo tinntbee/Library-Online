@@ -1,0 +1,151 @@
+@mixin animate($animation, $delay, $duration, $method, $times) {
+  animation: $animation $delay $duration $method $times;
+}
+
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+.ReadingSpace__book {
+  width: calc(58% - 20px);
+  background: transparent;
+  height: calc(100% - 20px);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+
+  & > .rpv-core__viewer {
+    background: transparent;
+
+    & > div {
+      background: transparent;
+    }
+
+    & .rpv-core__inner-page {
+      background: transparent;
+      background-color: none;
+    }
+  }
+
+  &__control {
+    height: 54px;
+    width: 690px;
+    background: var(--white-color);
+    border-radius: 10px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-shadow: 0px 3px 6px var(--text-gray50-color);
+    justify-content: space-between;
+    padding: 4px;
+    opacity: 0;
+    transition: all 0.2s 2s linear;
+
+    &:hover {
+      bottom: 30px;
+      opacity: 100%;
+      transition: all 0.2s linear;
+    }
+
+    & button {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      text-align: center;
+      border: 0;
+      cursor: pointer;
+      outline: none;
+      box-sizing: content-box;
+      padding: 8px;
+      margin: 4px;
+      border-radius: 10px;
+      background-size: 24px 24px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: var(--white-color);
+      transition: box-shadow 0.2s linear;
+
+      &:hover:enabled {
+        filter: brightness(95%);
+      }
+
+      &:disabled {
+        filter: brightness(130%);
+      }
+    }
+
+    & p {
+      font-size: 16px;
+      line-height: 16px;
+      color: var(--text-gray100-color);
+    }
+
+    & > .center,
+    .left,
+    .right {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    & > .left {
+      & > .full-screen {
+        background-image: url("../../../../static/jpg/full-screen.svg");
+      }
+      & > .translate {
+        background-image: url("../../../../static/jpg/translate.svg");
+      }
+    }
+
+    & > .center {
+      position: absolute;
+      top: auto;
+      bottom: auto;
+      left: 50%;
+      transform: translateX(-50%);
+
+      & > .go-to-first-page {
+        background-image: url("../../../../static/jpg/go-to-first-page.svg");
+      }
+
+      & > .go-to-previous-page {
+        background-image: url("../../../../static/jpg/go-to-previous-page.svg");
+      }
+
+      & > .go-to-last-page {
+        background-image: url("../../../../static/jpg/go-to-first-page.svg");
+        transform: scale(-1);
+      }
+
+      & > .go-to-next-page {
+        background-image: url("../../../../static/jpg/go-to-previous-page.svg");
+        transform: scale(-1);
+      }
+
+      & > .current-page {
+        height: 40px;
+        width: 40px;
+        border-radius: 10px;
+        box-shadow: 0px 3px 6px var(--text-gray50-color);
+        margin: 8px;
+        line-height: 40px;
+      }
+    }
+
+    & > .right {
+      & > .zoom-out {
+        background-image: url("../../../../static/jpg/zoom-out.svg");
+      }
+
+      & > .zoom-in {
+        background-image: url("../../../../static/jpg/zoom-in.svg");
+      }
+    }
+  }
+}
