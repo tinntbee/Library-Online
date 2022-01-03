@@ -1,0 +1,12 @@
+.all-categories {
+  width: 100%;
+  & > p {
+    font-size: 18px;
+    font-weight: 700;
+    background: var(--primary-color-orange);
+    padding: 15px 0;
+    border-radius: 10px;
+    color: var(--white-color);
+    margin-top: 20px;
+  }
+}

@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { ref, getDownloadURL } from "firebase/storage";
-import "./style.scss";
-import { Worker, DocumentAskPasswordEvent } from "@react-pdf-viewer/core";
-import { zoomPlugin } from "@react-pdf-viewer/zoom";
-import { pageNavigationPlugin } from "@react-pdf-viewer/page-navigation";
-import { fullScreenPlugin } from "@react-pdf-viewer/full-screen";
+import { Viewer, Worker } from "@react-pdf-viewer/core";
 // Import the styles
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import Controller from "./Controller";
-import PDFViewer from "./PDFViewer";
-import { Viewer } from "@react-pdf-viewer/core";
+import { fullScreenPlugin } from "@react-pdf-viewer/full-screen";
+import { pageNavigationPlugin } from "@react-pdf-viewer/page-navigation";
+import { zoomPlugin } from "@react-pdf-viewer/zoom";
+import { getDownloadURL, ref } from "firebase/storage";
+import React, { useEffect, useState } from "react";
 import { storage } from "../../../../service/firebase";
+import Controller from "./Controller";
+import "./style.scss";
 
 RenderPDF.propTypes = {};
 
 function RenderPDF(props) {
+  const { link, page, pass, _id, handlePageOnChange } = props;
+  const [initialPage, setInitialPage] = useState();
   const zoomPluginInstance = zoomPlugin();
-  const [url, setUrl] = useState("https://firebasestorage.googleapis.com/");
   const pageNavigationPluginInstance = pageNavigationPlugin();
   const { CurrentScale, ZoomIn, ZoomOut } = zoomPluginInstance;
   const {
@@ -25,54 +24,42 @@ function RenderPDF(props) {
     GoToNextPage,
     GoToPreviousPage,
     CurrentPageLabel,
+    CurrentPageInput,
   } = pageNavigationPluginInstance;
   const fullScreenPluginInstance = fullScreenPlugin();
   const { EnterFullScreen } = fullScreenPluginInstance;
 
-  useEffect(() => {
-    const getUrlBook = async () => {
-      const httpsReference = ref(
-        storage,
-        "https://firebasestorage.googleapis.com/v0/b/library-online-3ec9d.appspot.com/o/books%2Fpdf%2FTin%20Nguyen%20Trung%20-%20CV%20Fresher%20Front-end%20Software%20Engineer%20-%C4%91%C3%A3%20b%E1%BA%A3o%20v%E1%BB%87.pdf?alt=media&token=2ff3c3c9-0e56-40a2-879b-fc66021d0f17"
-      );
-      console.log({ httpsReference });
-      getDownloadURL(httpsReference)
-        .then((url) => {
-          // `url` is the download URL for 'images/stars.jpg'
-
-          // This can be downloaded directly:
-          const xhr = new XMLHttpRequest();
-          xhr.responseType = "blob";
-          xhr.onload = (event) => {
-            const blob = xhr.response;
-          };
-          xhr.open("GET", url);
-          xhr.send();
-
-          setUrl(url);
-        })
-        .catch((error) => {
-          // Handle any errors
-        });
-    };
-    getUrlBook();
-  }, []);
-
   const handleAskPassword = (DocumentAskPasswordEvent) => {
-    DocumentAskPasswordEvent.verifyPassword("1234");
+    DocumentAskPasswordEvent.verifyPassword(pass);
+  };
+
+  useEffect(() => {
+    setInitialPage(page);
+    if (initialPage) {
+      CurrentPageInput.value = initialPage;
+    }
+  }, [page]);
+
+  //NOTE: handle
+  const handleOnPageChange = (e) => {
+    handlePageOnChange({ _id: _id, page: e.currentPage });
   };
   return (
     <div className="ReadingSpace__book">
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
-        <Viewer
-          onDocumentAskPassword={handleAskPassword}
-          plugins={[
-            zoomPluginInstance,
-            pageNavigationPluginInstance,
-            fullScreenPluginInstance,
-          ]}
-          fileUrl={url}
-        />
+        {link && (
+          <Viewer
+            initialPage={initialPage}
+            onDocumentAskPassword={handleAskPassword}
+            plugins={[
+              zoomPluginInstance,
+              pageNavigationPluginInstance,
+              fullScreenPluginInstance,
+            ]}
+            fileUrl={link}
+            onPageChange={handleOnPageChange}
+          />
+        )}
       </Worker>
       <Controller
         CurrentScale={CurrentScale}
@@ -84,6 +71,7 @@ function RenderPDF(props) {
         GoToPreviousPage={GoToPreviousPage}
         CurrentPageLabel={CurrentPageLabel}
         EnterFullScreen={EnterFullScreen}
+        CurrentPageInput={CurrentPageInput}
       />
     </div>
   );

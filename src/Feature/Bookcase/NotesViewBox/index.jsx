@@ -2,12 +2,14 @@ import { Fade, IconButton, Modal, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import classNames from "classnames";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import PenIcon from "../../../static/PenIcon";
 import "./style.scss";
 
 NotesViewBox.propTypes = {};
 
 function NotesViewBox(props) {
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -25,8 +27,12 @@ function NotesViewBox(props) {
     setCreateNoteForm({ ...createNoteForm, title: e.target.value });
   };
   const handleSaveChange = () => {};
+  //NOTE: handle double Click
+  const handleClick = () => {
+    history.push("/note-space/" + data._id);
+  };
   return (
-    <div className="notes-view-box">
+    <div className="notes-view-box" onClick={handleClick}>
       <Modal
         open={open}
         onClose={handleClose}

@@ -55,6 +55,16 @@ export default function bookDetail(state = initialState, action) {
           data: [...newForum],
         },
       };
+    case type.REMOVE_COMMENT:
+      newForum = [...state.forum.data];
+      newForum = newForum.filter((item) => item._id !== action.payload);
+      return {
+        ...state,
+        forum: {
+          ...state.forum,
+          data: [...newForum],
+        },
+      };
     case type.POST_REPLY:
       const { reply, commentIndex } = action.payload;
       newForum = [...state.forum.data];

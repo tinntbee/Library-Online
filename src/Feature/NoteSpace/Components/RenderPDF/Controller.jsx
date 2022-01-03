@@ -6,6 +6,7 @@ import {
 } from "@react-pdf-viewer/zoom";
 import {
   RenderCurrentPageLabelProps,
+  RenderCurrentPageInputProps,
   RenderGoToPageProps,
 } from "@react-pdf-viewer/page-navigation";
 import {
@@ -25,6 +26,7 @@ function Controller(props) {
     GoToPreviousPage,
     CurrentPageLabel,
     EnterFullScreen,
+    CurrentPageInput
   } = props;
   return (
     <div className="ReadingSpace__book__control">
@@ -71,7 +73,7 @@ function Controller(props) {
             </>
           )}
         </CurrentPageLabel>
-
+        
         <GoToNextPage>
           {(props = RenderGoToPageProps) => (
             <button

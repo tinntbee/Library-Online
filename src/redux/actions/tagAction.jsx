@@ -7,6 +7,12 @@ const tagAction = {
       payload: {},
     };
   },
+  getTags: () => {
+    return {
+      type: type.GET_TAGS,
+      payload: {},
+    };
+  },
 };
 
 export default tagAction;

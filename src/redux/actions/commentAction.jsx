@@ -13,4 +13,10 @@ export const commentActions = {
       payload: payload,
     };
   },
+  remove: (id) => {
+    return {
+      type: type.REMOVE_COMMENT,
+      payload: id,
+    };
+  },
 };

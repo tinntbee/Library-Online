@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import bookActions from "../../redux/actions/bookActions";
-import "./style.css";
+import "./style.scss";
 
 Slideshow.propTypes = {};
 

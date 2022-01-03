@@ -3,7 +3,6 @@ import * as type from "../types";
 
 const initialState = {
   notes: [],
-  notesDetail: [],
   loading: false,
   error: "",
 };
@@ -25,6 +24,23 @@ export default function notes(state = initialState, action) {
       return {
         ...state,
         loading: false,
+      };
+    case type.PUT_NOTE_CONTENT:
+      let newNotes = [...state.notes];
+      let isHad = false;
+      for (let index = 0; index < newNotes.length; index++) {
+        const newNote = action.payload;
+        if (newNote && newNotes[index]._id === newNote._id) {
+          newNotes[index] = newNote;
+          isHad = true;
+        }
+      }
+      if (!isHad) {
+        newNotes.push(action.payload);
+      }
+      return {
+        ...state,
+        notes: [...newNotes],
       };
     default:
       return state;

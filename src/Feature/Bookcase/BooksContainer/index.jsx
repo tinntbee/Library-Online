@@ -6,6 +6,10 @@ import BookViewBox from "../BookViewBox";
 import Checkbox from "@mui/material/Checkbox";
 import classNames from "classnames";
 import bookAPI from "../../../api/bookAPI";
+import { useDispatch } from "react-redux";
+import dialogAction from "../../../redux/actions/dialogAction";
+import { snackBarActions } from "../../../redux/actions/snackBarActions";
+import noteAction from "../../../redux/actions/noteAction";
 
 BooksContainer.propTypes = {};
 
@@ -16,6 +20,7 @@ function BooksContainer(props) {
     showToolbar: false,
     data: null,
   });
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState([false]);
   const handleCheckBoxOnChange = (value) => {
     let newChecked = [...checked];
@@ -29,11 +34,17 @@ function BooksContainer(props) {
     }
   };
   const calculateCheckAll = (newChecked) => {
+    if (newChecked.length === 0) {
+      return false;
+    }
     return newChecked.reduce(
       (accumulator, currentValue) => accumulator && currentValue
     );
   };
   const calculateIndeterminate = (newChecked) => {
+    if (newChecked.length === 0) {
+      return false;
+    }
     return (
       newChecked.reduce(
         (accumulator, currentValue) => accumulator || currentValue
@@ -53,12 +64,59 @@ function BooksContainer(props) {
     setChecked(Array(state.data.length).fill(e.target.checked));
   };
 
+  const fetchDelete = async ({ _id, name }) => {
+    await bookAPI
+      .removeBookInBookcase(_id)
+      .then((res) => {
+        dispatch(
+          snackBarActions.open({
+            message: `Xóa '${name}' thành công khỏi tủ sách!`,
+            variant: "success",
+          })
+        );
+      })
+      .catch((err) => {
+        dispatch(
+          snackBarActions.open({
+            message: "Có lỗi sảy ra, xóa thất bại!",
+            variant: "error",
+          })
+        );
+      });
+  };
+
+  const handleDeleteClick = async () => {
+    dispatch(
+      dialogAction.open({
+        title: "Xóa Sách khỏi thư viện?",
+        message:
+          "Bạn có chắc chắn muốn xóa những quyển sách này (bao gồm các Note của chúng) khỏi tủ sách không?",
+        actions: [
+          {
+            name: "Xóa",
+            callback: async () => {
+              for (let index = 0; index < state.data.length; index++) {
+                const element = checked[index];
+                if (element) {
+                  await fetchDelete(state.data[index].book);
+                }
+              }
+              fetchData();
+              handleCloseToolbar();
+              dispatch(noteAction.getNotesActive());
+            },
+          },
+        ],
+      })
+    );
+  };
+
   const fetchData = async () => {
     bookAPI
       .getBooksInBookcase()
       .then((res) => {
         setChecked(Array(res.length).fill(false));
-        setState({ ...state, data: res });
+        setState({ ...state, showToolbar: false, data: res });
       })
       .catch((e) => {
         console.log({ e });
@@ -100,7 +158,7 @@ function BooksContainer(props) {
             }}
             onChange={handleCheckAllChange}
           />
-          <div className="delete">
+          <div className="delete" onClick={handleDeleteClick}>
             <img alt="" src="icons/delete-orange.svg" />
             <span>Xóa</span>
           </div>

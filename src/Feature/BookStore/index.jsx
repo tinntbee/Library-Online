@@ -1,10 +1,7 @@
 import classNames from "classnames";
+import queryString from "query-string";
 import React, { useEffect, useState } from "react";
-import ScrollContainer from "react-indiana-drag-scroll";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import BooksViewByCategories from "../../components/BooksViewByCategories";
-import BookViewCard from "../../components/BookViewCard";
 import SearchInBookstore from "../../components/SearchInBookstore";
 import Slideshow from "../../components/Slideshow";
 import bookActions from "../../redux/actions/bookActions";
@@ -13,7 +10,9 @@ import life_style_image from "../../static/jpg/life-style.jpg";
 import program_image from "../../static/jpg/program.jpg";
 import science_space_image from "../../static/jpg/science-space.jpg";
 import ToTopIcon from "../../static/ToTopIcon";
+import AllCategories from "./AllCategories";
 import BooksForYou from "./BooksForYou";
+import OtherTags from "./OtherTags";
 import "./style.css";
 
 BookStore.propTypes = {};
@@ -25,12 +24,8 @@ function BookStore(props) {
     dispatch(bookActions.getBooksSlide());
     dispatch(bookActions.getBooksForYou());
     dispatch(tagAction.getAllTagsByCategories());
+    dispatch(tagAction.getTags());
   }, []);
-
-  const tagsByCategories = useSelector(state=>state.bookStore.tagsByCategories.data);
-  console.log(tagsByCategories);
-
-  const data = useSelector(state=>state.bookStore.tagsByCategories.data);
 
   const [buttonScrollTop, setButtonScrollTop] = useState(false);
   const toggleVisible = () => {
@@ -47,6 +42,9 @@ function BookStore(props) {
     scrollTopRef.current.scrollTop = 0;
   };
 
+  let url = props.location.search;
+  let { tagId } = queryString.parse(url);
+
   return (
     <div className="Bookstore main-content">
       <div className="header">
@@ -54,7 +52,7 @@ function BookStore(props) {
         <p className="hoa">$34</p>
       </div>
       <div className="body">
-        <SearchInBookstore />
+        <SearchInBookstore tag={tagId} />
         <div
           className="body-content"
           onScroll={() => toggleVisible()}
@@ -73,9 +71,8 @@ function BookStore(props) {
               <img alt="" src={science_space_image} />
             </a>
           </div>
-          {data && data.map((item, index) => {
-            return <BooksViewByCategories key={item._id} data={item} />;
-          })}
+          <AllCategories />
+          <OtherTags />
         </div>
         <div
           onClick={() => onClickHandle()}

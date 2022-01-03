@@ -6,6 +6,10 @@ const tagAPI = {
     const url = "/categories";
     return axiosClient.get(url);
   },
+  getAll: () => {
+    const url = "/tags";
+    return axiosClient.get(url);
+  },
 };
 
 export default tagAPI;

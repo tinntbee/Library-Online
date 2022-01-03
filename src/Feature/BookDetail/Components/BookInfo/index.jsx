@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import bookAPI from "../../../../api/bookAPI";
 import RateLikeDislike from "../../../../components/RateLikeDislike";
 import backdropLoadingAction from "../../../../redux/actions/backdropLoadingAction";
@@ -22,11 +22,13 @@ BookInfo.propTypes = {};
 function BookInfo(props) {
   const book = useSelector((state) => state.bookDetail.book);
   const user = useSelector((state) => state.user.user);
+  const history = useHistory();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [state, setState] = useState(book);
   const [confirmDialog, setConfirmDialog] = useState({
     open: false,
+    handleSubmit: () => {},
   });
   const handleBuySubmit = async () => {
     setConfirmDialog({ ...confirmDialog, open: false });
@@ -40,6 +42,26 @@ function BookInfo(props) {
           variant: "success",
         });
         dispatch(bookActions.changeBookDetail({ ...book.data, isHad: true }));
+      })
+      .catch((e) => {
+        dispatch(backdropLoadingAction.setLoading(false));
+      });
+  };
+  const handleBuyAndReadSubmit = async () => {
+    setConfirmDialog({ ...confirmDialog, open: false });
+    dispatch(backdropLoadingAction.setLoading(true));
+    bookAPI
+      .buyBook(book.data._id)
+      .then((res) => {
+        dispatch(backdropLoadingAction.setLoading(false));
+        enqueueSnackbar(
+          "Thêm vào tủ sách thành công, chuyển hướng đến Không gian đọc",
+          {
+            variant: "success",
+          }
+        );
+        dispatch(bookActions.changeBookDetail({ ...book.data, isHad: true }));
+        history.push("/reading-space?bookId=" + res.book);
       })
       .catch((e) => {
         dispatch(backdropLoadingAction.setLoading(false));
@@ -102,10 +124,18 @@ function BookInfo(props) {
     }
   };
   const handleAddToBookcaseClick = () => {
-    setConfirmDialog({ ...confirmDialog, open: true });
+    setConfirmDialog({
+      ...confirmDialog,
+      open: true,
+      handleSubmit: handleBuySubmit,
+    });
   };
   const handleReadNowClick = () => {
-    setConfirmDialog({ ...confirmDialog, open: true });
+    setConfirmDialog({
+      ...confirmDialog,
+      open: true,
+      handleSubmit: handleBuyAndReadSubmit,
+    });
   };
   useEffect(() => {
     setState(book);
@@ -121,7 +151,7 @@ function BookInfo(props) {
           handleClose={() =>
             setConfirmDialog({ ...confirmDialog, open: false })
           }
-          handleSubmit={handleBuySubmit}
+          handleSubmit={confirmDialog.handleSubmit}
           data={{
             _id: book.data._id,
             image: book.data.image,
@@ -261,7 +291,11 @@ function BookInfo(props) {
                   {state.data.tags &&
                     state.data.tags.map((item, index) => {
                       return (
-                        <Link className="book-tag" key={index} to={item.path}>
+                        <Link
+                          className="book-tag"
+                          key={index}
+                          to={`/bookstore?tagId=${item._id}`}
+                        >
                           {item.name.toUpperCase()}
                         </Link>
                       );
@@ -284,20 +318,36 @@ function BookInfo(props) {
             )}
           </div>
           <div className="Book-action">
-            <button
-              className="Book-action__read-now button-bee contained"
-              disabled={state.loading}
-              onClick={handleReadNowClick}
-            >
-              READ NOW
-            </button>
-            <button
-              className="Book-action__add-to-bookcase button-bee outline"
-              disabled={state.loading}
-              onClick={handleAddToBookcaseClick}
-            >
-              ADD TO BOOKCASE
-            </button>
+            {state.data.isHad ? (
+              <>
+                <button
+                  className="Book-action__read-now button-bee contained"
+                  disabled={state.loading}
+                  onClick={() => {
+                    history.push("/reading-space?bookId=" + state.data._id);
+                  }}
+                >
+                  ĐỌC NGAY
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="Book-action__read-now button-bee contained"
+                  disabled={state.loading}
+                  onClick={handleReadNowClick}
+                >
+                  ĐỌC NGAY
+                </button>
+                <button
+                  className="Book-action__add-to-bookcase button-bee outline"
+                  disabled={state.loading}
+                  onClick={handleAddToBookcaseClick}
+                >
+                  THÊM VÀO TỦ SÁCH
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

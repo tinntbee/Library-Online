@@ -22,7 +22,7 @@ function* getBooksForYou(action) {
 
 function* getBooksByTags(action) {
   try {
-    console.log(action);
+    // console.log(action);
     const res = yield bookAPI.getBooksByTags(action.payload);
     // yield delay(3000);
     yield put({ type: "GET_BOOKS_BY_TAGS_SUCCESS", data: res });

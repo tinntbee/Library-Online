@@ -77,6 +77,7 @@ function BookViewBox(props) {
         enqueueSnackbar("Tạo Note mới thành công", {
           variant: "success",
         });
+        history.push("/note-space/" + res._id);
       })
       .catch((e) => {
         setOpen(false);
@@ -137,6 +138,14 @@ function BookViewBox(props) {
           </div>
         </Fade>
       </Modal>
+      <button
+        className="read-btn"
+        onClick={() => {
+          history.push("/reading-space?bookId=" + data.book._id);
+        }}
+      >
+        Đọc ngay
+      </button>
       <div className="action">
         <IconButton size="small" className="read" onClick={handleOpen}>
           <ReadIcon />

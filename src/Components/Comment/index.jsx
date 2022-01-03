@@ -7,16 +7,19 @@ import classNames from "classnames";
 import axiosClient from "../../api/axiosClient";
 import commentAPI from "../../api/commentAPI";
 import replyAPI from "../../api/replyAPI";
+import { useSelector } from "react-redux";
 
 Comment.propTypes = {};
 
 function Comment(props) {
+  const { handleRemove } = props;
   const [data, setData] = useState(props.data);
   const [replies, setReplies] = useState([]);
   const yourReplyInputRef = useRef();
   const [replyVisible, setReplyVisible] = useState(false);
   const [yourReplyVisible, setYourReplyVisible] = useState(false);
   const [state, setState] = useState({ content: "Quan điểm của mình..." });
+  const user = useSelector((state) => state.user.user);
 
   async function fetchReplies(commentId) {
     const url = "/replies/getRepliesByCommentId/" + commentId;
@@ -156,6 +159,12 @@ function Comment(props) {
             <p>Chưa có phản hồi</p>
           )}
           <div className="dot" />
+          {user && user._id === data.user._id && (
+            <>
+              <p onClick={handleRemove}>Xóa bình luận</p>
+              <div className="dot" />
+            </>
+          )}
           <p>{data.createdAt}</p>
         </div>
       </div>

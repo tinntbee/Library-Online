@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { MyBooksContainer } from "../style";
 import "./style.scss";
+import { useEffect } from "react";
+import bookAPI from "../../../api/bookAPI";
 
 MyBooks.propTypes = {};
 
@@ -13,7 +15,7 @@ function MyBooks(props) {
     }
     return array;
   };
-  const books = [
+  const [books, setBooks] = useState([
     {
       _id: 1,
       image: "https://images.thuvienpdf.com/r3KxA0.webp",
@@ -54,20 +56,22 @@ function MyBooks(props) {
       _id: 10,
       image: "https://images.thuvienpdf.com/7WqRAWOX8l.webp",
     },
-  ];
+  ]);
   const [state, setState] = useState(createArray(books.length));
 
   const delayAutoSlide = 2000;
   function rotateArray(rotate = 1) {
-    if (rotate > 0) {
-      const newState = [...state];
-      newState.unshift(newState.pop());
-      setState(newState);
-    }
-    if (rotate < 0) {
-      const newState = [...state];
-      newState.push(newState.shift());
-      setState(newState);
+    if (books.length >= 5) {
+      if (rotate > 0) {
+        const newState = [...state];
+        newState.unshift(newState.pop());
+        setState(newState);
+      }
+      if (rotate < 0) {
+        const newState = [...state];
+        newState.push(newState.shift());
+        setState(newState);
+      }
     }
   }
 
@@ -89,6 +93,20 @@ function MyBooks(props) {
     };
   }, [state]);
 
+  useEffect(() => {
+    bookAPI
+      .getBooksInBookcase()
+      .then((res) => {
+        const newBooks = res.map(function (obj) {
+          return { _id: obj.book._id, image: obj.book.image };
+        });
+        setBooks([...newBooks]);
+        setState(createArray(newBooks.length));
+      })
+      .catch((err) => {
+        console.log({ err });
+      });
+  }, []);
   return (
     <MyBooksContainer className="mybook-slideshow">
       {books &&

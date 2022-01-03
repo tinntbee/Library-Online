@@ -6,7 +6,7 @@ PomodoroMode.propTypes = {};
 function PomodoroMode(props) {
   const [stateTimeStep, setStateTimeStep] = useState({
     isRun: false,
-    minute: 120,
+    minute: 60,
     second: 0,
   });
 
@@ -17,8 +17,8 @@ function PomodoroMode(props) {
   const handleMinuteChange = (value) => {
     if (stateTimeStep.isRun === false) {
       if (parseInt(value) < 0) value = 0;
-      if (parseInt(value) > 120) value = 120;
-      if (parseInt(value) === 120) {
+      if (parseInt(value) > 60) value = 60;
+      if (parseInt(value) === 60) {
         setStateTimeStep({ ...stateTimeStep, minute: value, second: 0 });
       } else {
         setStateTimeStep({ ...stateTimeStep, minute: value });
@@ -28,7 +28,7 @@ function PomodoroMode(props) {
 
   const handleSecondChange = (value) => {
     if (stateTimeStep.isRun === false) {
-      if (parseInt(stateTimeStep.minute) === 120 || parseInt(value) < 0)
+      if (parseInt(stateTimeStep.minute) === 60 || parseInt(value) < 0)
         value = 0;
       if (parseInt(value) > 59) value = 59;
       setStateTimeStep({ ...stateTimeStep, second: value });
@@ -89,7 +89,7 @@ function PomodoroMode(props) {
   useEffect(() => {
     setValueProgress(() => {
       return (
-        ((stateTimeStep.minute * 60 + stateTimeStep.second * 1) / 7200) * 100
+        ((stateTimeStep.minute * 60 + stateTimeStep.second * 1) / 3600) * 100
       );
     });
   }, [stateTimeStep]);
@@ -106,7 +106,7 @@ function PomodoroMode(props) {
         <div className="set-time">
           <input
             min="0"
-            max="120"
+            max="60"
             type="number"
             className="minute"
             disabled={stateTimeStep.isRun}

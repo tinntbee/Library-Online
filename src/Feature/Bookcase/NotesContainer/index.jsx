@@ -11,20 +11,6 @@ NotesContainer.propTypes = {};
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 function NotesContainer(props) {
-  const data = [
-    {
-      _id: 1,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-    {
-      _id: 2,
-      name: "abc",
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-      checked: false,
-    },
-  ];
   const [state, setState] = useState({
     showToolbar: false,
     data: [],
@@ -82,7 +68,6 @@ function NotesContainer(props) {
   useEffect(() => {
     fetchData();
   }, []);
-
   return (
     <div className="container">
       <div

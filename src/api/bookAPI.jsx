@@ -27,7 +27,6 @@ const bookAPI = {
   getBook: (params) => {
     const delayDemo = async () => {
       await sleep(2000);
-
       return books.find((item) => item._id === parseInt(params._id));
     };
     return delayDemo();
@@ -55,6 +54,14 @@ const bookAPI = {
   buyBookAndReadNow: (bookId) => {
     const url = "/bookcases/buyBookAndReadNow";
     return axiosClient.post(url, { ookId: bookId });
+  },
+  getBookInBookcase: (_id) => {
+    const url = "/bookcases/getBookInBookcase/" + _id;
+    return axiosClient.get(url);
+  },
+  removeBookInBookcase: (_id) => {
+    const url = "/bookcases/deleteBookInBookcase/" + _id;
+    return axiosClient.delete(url);
   },
 };
 

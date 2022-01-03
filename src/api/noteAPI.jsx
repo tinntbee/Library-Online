@@ -30,6 +30,22 @@ const noteAPI = {
     };
     return axiosClient.put(url, req);
   },
+  putNoteContent: (note) => {
+    const url = "/notes/content";
+    const req = {
+      _id: note._id,
+      content: note.content,
+    };
+    return axiosClient.put(url, req);
+  },
+  putNoteNumberPage: (note) => {
+    const url = "/notes/page";
+    const req = {
+      _id: note._id,
+      page: note.page,
+    };
+    return axiosClient.put(url, req);
+  },
   deleteNote: (_id) => {
     const url = "/notes/" + _id;
     return axiosClient.delete(url);

@@ -1,10 +1,13 @@
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axiosClient from "../../api/axiosClient";
+import tagAPI from "../../api/tagAPI";
 import SearchIcon from "../../static/SearchIcon";
 import TagsIcon from "../../static/TagsIcon";
+import queryString from "query-string";
 import BookViewCard from "../BookViewCard";
+import { useParams } from "react-router-dom";
 import SearchBookViewCard from "../SearchBookViewCard";
 import "./style.scss";
 
@@ -12,19 +15,20 @@ SearchInBookstore.propTypes = {};
 
 function SearchInBookstore(props) {
   const [state, setState] = useState({
-    books: [],
     search: "",
-    tagId: "",
-    tagName: "",
-    filter: "all",
+    tagId: props.tag,
     sort: "new",
+    filter: "all",
     page: 1,
+    books: [],
+    tagName: "",
     size: 10,
     limit: 0,
   });
+  console.log(props.tag);
   const [tags, setTags] = useState([]);
   const searchRef = useRef();
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(!!props.tag);
   const searchClickHandle = () => {
     setVisible(!visible);
   };
@@ -36,9 +40,8 @@ function SearchInBookstore(props) {
     }
   };
   const fetchTags = async () => {
-    const url = "/tags";
-    await axiosClient
-      .get(url)
+    tagAPI
+      .getAll()
       .then((res) => {
         setTags(res);
       })
@@ -47,11 +50,12 @@ function SearchInBookstore(props) {
   const fetchDataSearch = async () => {
     searchRef.current.blur();
     const { search, tagId, filter, sort, page, size } = state;
+    // console.log(state);
     const url = "/books/search";
     await axiosClient
       .post(url, { search, tagId, filter, sort, page, size })
       .then((res) => {
-        console.log({ res });
+        // console.log({ res });
         setState({
           ...state,
           books: res.books,
@@ -62,6 +66,7 @@ function SearchInBookstore(props) {
       })
       .catch((e) => console.log({ e }));
   };
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     fetchTags();
@@ -69,6 +74,7 @@ function SearchInBookstore(props) {
   useEffect(() => {
     fetchDataSearch();
   }, [state.search, state.tagId, state.filter, state.sort, state.page]);
+
   return (
     <div
       className={classNames({

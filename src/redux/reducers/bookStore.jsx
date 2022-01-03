@@ -39,7 +39,7 @@ export default function bookStore(state = initialState, action) {
       return { ...state, booksSlide: { ...state.booksSlide, loading: true } };
 
     case type.GET_BOOKS_SLIDE_SUCCESS:
-      console.log(action.data);
+      // console.log(action.data);
       return {
         ...state,
         booksSlide: {
@@ -88,11 +88,11 @@ export default function bookStore(state = initialState, action) {
     case type.GET_BOOKS_BY_TAGS_SUCCESS:
       temp = [...state.booksByTags.data];
       const index = temp.findIndex((e) => e._id === action.data._id);
-      console.log(index);
+      // console.log(index);
       if (index === -1) {
-        temp.push({...action.data});
+        temp.push({ ...action.data });
       } else {
-        temp[index] = {...action.data};
+        temp[index] = { ...action.data };
       }
       return {
         ...state,
@@ -136,6 +136,29 @@ export default function bookStore(state = initialState, action) {
         ...state,
         tagsByCategories: {
           ...state.tagsByCategories,
+          loading: false,
+          error: action.message,
+        },
+      };
+
+    case type.GET_TAGS:
+      return { ...state, tags: { loading: true } };
+
+    case type.GET_TAGS_SUCCESS:
+      return {
+        ...state,
+        tags: {
+          ...state.tags,
+          loading: false,
+          data: action.data,
+        },
+      };
+
+    case type.GET_TAGS_FAILED:
+      return {
+        ...state,
+        tags: {
+          ...state.tags,
           loading: false,
           error: action.message,
         },

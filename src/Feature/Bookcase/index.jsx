@@ -20,7 +20,7 @@ function Bookcase(props) {
   const [bookcase, setBookcase] = useState();
   const [thumbnail, setThumbnail] = useState({
     file: undefined,
-    url: bookcase?.thumbnail,
+    url: bookcase?.cover,
     isShow: false,
   });
   const user = useSelector((state) => state.user.user);
@@ -34,7 +34,7 @@ function Bookcase(props) {
     setThumbnail({
       ...thumbnail,
       isShow: false,
-      url: bookcase?.thumbnail,
+      url: bookcase?.cover,
     });
   };
   const handleThumbnailSaveOnClick = async () => {

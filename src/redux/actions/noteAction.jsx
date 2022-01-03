@@ -7,6 +7,18 @@ const noteAction = {
       payload: {},
     };
   },
+  putNoteContent: (note) => {
+    return {
+      type: type.PUT_NOTE_CONTENT,
+      payload: note,
+    };
+  },
+  changePageCurrent: (payload) => {
+    return {
+      type: type.CHANGE_PAGE_CURRENT,
+      payload: payload,
+    };
+  },
 };
 
 export default noteAction;

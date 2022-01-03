@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import FlashcardIcon from "../../static/FlashcardIcon";
 import LibraryIcon from "../../static/LibraryIcon";
 import MusicIcon from "../../static/MusicIcon";
@@ -16,12 +16,7 @@ SideBar.propTypes = {};
 
 function SideBar(props) {
   const notes = useSelector((state) => state.notes);
-  const [data, setData] = useState({
-    notes: { notes: [], loading: false },
-    flashcards: [],
-    books: [],
-  });
-
+  const { id } = useParams();
   const pagesList = [
     "reading-space",
     "bookstore",
@@ -29,6 +24,7 @@ function SideBar(props) {
     "flash-card",
     "pomodoro",
   ];
+
   const [pageCurrent, setPageCurrent] = useState("book-store");
   const history = useHistory();
   const user = useSelector((state) => state.user.user);
@@ -42,7 +38,7 @@ function SideBar(props) {
   };
 
   const [state, setState] = useState({
-    tab: 1,
+    tab: -1,
     controller: 0,
   });
 
@@ -56,9 +52,13 @@ function SideBar(props) {
         setPageCurrent(element);
         return;
       }
+      if (pathname.includes("note-space")) {
+        
+      }
     }
     setPageCurrent("none");
   };
+
   history.listen(function (location) {
     setLocationActive(location.pathname);
   });
@@ -70,10 +70,6 @@ function SideBar(props) {
       dispatch(userActions.reSign());
     }
   }, []);
-
-  useEffect(() => {
-    setData({ ...data, notes: notes });
-  }, [notes]);
 
   return (
     <div className="Sidebar">
@@ -171,17 +167,17 @@ function SideBar(props) {
               <p>NOTES</p>
             </li>
 
-            {data.notes.notes?.map((item, index) => {
+            {notes.notes?.map((item, index) => {
               return (
                 <li
-                  key={index}
+                  key={item._id}
                   className={classNames({
                     "Sidebar-tab": true,
                     active: index === state.tab - 1,
                   })}
                 >
                   <Link
-                    to={"/reading-space"}
+                    to={"/note-space/" + item._id}
                     onClick={() => {
                       tabClickHandle(index + 1);
                     }}
@@ -202,103 +198,12 @@ function SideBar(props) {
               );
             })}
 
-            {/* flashcard */}
-            {data.flashcards.length > 0 && (
-              <>
-                <li className="Sidebar-tabs-title">
-                  <p>FLASH CARDS</p>
-                </li>
-                <>
-                  {data.flashcards.map((item, index) => {
-                    return (
-                      <li
-                        key={index}
-                        className={classNames({
-                          "Sidebar-tab": true,
-                          active: index === state.tab - 2 - data.notes.length,
-                        })}
-                      >
-                        <Link
-                          to={item.path}
-                          onClick={() => {
-                            tabClickHandle(index + 2 + data.notes.length);
-                          }}
-                        >
-                          <img
-                            alt=""
-                            className="Sidebar-tab-thumbnail"
-                            src={item.thumbnail}
-                          />
-                          <div>
-                            <p className="Sidebar-tab-title">{item.title}</p>
-                            <p className="Sidebar-tab-description">
-                              {item.description}
-                            </p>
-                          </div>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </>
-              </>
+            {state.tab !== -1 && (
+              <li
+                style={{ "--value": state.tab }}
+                className="Sidebar-tab-active"
+              ></li>
             )}
-
-            {/* books */}
-            {data.flashcards.length > 0 && (
-              <>
-                <li className="Sidebar-tabs-title">
-                  <p>BOOKS</p>
-                </li>
-
-                <>
-                  {data.books.map((item, index) => {
-                    return (
-                      <li
-                        key={index}
-                        className={classNames({
-                          "Sidebar-tab": true,
-                          active:
-                            index ===
-                            state.tab -
-                              3 -
-                              data.notes.length -
-                              data.flashcards.length,
-                        })}
-                      >
-                        <Link
-                          to={item.path}
-                          onClick={() => {
-                            tabClickHandle(
-                              index +
-                                3 +
-                                data.notes.length +
-                                data.flashcards.length
-                            );
-                          }}
-                        >
-                          <img
-                            alt=""
-                            className="Sidebar-tab-thumbnail"
-                            src={item.thumbnail}
-                          />
-                          <div>
-                            <p className="Sidebar-tab-title">{item.title}</p>
-                            <p className="Sidebar-tab-description">
-                              {item.description}
-                            </p>
-                          </div>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </>
-              </>
-            )}
-
-            <li
-              style={{ "--value": state.tab }}
-              className="Sidebar-tab-active"
-            ></li>
           </ul>
         </div>
       </div>

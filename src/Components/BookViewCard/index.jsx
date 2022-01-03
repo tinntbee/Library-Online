@@ -27,8 +27,8 @@ function BookViewCard(props) {
         <Link to="#">
           <LikeIcon />
           <p>
-            {data.like + data.dislike > 0
-              ? (data.like / (data.like + data.dislike)) * 100
+            {data.totalLike + data.totalDislike > 0
+              ? (data.totalLike / (data.totalLike + data.totalDislike)) * 100 + "%"
               : "-"}
           </p>
         </Link>
