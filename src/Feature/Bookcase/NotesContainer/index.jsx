@@ -2,7 +2,12 @@ import Checkbox from "@mui/material/Checkbox";
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { useDispatch } from "react-redux";
 import noteAPI from "../../../api/noteAPI";
+import dialogAction from "../../../redux/actions/dialogAction";
+import noteAction from "../../../redux/actions/noteAction";
+import { snackBarActions } from "../../../redux/actions/snackBarActions";
+import { removeVieCharacters } from "../../../utils/removeVie";
 import NotesViewBox from "../NotesViewBox";
 import "./style.scss";
 
@@ -15,7 +20,9 @@ function NotesContainer(props) {
     showToolbar: false,
     data: [],
   });
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState([false]);
+  const [filter, setFilter] = useState("");
   const handleCheckBoxOnChange = (value) => {
     let newChecked = [...checked];
     newChecked[value.index] = value.isChecked;
@@ -29,21 +36,25 @@ function NotesContainer(props) {
     console.log({ newChecked });
   };
   const calculateCheckAll = (newChecked) => {
-    return checked.length > 0
-      ? newChecked.reduce(
-          (accumulator, currentValue) => accumulator && currentValue
-        )
-      : false;
+    if (newChecked === undefined || newChecked.length === 0) {
+      return false;
+    }
+    return newChecked.reduce(
+      (accumulator, currentValue) => accumulator && currentValue
+    );
   };
   const calculateIndeterminate = (newChecked) => {
-    return checked.length > 0
-      ? newChecked.reduce(
-          (accumulator, currentValue) => accumulator || currentValue
-        ) ^
-          newChecked.reduce(
-            (accumulator, currentValue) => accumulator && currentValue
-          )
-      : false;
+    if (newChecked === undefined || newChecked.length === 0) {
+      return false;
+    }
+    return (
+      newChecked.reduce(
+        (accumulator, currentValue) => accumulator || currentValue
+      ) ^
+      newChecked.reduce(
+        (accumulator, currentValue) => accumulator && currentValue
+      )
+    );
   };
 
   const handleCloseToolbar = () => {
@@ -55,16 +66,70 @@ function NotesContainer(props) {
     setChecked(Array(state.data.length).fill(e.target.checked));
   };
 
-  const fetchData = () => {
+  const handleFilterChange = (e) => {
+    setFilter(removeVieCharacters(e.target.value));
+  };
+
+  const fetchData = async () => {
     noteAPI
       .getNotesInBookcase()
       .then((res) => {
-        setState({ ...state, data: res });
+        setChecked(Array(res.length).fill(false));
+        setState({ ...state, data: res, showToolbar: false });
       })
       .catch((e) => {
         console.log({ e });
       });
   };
+
+  const fetchDelete = async ({ _id, name }) => {
+    console.log({ _id, name });
+    await noteAPI
+      .deleteNote(_id)
+      .then((res) => {
+        dispatch(
+          snackBarActions.open({
+            message: `Xóa '${name}' thành công khỏi tủ sách!`,
+            variant: "success",
+          })
+        );
+      })
+      .catch((err) => {
+        dispatch(
+          snackBarActions.open({
+            message: "Có lỗi sảy ra, xóa thất bại!",
+            variant: "error",
+          })
+        );
+      });
+  };
+
+  const handleDeleteClick = async () => {
+    dispatch(
+      dialogAction.open({
+        title: "Xóa Sách khỏi thư viện?",
+        message:
+          "Bạn có chắc chắn muốn xóa những ghi chú này khỏi tủ sách không?",
+        actions: [
+          {
+            name: "Xóa",
+            callback: async () => {
+              for (let index = 0; index < state.data.length; index++) {
+                const element = checked[index];
+                if (element) {
+                  await fetchDelete(state.data[index]);
+                }
+              }
+              fetchData();
+              handleCloseToolbar();
+              dispatch(noteAction.getNotesActive());
+            },
+          },
+        ],
+      })
+    );
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -81,7 +146,7 @@ function NotesContainer(props) {
           <span>My Notes</span>
         </div>
         <div className="container__header__search">
-          <input type="text" />
+          <input type="text" onChange={handleFilterChange} />
           <button style={{ backgroundImage: `url("icons/search.svg")` }} />
         </div>
         <div className="tools-bar">
@@ -100,7 +165,7 @@ function NotesContainer(props) {
             }}
             onChange={handleCheckAllChange}
           />
-          <div className="delete">
+          <div className="delete" onClick={handleDeleteClick}>
             <img alt="" src="icons/delete-orange.svg" />
             <span>Xóa</span>
           </div>
@@ -115,13 +180,15 @@ function NotesContainer(props) {
             {state.data &&
               state.data.map((item, index) => {
                 return (
-                  <NotesViewBox
-                    key={index}
-                    index={index}
-                    data={item}
-                    checked={checked[index]}
-                    handleCheckBoxOnChange={handleCheckBoxOnChange}
-                  />
+                  removeVieCharacters(item.name).includes(filter) && (
+                    <NotesViewBox
+                      key={item._id}
+                      index={index}
+                      data={item}
+                      checked={checked[index]}
+                      handleCheckBoxOnChange={handleCheckBoxOnChange}
+                    />
+                  )
                 );
               })}
           </div>

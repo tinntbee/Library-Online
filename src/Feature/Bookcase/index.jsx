@@ -10,6 +10,8 @@ import userAPI from "../../api/userAPI";
 import backdropLoadingAction from "../../redux/actions/backdropLoadingAction";
 import { filesService } from "../../service/firebase/filesService";
 import { useSnackbar } from "notistack";
+import DialogRefund from "./DialogRefund";
+import { userActions } from "../../redux/actions/userActions";
 
 Bookcase.propTypes = {};
 
@@ -23,6 +25,8 @@ function Bookcase(props) {
     url: bookcase?.cover,
     isShow: false,
   });
+  const [dialog, setDialog] = useState({ open: false });
+
   const user = useSelector((state) => state.user.user);
   const handleThumbnailChange = (e) => {
     var file = e.target.files[0];
@@ -58,6 +62,9 @@ function Bookcase(props) {
       }
     }
   };
+  const handleDialogClose = () => {
+    setDialog({ ...dialog, open: false });
+  };
   const fetchBookcase = async () => {
     dispatch(backdropLoadingAction.setLoading(true));
     userAPI
@@ -73,14 +80,38 @@ function Bookcase(props) {
         dispatch(backdropLoadingAction.setLoading(false));
       });
   };
+  const getBookRefund = async () => {
+    userAPI
+      .bookRefund()
+      .then((res) => {
+        const { hoa, totalHoa, bookNumber } = res;
+        if (bookNumber !== 0) {
+          setDialog({ ...dialog, hoa, totalHoa, bookNumber, open: true });
+          dispatch(userActions.reSign());
+        }
+      })
+      .catch((err) => {
+        console.log({ err });
+      });
+  };
   useEffect(() => {
     fetchBookcase();
+    getBookRefund();
   }, []);
   return (
     <div className="bookcase main-content">
+      <DialogRefund
+        open={dialog.open}
+        hoa={dialog.hoa}
+        totalHoa={dialog.totalHoa}
+        bookNumber={dialog.bookNumber}
+        handleClose={handleDialogClose}
+      />
       <div className="header">
         <p className="title">BOOKCASE</p>
-        <p className="hoa">$34</p>
+        <p className="hoa">
+          <b>${user?.hoa}</b>
+        </p>
       </div>
       <div className="body">
         <div

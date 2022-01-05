@@ -1,8 +1,13 @@
 import { Fade, IconButton, Modal, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import classNames from "classnames";
+import { useSnackbar } from "notistack";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import noteAPI from "../../../api/noteAPI";
+import noteAction from "../../../redux/actions/noteAction";
+import { filesService } from "../../../service/firebase/filesService";
 import PenIcon from "../../../static/PenIcon";
 import "./style.scss";
 
@@ -10,29 +15,75 @@ NotesViewBox.propTypes = {};
 
 function NotesViewBox(props) {
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setCreateNoteForm({
+      file: null,
+      url: data.image,
+      title: data.name,
+    });
+    setOpen(false);
+  };
 
   const { data, handleCheckBoxOnChange, index, checked } = props;
+  const [state, setState] = useState(data);
   const handleCheckBoxChange = (e) => {
     handleCheckBoxOnChange({ index: index, isChecked: !checked });
   };
   const [createNoteForm, setCreateNoteForm] = useState({
-    thumbnailFile: null,
-    thumbnailUrl: data.image,
-    title: "",
+    file: null,
+    url: data.image,
+    name: data.name,
   });
   const handleTitleChange = (e) => {
-    setCreateNoteForm({ ...createNoteForm, title: e.target.value });
+    setCreateNoteForm({ ...createNoteForm, name: e.target.value });
   };
-  const handleSaveChange = () => {};
-  //NOTE: handle double Click
+  const handleThumbnailChange = (e) => {
+    var file = e.target.files[0];
+    var url = URL.createObjectURL(file);
+    setCreateNoteForm({ ...createNoteForm, url: url, file: file });
+    return () => URL.revokeObjectURL(url);
+  };
+  const handleSaveChange = async () => {
+    setOpen(false);
+    //NOTE: save image if have
+    let url = createNoteForm.url;
+    if (createNoteForm.file) {
+      const path = `/public/user-${user._id}/note-image/${Date.now()}`;
+      const file = createNoteForm.file;
+      const acceptedImageTypes = ["image/gif", "image/jpeg", "image/png"];
+      if (acceptedImageTypes.includes(file.type)) {
+        url = await filesService.uploadTaskPromise(path, file);
+      }
+    }
+    noteAPI
+      .changeNoteInfo({
+        _id: data._id,
+        name: createNoteForm.name,
+        image: url,
+      })
+      .then((res) => {
+        setState({ ...state, name: res.name, image: res.image });
+        enqueueSnackbar("Cập nhật thông tin thành công", {
+          variant: "success",
+        });
+        dispatch(noteAction.getNotesActive());
+      })
+      .catch((err) => {
+        enqueueSnackbar("Có lỗi đã sảy ra :<", { variant: "error" });
+        console.log({ err });
+      });
+  };
+
   const handleClick = () => {
     history.push("/note-space/" + data._id);
   };
   return (
-    <div className="notes-view-box" onClick={handleClick}>
+    <div className="notes-view-box">
       <Modal
         open={open}
         onClose={handleClose}
@@ -46,14 +97,14 @@ function NotesViewBox(props) {
               <div
                 className="thumbnail-view"
                 style={{
-                  backgroundImage: `url(${data.image})`,
+                  backgroundImage: `url(${createNoteForm.url})`,
                 }}
               >
                 <div
                   className="upload-file"
                   style={{ backgroundImage: "url(icons/camera.svg)" }}
                 >
-                  <input type="file" />
+                  <input type="file" onChange={handleThumbnailChange} />
                 </div>
               </div>
               <TextField
@@ -62,7 +113,7 @@ function NotesViewBox(props) {
                 variant="outlined"
                 size="small"
                 fullWidth
-                value={createNoteForm.title}
+                value={createNoteForm.name}
                 onChange={handleTitleChange}
               />
             </div>
@@ -72,8 +123,8 @@ function NotesViewBox(props) {
               </button>
               <button
                 className="create"
-                onClick={handleSaveChange}
-                disabled={!createNoteForm.title}
+                onClick={createNoteForm.name && handleSaveChange}
+                disabled={!createNoteForm.name}
               >
                 Lưu thay đổi
               </button>
@@ -83,9 +134,10 @@ function NotesViewBox(props) {
       </Modal>
       <div
         className="thumbnail"
-        style={{ backgroundImage: `url(${data.image})` }}
+        style={{ backgroundImage: `url(${state.image})` }}
+        onClick={handleClick}
       ></div>
-      <p>{data.name}</p>
+      <p>{state.name}</p>
       <div className="action">
         <IconButton size="small" className="pen" onClick={handleOpen}>
           <PenIcon />

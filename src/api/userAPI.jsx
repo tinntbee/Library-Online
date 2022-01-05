@@ -40,6 +40,10 @@ const userAPI = {
     const url = "/accounts/changeCover";
     return axiosClient.put(url, { cover: cover });
   },
+  bookRefund: () => {
+    const url = "/bookcases/refund";
+    return axiosClient.get(url);
+  },
 };
 
 export default userAPI;

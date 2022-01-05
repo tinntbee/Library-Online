@@ -1,14 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { AccountDetail, BodyContent, Body, Header } from "./style";
-import TagFavorites from "./TagFavorites";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import axiosClient from "../../api/axiosClient";
+import { userActions } from "../../redux/actions/userActions";
 import AccountInformation from "./AccountInformation";
 import MyBooks from "./MyBooks";
 import Report from "./Report";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
-import { userActions } from "../../redux/actions/userActions";
-import axiosClient from "../../api/axiosClient";
+import { AccountDetail, Body, BodyContent, Header } from "./style";
+import TagFavorites from "./TagFavorites";
 
 AccountDetailFeature.propTypes = {};
 
@@ -22,6 +21,7 @@ function AccountDetailFeature(props) {
     dispatch(userActions.signOut());
     history.push("/login");
   };
+ 
   return (
     <AccountDetail className="main-content">
       <Header>

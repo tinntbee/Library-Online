@@ -2,6 +2,7 @@ import * as type from "../types";
 
 const initialState = {
   open: false,
+  type: "confirm", //confirm, warning, congratulations
   title: "title here",
   message: "message here",
   actions: [

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="82" height="82" viewBox="0 0 82 82">
+  <g id="ic_sentiment_dissatisfied_24px" transform="translate(-2 -2)">
+    <circle id="Ellipse_31" data-name="Ellipse 31" cx="5.309" cy="5.309" r="5.309" transform="translate(52.01 27.647)" fill="#185f74"/>
+    <ellipse id="Ellipse_32" data-name="Ellipse 32" cx="6.37" cy="5.309" rx="6.37" ry="5.309" transform="translate(22.093 27.647)" fill="#185f74"/>
+    <path id="Path_109" data-name="Path 109" d="M42.959,2A41,41,0,1,0,84,43,40.98,40.98,0,0,0,42.959,2ZM43,75.8A32.8,32.8,0,1,1,75.8,43,32.791,32.791,0,0,1,43,75.8Zm0-24.6A22.53,22.53,0,0,0,22.008,65.55h6.847a16.3,16.3,0,0,1,28.29,0h6.847A22.53,22.53,0,0,0,43,51.2Z" transform="translate(0 0)" fill="#185f74"/>
+  </g>
+</svg>

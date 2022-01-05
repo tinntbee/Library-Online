@@ -59,6 +59,11 @@ const noteAPI = {
     const url = "/notes/close/" + _id;
     return axiosClient.get(url);
   },
+  completePomodoro: (goal) => {
+    const url = "/notes/completePomodoro";
+    const data = { goal: goal };
+    return axiosClient.post(url, data);
+  },
 };
 
 export default noteAPI;

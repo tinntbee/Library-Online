@@ -13,6 +13,7 @@ import "froala-editor/css/third_party/embedly.min.css";
 import "./style.scss";
 import { useEffect } from "react";
 import noteAPI from "../../../../api/noteAPI";
+import { filesService } from "../../../../service/firebase/filesService";
 
 NoteEditor.propTypes = {};
 
@@ -27,6 +28,22 @@ function NoteEditor(props) {
 
   const [state, setState] = useState({ model: content });
 
+  const config = {
+    events: {
+      "image.beforeUpload": async function (files) {
+        var editor = this;
+        const path = "/Notes/Images/" + Date.now();
+        const file = files[0];
+        const result = await filesService.uploadTaskPromise(path, file);
+        editor.image.insert(result, null, null, editor.image.get());
+
+        editor.popups.hideAll();
+        // Stop default upload chain.
+        return false;
+      },
+    },
+  };
+
   useEffect(() => {
     setState({ model: content });
   }, [content]);
@@ -36,6 +53,7 @@ function NoteEditor(props) {
         className="ReadingSpace__editor"
         tag="textarea"
         model={state.model}
+        config={config}
         onModelChange={handleModelChange}
       />
     </div>

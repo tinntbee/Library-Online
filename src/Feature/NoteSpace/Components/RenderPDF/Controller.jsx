@@ -1,17 +1,5 @@
 import React from "react";
-import {
-  RenderCurrentScaleProps,
-  RenderZoomInProps,
-  RenderZoomOutProps,
-} from "@react-pdf-viewer/zoom";
-import {
-  RenderCurrentPageLabelProps,
-  RenderCurrentPageInputProps,
-  RenderGoToPageProps,
-} from "@react-pdf-viewer/page-navigation";
-import {
-  RenderEnterFullScreenProps,
-} from "@react-pdf-viewer/full-screen";
+import { useEffect } from "react";
 
 Controller.propTypes = {};
 
@@ -26,14 +14,33 @@ function Controller(props) {
     GoToPreviousPage,
     CurrentPageLabel,
     EnterFullScreen,
-    CurrentPageInput
   } = props;
+
+  const translateService = async (text) => {
+    const res = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      body: JSON.stringify({
+        q: text,
+        source: "auto",
+        target: "vi",
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    console.log(await res.json());
+  };
+
+  const handleTranslate = () => {
+    const text = window.getSelection().toString();
+    translateService(text);
+  };
+
   return (
     <div className="ReadingSpace__book__control">
       <div className="left">
-        <button className="translate"></button>
+        <button className="translate" onClick={handleTranslate}></button>
         <EnterFullScreen>
-          {(props = RenderEnterFullScreenProps) => (
+          {(props) => (
             <button className="full-screen" onClick={props.onClick}></button>
           )}
         </EnterFullScreen>
@@ -41,7 +48,7 @@ function Controller(props) {
 
       <div className="center">
         <GoToFirstPage>
-          {(props = RenderGoToPageProps) => (
+          {(props) => (
             <button
               className="go-to-first-page"
               onClick={props.onClick}
@@ -50,7 +57,7 @@ function Controller(props) {
         </GoToFirstPage>
 
         <GoToPreviousPage>
-          {(props = RenderGoToPageProps) => (
+          {(props) => (
             <button
               className="go-to-previous-page"
               disabled={props.isDisabled}
@@ -60,7 +67,7 @@ function Controller(props) {
         </GoToPreviousPage>
 
         <CurrentPageLabel>
-          {(props = RenderCurrentPageLabelProps) => (
+          {(props) => (
             <>
               <p>{"Page "}</p>
               <p className="current-page">
@@ -73,9 +80,9 @@ function Controller(props) {
             </>
           )}
         </CurrentPageLabel>
-        
+
         <GoToNextPage>
-          {(props = RenderGoToPageProps) => (
+          {(props) => (
             <button
               className="go-to-next-page"
               disabled={props.isDisabled}
@@ -85,7 +92,7 @@ function Controller(props) {
         </GoToNextPage>
 
         <GoToLastPage>
-          {(props = RenderGoToPageProps) => (
+          {(props) => (
             <button
               className="go-to-last-page"
               onClick={props.onClick}
@@ -96,13 +103,13 @@ function Controller(props) {
 
       <div className="right">
         <ZoomOut>
-          {(props = RenderZoomOutProps) => (
+          {(props) => (
             <button className="zoom-out" onClick={props.onClick}></button>
           )}
         </ZoomOut>
 
         <CurrentScale>
-          {(props = RenderCurrentScaleProps) => (
+          {(props) => (
             <p className="scale">
               <b>{`${Math.round(props.scale * 100)}%`}</b>
             </p>
@@ -110,7 +117,7 @@ function Controller(props) {
         </CurrentScale>
 
         <ZoomIn>
-          {(props = RenderZoomInProps) => (
+          {(props) => (
             <button className="zoom-in" onClick={props.onClick}></button>
           )}
         </ZoomIn>

@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import dialogAction from "../../../redux/actions/dialogAction";
 import { snackBarActions } from "../../../redux/actions/snackBarActions";
 import noteAction from "../../../redux/actions/noteAction";
+import { removeVieCharacters } from "../../../utils/removeVie";
 
 BooksContainer.propTypes = {};
 
@@ -22,6 +23,8 @@ function BooksContainer(props) {
   });
   const dispatch = useDispatch();
   const [checked, setChecked] = useState([false]);
+  const [filter, setFilter] = useState("");
+
   const handleCheckBoxOnChange = (value) => {
     let newChecked = [...checked];
     newChecked[value.index] = value.isChecked;
@@ -34,7 +37,7 @@ function BooksContainer(props) {
     }
   };
   const calculateCheckAll = (newChecked) => {
-    if (newChecked.length === 0) {
+    if (newChecked === undefined || newChecked.length === 0) {
       return false;
     }
     return newChecked.reduce(
@@ -42,7 +45,7 @@ function BooksContainer(props) {
     );
   };
   const calculateIndeterminate = (newChecked) => {
-    if (newChecked.length === 0) {
+    if (newChecked === undefined || newChecked.length === 0) {
       return false;
     }
     return (
@@ -111,6 +114,10 @@ function BooksContainer(props) {
     );
   };
 
+  const handleFilterChange = (e) => {
+    setFilter(removeVieCharacters(e.target.value));
+  };
+
   const fetchData = async () => {
     bookAPI
       .getBooksInBookcase()
@@ -139,7 +146,7 @@ function BooksContainer(props) {
           <span>My Books</span>
         </div>
         <div className="container__header__search">
-          <input type="text" />
+          <input type="text" onChange={handleFilterChange} />
           <button style={{ backgroundImage: `url("icons/search.svg")` }} />
         </div>
         <div className="tools-bar">
@@ -173,13 +180,15 @@ function BooksContainer(props) {
             {state.data &&
               state.data.map((item, index) => {
                 return (
-                  <BookViewBox
-                    key={index}
-                    index={index}
-                    data={item}
-                    checked={checked[index]}
-                    handleCheckBoxOnChange={handleCheckBoxOnChange}
-                  />
+                  removeVieCharacters(item.book.name).includes(filter) && (
+                    <BookViewBox
+                      key={item._id}
+                      index={index}
+                      data={item}
+                      checked={checked[index]}
+                      handleCheckBoxOnChange={handleCheckBoxOnChange}
+                    />
+                  )
                 );
               })}
           </div>
