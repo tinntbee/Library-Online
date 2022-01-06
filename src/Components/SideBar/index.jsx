@@ -7,7 +7,7 @@ import LibraryIcon from "../../static/LibraryIcon";
 import MusicIcon from "../../static/MusicIcon";
 import PomodoroIcon from "../../static/PomodoroIcon";
 import ReadIcon from "../../static/ReadIcon";
-import "./style.css";
+import "./style.scss";
 import { useHistory } from "react-router-dom";
 import { userActions } from "../../redux/actions/userActions";
 import noteAction from "../../redux/actions/noteAction";
@@ -16,7 +16,7 @@ SideBar.propTypes = {};
 
 function SideBar(props) {
   const notes = useSelector((state) => state.notes);
-  const { id } = useParams();
+  const [noteActive, setNoteActive] = useState(-1);
   const pagesList = [
     "reading-space",
     "bookstore",
@@ -46,6 +46,21 @@ function SideBar(props) {
     history.push("/account");
   };
 
+  const handleCloseTabClick = ({ _id, index }) => {
+    if (noteActive === index) {
+      if (notes.notes.length > 1) {
+        if (index > 0) {
+          history.push("/note-space/" + notes.notes[index - 1]._id);
+        } else {
+          history.push("/note-space/" + notes.notes[index + 1]._id);
+        }
+      } else {
+        history.push("/bookcase");
+      }
+    }
+    dispatch(noteAction.closeNote(_id));
+  };
+
   const setLocationActive = (pathname) => {
     for (const element of pagesList) {
       if (pathname.includes(element)) {
@@ -53,7 +68,17 @@ function SideBar(props) {
         return;
       }
       if (pathname.includes("note-space")) {
-        
+        for (let index = 0; index < notes.notes.length; index++) {
+          const element = notes.notes[index];
+          if (pathname.includes(element._id)) {
+            setState({ ...state, tab: index + 1 });
+            setNoteActive(index);
+            break;
+          }
+        }
+      } else {
+        setState({ ...state, tab: -1 });
+        setNoteActive(-1);
       }
     }
     setPageCurrent("none");
@@ -65,11 +90,14 @@ function SideBar(props) {
 
   useEffect(() => {
     dispatch(noteAction.getNotesActive());
-    setLocationActive(window.location.pathname);
     if (!user) {
       dispatch(userActions.reSign());
     }
   }, []);
+
+  useEffect(() => {
+    setLocationActive(window.location.pathname);
+  }, [notes.notes.length]);
 
   return (
     <div className="Sidebar">
@@ -163,10 +191,11 @@ function SideBar(props) {
         <div className="Sidebar-tabs">
           <ul className="Sidebar-tabs-list">
             {/* notes */}
-            <li className="Sidebar-tabs-title">
-              <p>NOTES</p>
-            </li>
-
+            {notes.notes?.length > 0 && (
+              <li className="Sidebar-tabs-title">
+                <p>NOTES</p>
+              </li>
+            )}
             {notes.notes?.map((item, index) => {
               return (
                 <li
@@ -176,18 +205,20 @@ function SideBar(props) {
                     active: index === state.tab - 1,
                   })}
                 >
-                  <Link
-                    to={"/note-space/" + item._id}
-                    onClick={() => {
-                      tabClickHandle(index + 1);
-                    }}
-                  >
-                    <img
-                      alt=""
+                  <Link to="#">
+                    <div
                       className="Sidebar-tab-thumbnail"
-                      src={item.image}
+                      style={{ backgroundImage: `url("${item.image}")` }}
+                      onClick={() =>
+                        handleCloseTabClick({ _id: item._id, index: index })
+                      }
                     />
-                    <div>
+                    <div
+                      onClick={() => {
+                        history.push("/note-space/" + item._id);
+                        tabClickHandle(index + 1);
+                      }}
+                    >
                       <p className="Sidebar-tab-title">{item.name}</p>
                       <p className="Sidebar-tab-description">
                         {item.book.name}

@@ -19,6 +19,12 @@ const noteAction = {
       payload: payload,
     };
   },
+  closeNote: (_id) => {
+    return {
+      type: type.CLOSE_NOTES,
+      payload: _id,
+    };
+  },
 };
 
 export default noteAction;

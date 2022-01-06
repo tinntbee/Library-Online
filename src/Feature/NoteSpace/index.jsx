@@ -41,7 +41,7 @@ function NoteSpace(props) {
     <div className="NoteSpace">
       {notes.map((item, index) => {
         return item._id === id ? (
-          <NoteTabPanel visible={true} _id={item._id} />
+          <NoteTabPanel key={item._id} visible={true} _id={item._id} />
         ) : (
           <></>
         );

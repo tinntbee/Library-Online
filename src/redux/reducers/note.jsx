@@ -42,6 +42,15 @@ export default function notes(state = initialState, action) {
         ...state,
         notes: [...newNotes],
       };
+    case type.CLOSE_NOTES:
+      let newCloseListNote = [...state.notes].filter(
+        (item) => item._id !== action.payload
+      );
+      return {
+        ...state,
+        notes: [...newCloseListNote],
+      };
+      break;
     default:
       return state;
   }

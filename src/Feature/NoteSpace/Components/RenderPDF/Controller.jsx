@@ -1,4 +1,6 @@
+import classNames from "classnames";
 import React from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 
 Controller.propTypes = {};
@@ -16,29 +18,97 @@ function Controller(props) {
     EnterFullScreen,
   } = props;
 
-  const translateService = async (text) => {
-    const res = await fetch("https://libretranslate.de/translate", {
-      method: "POST",
-      body: JSON.stringify({
-        q: text,
-        source: "auto",
-        target: "vi",
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
+  const [translate, setTranslate] = useState({
+    open: false,
+    des: "",
+    loading: "",
+  });
 
-    console.log(await res.json());
+  const [src, setSrc] = useState("");
+
+  const translateService = async (text) => {
+    setTranslate({ ...translate, open: true, loading: true });
+    try {
+      const res = await fetch("https://libretranslate.de/translate", {
+        method: "POST",
+        body: JSON.stringify({
+          q: text,
+          source: "auto",
+          target: "vi",
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      setTranslate({ ...translate, des: res, loading: false });
+    } catch (err) {
+      setTranslate({
+        ...translate,
+        des: "[Lỗi] Không thể kết nối đến máy chủ :<",
+        loading: false,
+        open: true,
+      });
+    }
   };
 
-  const handleTranslate = () => {
-    const text = window.getSelection().toString();
-    translateService(text);
+  const handleOpenTranslateClick = () => {
+    if (translate.open === false) {
+      const text = window.getSelection().toString();
+      if (text) {
+        translateService(text);
+        setSrc(text);
+      } else {
+        setTranslate({ ...translate, open: true });
+      }
+    } else {
+      setTranslate({ ...translate, open: false });
+    }
+  };
+
+  const handleSrcOnChange = (e) => {
+    setSrc(e.target.value);
+  };
+
+  const handleTranslateClick = () => {
+    if (src) {
+      translateService(src);
+    }
   };
 
   return (
     <div className="ReadingSpace__book__control">
       <div className="left">
-        <button className="translate" onClick={handleTranslate}></button>
+        <div
+          className={classNames({
+            "translate-container": true,
+            active: translate.open,
+          })}
+        >
+          {translate.open && (
+            <div className="translate-content">
+              <div className="translate-content__top">
+                <input
+                  className="src"
+                  type={"text"}
+                  onChange={handleSrcOnChange}
+                  value={src}
+                />
+                <button
+                  disabled={src.length === 0 || translate.loading}
+                  onClick={handleTranslateClick}
+                >
+                  Dịch
+                </button>
+              </div>
+              <div className="translate-content__bottom">
+                <p>{translate.des}</p>
+              </div>
+            </div>
+          )}
+          <button
+            className="translate"
+            onClick={handleOpenTranslateClick}
+          ></button>
+        </div>
         <EnterFullScreen>
           {(props) => (
             <button className="full-screen" onClick={props.onClick}></button>

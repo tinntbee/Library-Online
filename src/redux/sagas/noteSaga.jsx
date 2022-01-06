@@ -1,4 +1,4 @@
-import { put, takeLatest } from "@redux-saga/core/effects";
+import { put, takeLatest, takeEvery } from "@redux-saga/core/effects";
 import noteAPI from "../../api/noteAPI";
 import noteAction from "../actions/noteAction";
 
@@ -26,9 +26,19 @@ function* changePageCurrent(action) {
   }
 }
 
+function* closeNote(action) {
+  try {
+    const _id = action.payload;
+    const res = yield noteAPI.closeNote(_id);
+  } catch (e) {
+    console.log("update page current fail");
+  }
+}
+
 function* noteSaga() {
   yield takeLatest("GET_ALL_NOTES_ACTIVE", getAllNotesActive);
   yield takeLatest("CHANGE_PAGE_CURRENT", changePageCurrent);
+  yield takeEvery("CLOSE_NOTES", closeNote);
 }
 
 export default noteSaga;
