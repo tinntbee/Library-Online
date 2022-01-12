@@ -27,7 +27,10 @@ function* SignInWithGoogle(action) {
     // console.log(res);
     yield put({ type: "SIGN_IN_WITH_GOOGLE_SUCCESS", res: res });
   } catch (e) {
-    yield put({ type: "SIGN_IN_WITH_GOOGLE_SUCCESS", message: e.message });
+    yield put({
+      type: "SIGN_IN_WITH_GOOGLE_FAILED",
+      message: "Đăng nhập bị từ chối, thử lại sau !",
+    });
   }
 }
 
@@ -37,7 +40,10 @@ function* ReSign(action) {
     const res = yield userAPI.reSign();
     yield put({ type: "RE_SIGN_SUCCESS", res: res });
   } catch (e) {
-    yield put({ type: "RE_SIGN_FAILED", message: e.message });
+    yield put({
+      type: "RE_SIGN_FAILED",
+      message: "Có lỗi sảy ra vui lòng đăng nhập lại !",
+    });
   }
 }
 

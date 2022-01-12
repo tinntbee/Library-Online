@@ -34,6 +34,7 @@ export default function user(state = initialState, action) {
         ...state,
         loading: false,
         error: "can't not get user, something's wrong!! :<",
+        user: undefined,
       };
 
     case type.SIGN_IN_WITH_GOOGLE:
@@ -45,6 +46,7 @@ export default function user(state = initialState, action) {
     case type.SIGN_IN_WITH_GOOGLE_SUCCESS:
       return {
         ...state,
+        error: "",
         loading: false,
         user: action.res.user,
       };
@@ -53,7 +55,8 @@ export default function user(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        error: "can't not get user, something's wrong!! :<",
+        error: action.message,
+        user: undefined,
       };
 
     case type.SIGN_OUT:
@@ -77,6 +80,7 @@ export default function user(state = initialState, action) {
       return {
         ...state,
         loading: false,
+        error: "",
         user: action.res.user,
       };
 
@@ -86,6 +90,7 @@ export default function user(state = initialState, action) {
         ...state,
         loading: false,
         error: action.error,
+        user: undefined,
       };
 
     default:

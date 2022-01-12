@@ -1,20 +1,29 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { useSnackbar } from "notistack";
+import React, { useEffect } from "react";
 import GoogleLogin from "react-google-login";
-import "./style.scss";
-import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import { userActions } from "../../redux/actions/userActions";
-import { useEffect } from "react";
+import "./style.scss";
 
 Login.propTypes = {};
 
 function Login(props) {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
   const user = useSelector((state) => state.user);
   const responseGoogle = (res) => {
-    dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
+    if (res.xu.lv.includes("@student.hcmute.edu.vn")) {
+      dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
+    } else {
+      enqueueSnackbar(
+        "Vui lòng đăng nhập với tài khoản có đuôi student.hcmute.edu.vn",
+        {
+          variant: "info",
+        }
+      );
+    }
     //history.push("/bookstore");
   };
   useEffect(() => {
@@ -24,6 +33,12 @@ function Login(props) {
         history.goBack();
       } else {
         history.replace("/account");
+      }
+    } else {
+      if (user?.error) {
+        enqueueSnackbar(user.error, {
+          variant: "error",
+        });
       }
     }
   }, [user, history]);

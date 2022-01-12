@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import axiosClient from "../../../../api/axiosClient";
 
 Controller.propTypes = {};
 
@@ -28,39 +29,48 @@ function Controller(props) {
 
   const translateService = async (text) => {
     setTranslate({ ...translate, open: true, loading: true });
-    try {
-      const res = await fetch("https://libretranslate.de/translate", {
-        method: "POST",
-        body: JSON.stringify({
-          q: text,
-          source: "auto",
-          target: "vi",
-        }),
-        headers: { "Content-Type": "application/json" },
+    await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      body: JSON.stringify({
+        q: text,
+        source: "auto",
+        target: "vi",
+      }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Something went wrong");
+        }
+      })
+      .then((responseJson) => {
+        console.log({ responseJson });
+        setTranslate({
+          ...translate,
+          open: true,
+          des: responseJson.translatedText,
+          loading: false,
+        });
+      })
+      .catch((err) => {
+        setTranslate({
+          ...translate,
+          des: "[Lỗi] Không thể kết nối đến máy chủ :<",
+          loading: false,
+          open: true,
+        });
       });
-
-      setTranslate({ ...translate, des: res, loading: false });
-    } catch (err) {
-      setTranslate({
-        ...translate,
-        des: "[Lỗi] Không thể kết nối đến máy chủ :<",
-        loading: false,
-        open: true,
-      });
-    }
   };
 
   const handleOpenTranslateClick = () => {
-    if (translate.open === false) {
-      const text = window.getSelection().toString();
-      if (text) {
-        translateService(text);
-        setSrc(text);
-      } else {
-        setTranslate({ ...translate, open: true });
-      }
+    const text = window.getSelection().toString();
+    if (text) {
+      translateService(text);
+      setSrc(text);
     } else {
-      setTranslate({ ...translate, open: false });
+      setTranslate({ ...translate, open: !translate.open });
     }
   };
 
@@ -73,9 +83,13 @@ function Controller(props) {
       translateService(src);
     }
   };
-
   return (
-    <div className="ReadingSpace__book__control">
+    <div
+      className={classNames({
+        ReadingSpace__book__control: true,
+        hide: !translate.open,
+      })}
+    >
       <div className="left">
         <div
           className={classNames({

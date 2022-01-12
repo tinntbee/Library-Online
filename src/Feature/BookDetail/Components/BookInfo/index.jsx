@@ -248,7 +248,7 @@ function BookInfo(props) {
                 variant="rectangular"
               />
             ) : (
-              <p className="Book-name">{state.data.name.toUpperCase()}</p>
+              <p className="Book-name">{state.data.name?.toUpperCase()}</p>
             )}
             {state.loading ? (
               <Skeleton

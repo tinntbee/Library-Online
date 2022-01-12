@@ -17,7 +17,7 @@ import {
   AvatarContainer,
   Content,
   InformationContainer,
-  Title
+  Title,
 } from "../style";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
@@ -126,6 +126,7 @@ function AccountInformation(props) {
         if (error.response && error.response.status === 403) {
           setLoading(false);
           enqueueSnackbar("Bạn cần phải đăng nhập", { variant: "warning" });
+          dispatch(userActions.reSign());
           history.push("/login");
         }
       });
@@ -148,7 +149,7 @@ function AccountInformation(props) {
         // console.log({ res });
         setLoading(false);
         enqueueSnackbar("Cập nhật thành công", { variant: "success" });
-        dispatch(userActions.reSign())
+        dispatch(userActions.reSign());
       })
       .catch((e) =>
         enqueueSnackbar("Có lỗi đã sảy ra :<", { variant: "error" })

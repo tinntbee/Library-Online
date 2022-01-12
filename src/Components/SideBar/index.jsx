@@ -8,6 +8,7 @@ import MusicIcon from "../../static/MusicIcon";
 import PomodoroIcon from "../../static/PomodoroIcon";
 import ReadIcon from "../../static/ReadIcon";
 import "./style.scss";
+import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 import { userActions } from "../../redux/actions/userActions";
 import noteAction from "../../redux/actions/noteAction";
@@ -26,8 +27,10 @@ function SideBar(props) {
   ];
 
   const [pageCurrent, setPageCurrent] = useState("book-store");
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const user = useSelector((state) => state.user.user);
+  const error = useSelector((state) => state.user.error);
   const dispatch = useDispatch();
 
   const tabClickHandle = (index) => {
@@ -92,6 +95,7 @@ function SideBar(props) {
     dispatch(noteAction.getNotesActive());
     if (!user) {
       dispatch(userActions.reSign());
+    } else {
     }
   }, []);
 

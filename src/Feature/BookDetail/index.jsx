@@ -18,10 +18,10 @@ function BookDetail(props) {
   const history = useHistory();
   const { id } = useParams();
   const [_id, set_id] = useState(id);
+  const user = useSelector((state) => state.user.user);
 
   const dispatch = useDispatch();
   const bookDetail = useSelector((state) => state.bookDetail.book);
-
 
   useEffect(() => {
     dispatch(bookActions.getBookDetail(_id));
@@ -52,7 +52,7 @@ function BookDetail(props) {
       <div className="Book-detail main-content">
         <div className="header">
           <p className="title">BOOK DETAIL</p>
-          <p className="hoa">$34</p>
+          <p className="hoa">{user?.hoa ? "$" + user.hoa : ""}</p>
         </div>
         <div className="body">
           <div
