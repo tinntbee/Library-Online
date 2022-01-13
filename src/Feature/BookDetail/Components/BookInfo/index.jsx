@@ -314,7 +314,7 @@ function BookInfo(props) {
                 variant="rectangular"
               />
             ) : (
-              <>{state.data.description}</>
+              <div dangerouslySetInnerHTML={{ __html: state.data.description }}></div>
             )}
           </div>
           <div className="Book-action">

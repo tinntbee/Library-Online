@@ -41,6 +41,7 @@ export default function user(state = initialState, action) {
       return {
         ...state,
         loading: true,
+        error: "",
       };
 
     case type.SIGN_IN_WITH_GOOGLE_SUCCESS:

@@ -12,6 +12,7 @@ import imageAPI from "../../../api/imageAPI";
 import userAPI from "../../../api/userAPI";
 import { userActions } from "../../../redux/actions/userActions";
 import { filesService } from "../../../service/firebase/filesService";
+import { facultyOptions } from "../../../utils/facultyList";
 import {
   AccountInformationContainer,
   AvatarContainer,
@@ -56,7 +57,6 @@ const sexOptions = [
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
 ];
-const facultyOptions = [{ value: "FIT", label: "Công nghệ thông tin" }];
 
 function AccountInformation(props) {
   const history = useHistory();
@@ -65,7 +65,6 @@ function AccountInformation(props) {
   const yesterday = new Date(Date.now() - 86400000);
   const user = useSelector((state) => state.user);
   const { enqueueSnackbar } = useSnackbar();
-
   const [state, setState] = useState({
     _id: "1",
     nickname: "",

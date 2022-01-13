@@ -1,5 +1,5 @@
 import { useSnackbar } from "notistack";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GoogleLogin from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
@@ -9,11 +9,13 @@ import "./style.scss";
 Login.propTypes = {};
 
 function Login(props) {
+  const [dirty, setDirty] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const user = useSelector((state) => state.user);
   const responseGoogle = (res) => {
+    setDirty(true);
     if (res.xu.lv.includes("@student.hcmute.edu.vn")) {
       dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
     } else {
@@ -27,21 +29,24 @@ function Login(props) {
     //history.push("/bookstore");
   };
   useEffect(() => {
-    if (user.loading === false && !user.error && user.user) {
-      console.log({ history });
-      if (history.action !== "POP") {
-        history.goBack();
+    if (dirty) {
+      if (user.loading === false && !user.error && user.user) {
+        console.log({ history });
+        if (history.action !== "POP") {
+          history.goBack();
+        } else {
+          history.replace("/account");
+        }
       } else {
-        history.replace("/account");
-      }
-    } else {
-      if (user?.error) {
-        enqueueSnackbar(user.error, {
-          variant: "error",
-        });
+        if (user?.error) {
+          console.log({ user });
+          enqueueSnackbar(user.error, {
+            variant: "error",
+          });
+        }
       }
     }
-  }, [user, history]);
+  }, [user]);
   return (
     <div className="login">
       <div

@@ -1,16 +1,8 @@
+import classNames from "classnames";
 import React from "react";
-import {
-  RenderCurrentScaleProps,
-  RenderZoomInProps,
-  RenderZoomOutProps,
-} from "@react-pdf-viewer/zoom";
-import {
-  RenderCurrentPageLabelProps,
-  RenderGoToPageProps,
-} from "@react-pdf-viewer/page-navigation";
-import {
-  RenderEnterFullScreenProps,
-} from "@react-pdf-viewer/full-screen";
+import { useState } from "react";
+import { useEffect } from "react";
+import axiosClient from "../../../../api/axiosClient";
 
 Controller.propTypes = {};
 
@@ -26,12 +18,113 @@ function Controller(props) {
     CurrentPageLabel,
     EnterFullScreen,
   } = props;
+
+  const [translate, setTranslate] = useState({
+    open: false,
+    des: "",
+    loading: "",
+  });
+
+  const [src, setSrc] = useState("");
+
+  const translateService = async (text) => {
+    setTranslate({ ...translate, open: true, loading: true });
+    await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      body: JSON.stringify({
+        q: text,
+        source: "auto",
+        target: "vi",
+      }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Something went wrong");
+        }
+      })
+      .then((responseJson) => {
+        console.log({ responseJson });
+        setTranslate({
+          ...translate,
+          open: true,
+          des: responseJson.translatedText,
+          loading: false,
+        });
+      })
+      .catch((err) => {
+        setTranslate({
+          ...translate,
+          des: "[Lỗi] Không thể kết nối đến máy chủ :<",
+          loading: false,
+          open: true,
+        });
+      });
+  };
+
+  const handleOpenTranslateClick = () => {
+    const text = window.getSelection().toString();
+    if (text) {
+      translateService(text);
+      setSrc(text);
+    } else {
+      setTranslate({ ...translate, open: !translate.open });
+    }
+  };
+
+  const handleSrcOnChange = (e) => {
+    setSrc(e.target.value);
+  };
+
+  const handleTranslateClick = () => {
+    if (src) {
+      translateService(src);
+    }
+  };
   return (
-    <div className="ReadingSpace__book__control">
+    <div
+      className={classNames({
+        ReadingSpace__book__control: true,
+        hide: !translate.open,
+      })}
+    >
       <div className="left">
-        <button className="translate"></button>
+        <div
+          className={classNames({
+            "translate-container": true,
+            active: translate.open,
+          })}
+        >
+          {translate.open && (
+            <div className="translate-content">
+              <div className="translate-content__top">
+                <input
+                  className="src"
+                  type={"text"}
+                  onChange={handleSrcOnChange}
+                  value={src}
+                />
+                <button
+                  disabled={src.length === 0 || translate.loading}
+                  onClick={handleTranslateClick}
+                >
+                  Dịch
+                </button>
+              </div>
+              <div className="translate-content__bottom">
+                <p>{translate.des}</p>
+              </div>
+            </div>
+          )}
+          <button
+            className="translate"
+            onClick={handleOpenTranslateClick}
+          ></button>
+        </div>
         <EnterFullScreen>
-          {(props = RenderEnterFullScreenProps) => (
+          {(props) => (
             <button className="full-screen" onClick={props.onClick}></button>
           )}
         </EnterFullScreen>
@@ -39,7 +132,7 @@ function Controller(props) {
 
       <div className="center">
         <GoToFirstPage>
-          {(props = RenderGoToPageProps) => (
+          {(props) => (
             <button
               className="go-to-first-page"
               onClick={props.onClick}
@@ -48,7 +141,7 @@ function Controller(props) {
         </GoToFirstPage>
 
         <GoToPreviousPage>
-          {(props = RenderGoToPageProps) => (
+          {(props) => (
             <button
               className="go-to-previous-page"
               disabled={props.isDisabled}
@@ -58,7 +151,7 @@ function Controller(props) {
         </GoToPreviousPage>
 
         <CurrentPageLabel>
-          {(props = RenderCurrentPageLabelProps) => (
+          {(props) => (
             <>
               <p>{"Page "}</p>
               <p className="current-page">
@@ -73,7 +166,7 @@ function Controller(props) {
         </CurrentPageLabel>
 
         <GoToNextPage>
-          {(props = RenderGoToPageProps) => (
+          {(props) => (
             <button
               className="go-to-next-page"
               disabled={props.isDisabled}
@@ -83,7 +176,7 @@ function Controller(props) {
         </GoToNextPage>
 
         <GoToLastPage>
-          {(props = RenderGoToPageProps) => (
+          {(props) => (
             <button
               className="go-to-last-page"
               onClick={props.onClick}
@@ -94,13 +187,13 @@ function Controller(props) {
 
       <div className="right">
         <ZoomOut>
-          {(props = RenderZoomOutProps) => (
+          {(props) => (
             <button className="zoom-out" onClick={props.onClick}></button>
           )}
         </ZoomOut>
 
         <CurrentScale>
-          {(props = RenderCurrentScaleProps) => (
+          {(props) => (
             <p className="scale">
               <b>{`${Math.round(props.scale * 100)}%`}</b>
             </p>
@@ -108,7 +201,7 @@ function Controller(props) {
         </CurrentScale>
 
         <ZoomIn>
-          {(props = RenderZoomInProps) => (
+          {(props) => (
             <button className="zoom-in" onClick={props.onClick}></button>
           )}
         </ZoomIn>

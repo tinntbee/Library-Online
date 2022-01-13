@@ -11,7 +11,7 @@ function PomodoroMode(props) {
   const dispatch = useDispatch();
   const [stateTimeStep, setStateTimeStep] = useState({
     isRun: false,
-    minute: 60,
+    minute: 20,
     second: 0,
     goal: 0,
   });
