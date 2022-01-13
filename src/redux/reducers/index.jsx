@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
   bookDetail: bookDetail,
   backdropLoading: backdropLoading,
   notes: notes,
-  dialogBox: dialogBox
+  dialogBox: dialogBox,
 });
 
 export default rootReducer;

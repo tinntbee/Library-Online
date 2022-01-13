@@ -40,11 +40,11 @@ function ListBookHorizontal(props) {
   return (
     booksByTags?.books.length !== 0 && (
       <div
-        id={data.name.toLowerCase().replaceAll(" ", "_")}
+        id={data.name?.toLowerCase().replaceAll(" ", "_")}
         className="List-book-view"
       >
         <div className="List-book-view-header">
-          <p>{"#" + data.name.toUpperCase()}</p>
+          <p>{"#" + data.name?.toUpperCase()}</p>
         </div>
         <ScrollContainer
           ref={scrollRef}

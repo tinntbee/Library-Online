@@ -10,6 +10,10 @@ const tagAPI = {
     const url = "/tags";
     return axiosClient.get(url);
   },
+  getOtherTag: () => {
+    const url = "/tags/others";
+    return axiosClient.get(url);
+  },
 };
 
 export default tagAPI;
