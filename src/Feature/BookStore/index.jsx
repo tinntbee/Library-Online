@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SearchInBookstore from "../../components/SearchInBookstore";
 import Slideshow from "../../components/Slideshow";
 import bookActions from "../../redux/actions/bookActions";
@@ -26,6 +26,7 @@ function BookStore(props) {
     dispatch(tagAction.getAllTagsByCategories());
     dispatch(tagAction.getTags());
   }, []);
+  const user = useSelector((state) => state.user.user);
 
   const [buttonScrollTop, setButtonScrollTop] = useState(false);
   const toggleVisible = () => {
@@ -49,7 +50,7 @@ function BookStore(props) {
     <div className="Bookstore main-content">
       <div className="header">
         <p className="title">BOOK STORE</p>
-        <p className="hoa">$34</p>
+        <p className="hoa">{user && "$" + user.hoa}</p>
       </div>
       <div className="body">
         <SearchInBookstore tag={tagId} />
