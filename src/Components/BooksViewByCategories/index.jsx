@@ -16,13 +16,13 @@ function BooksViewByCategories(props) {
   );
   // useEffect(() => {
   //   if (!books) {
-      
+
   //   dispatch(bookActions.getBooksByTags(data._id));
   //   }
   // }, []);
   return (
     <>
-      {data && (
+      {data && data?.tags.length !== 0 && (
         <div
           className="Books-view-by-categories"
           id={data._id}
@@ -35,12 +35,7 @@ function BooksViewByCategories(props) {
           </div>
 
           {data.tags.map((item, index) => {
-            return (
-              <ListBookHorizontal
-                key={index}
-                data={item}
-              />
-            );
+            return <ListBookHorizontal key={index} data={item} />;
           })}
         </div>
       )}

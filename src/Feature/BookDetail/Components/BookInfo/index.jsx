@@ -16,6 +16,7 @@ import ReadIcon from "../../../../static/ReadIcon";
 import { useSnackbar } from "notistack";
 import BookViewIntro from "../BookViewIntro";
 import ConformDialog from "../ConfirmDialog";
+import { userActions } from "../../../../redux/actions/userActions";
 
 BookInfo.propTypes = {};
 
@@ -42,6 +43,7 @@ function BookInfo(props) {
           variant: "success",
         });
         dispatch(bookActions.changeBookDetail({ ...book.data, isHad: true }));
+        dispatch(userActions.reSign());
       })
       .catch((e) => {
         dispatch(backdropLoadingAction.setLoading(false));
@@ -60,6 +62,7 @@ function BookInfo(props) {
             variant: "success",
           }
         );
+        dispatch(userActions.reSign());
         dispatch(bookActions.changeBookDetail({ ...book.data, isHad: true }));
         history.push("/reading-space?bookId=" + res.book);
       })
@@ -314,7 +317,9 @@ function BookInfo(props) {
                 variant="rectangular"
               />
             ) : (
-              <div dangerouslySetInnerHTML={{ __html: state.data.description }}></div>
+              <div
+                dangerouslySetInnerHTML={{ __html: state.data.description }}
+              ></div>
             )}
           </div>
           <div className="Book-action">
