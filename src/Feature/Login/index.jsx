@@ -16,7 +16,8 @@ function Login(props) {
   const user = useSelector((state) => state.user);
   const responseGoogle = (res) => {
     setDirty(true);
-    if (res.xu.lv.includes("@student.hcmute.edu.vn")) {
+    console.log(res);
+    if (res.Qu.Gv.includes("@student.hcmute.edu.vn")) {
       dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
     } else {
       enqueueSnackbar(
