@@ -17,16 +17,17 @@ function Login(props) {
   const responseGoogle = (res) => {
     setDirty(true);
     console.log(res);
-    if (res.Qu.Gv.includes("@student.hcmute.edu.vn")) {
-      dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
-    } else {
-      enqueueSnackbar(
-        "Vui lòng đăng nhập với tài khoản có đuôi student.hcmute.edu.vn",
-        {
-          variant: "info",
-        }
-      );
-    }
+    // if (res.Wu.Nv.includes("@student.hcmute.edu.vn")) {
+    //   dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
+    // } else {
+    //   enqueueSnackbar(
+    //     "Vui lòng đăng nhập với tài khoản có đuôi student.hcmute.edu.vn",
+    //     {
+    //       variant: "info",
+    //     }
+    //   );
+    // }
+    dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
     //history.push("/bookstore");
   };
   useEffect(() => {
