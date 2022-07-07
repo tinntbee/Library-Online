@@ -195,6 +195,8 @@
   margin-top: 10px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
 }
 
 .Book-title .book-tag {
@@ -203,9 +205,9 @@
   color: var(--white-color);
   padding: 5px 10px;
   border-radius: 20px;
-  margin-right: 10px;
   background: var(--gray-color);
   box-sizing: border-box;
+  min-width: fit-content;
 }
 
 .Book-description {
