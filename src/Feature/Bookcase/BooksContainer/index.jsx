@@ -180,7 +180,7 @@ function BooksContainer(props) {
             {state.data &&
               state.data.map((item, index) => {
                 return (
-                  removeVieCharacters(item.book.name).includes(filter) && (
+                  item.book && removeVieCharacters(item.book.name).includes(filter) && (
                     <BookViewBox
                       key={item._id}
                       index={index}

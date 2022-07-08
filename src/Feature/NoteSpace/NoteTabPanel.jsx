@@ -59,13 +59,15 @@ function NoteTabPanel(props) {
                 _id={_id}
                 handleContentOnChange={handleContentOnChange}
               />
-              <RenderPDF
-                link={note?.book.link}
-                page={note?.page}
-                pass={note?.book.key}
-                _id={_id}
-                handlePageOnChange={handlePageOnChange}
-              />
+              {note.book && (
+                <RenderPDF
+                  link={note?.book.link}
+                  page={note?.page}
+                  pass={note?.book.key}
+                  _id={_id}
+                  handlePageOnChange={handlePageOnChange}
+                />
+              )}
             </>
           )}
         </div>

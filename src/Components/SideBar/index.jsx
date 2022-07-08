@@ -202,34 +202,36 @@ function SideBar(props) {
             )}
             {notes.notes?.map((item, index) => {
               return (
-                <li
-                  key={item._id}
-                  className={classNames({
-                    "Sidebar-tab": true,
-                    active: index === state.tab - 1,
-                  })}
-                >
-                  <Link to="#">
-                    <div
-                      className="Sidebar-tab-thumbnail"
-                      style={{ backgroundImage: `url("${item.image}")` }}
-                      onClick={() =>
-                        handleCloseTabClick({ _id: item._id, index: index })
-                      }
-                    />
-                    <div
-                      onClick={() => {
-                        history.push("/note-space/" + item._id);
-                        tabClickHandle(index + 1);
-                      }}
-                    >
-                      <p className="Sidebar-tab-title">{item.name}</p>
-                      <p className="Sidebar-tab-description">
-                        {item.book.name}
-                      </p>
-                    </div>
-                  </Link>
-                </li>
+                item.book && (
+                  <li
+                    key={item._id}
+                    className={classNames({
+                      "Sidebar-tab": true,
+                      active: index === state.tab - 1,
+                    })}
+                  >
+                    <Link to="#">
+                      <div
+                        className="Sidebar-tab-thumbnail"
+                        style={{ backgroundImage: `url("${item.image}")` }}
+                        onClick={() =>
+                          handleCloseTabClick({ _id: item._id, index: index })
+                        }
+                      />
+                      <div
+                        onClick={() => {
+                          history.push("/note-space/" + item._id);
+                          tabClickHandle(index + 1);
+                        }}
+                      >
+                        <p className="Sidebar-tab-title">{item.name}</p>
+                        <p className="Sidebar-tab-description">
+                          {item.book.name}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                )
               );
             })}
 
