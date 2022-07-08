@@ -13,10 +13,12 @@ function BookViewIntro(props) {
   return (
     <>
       <div
-        className="Book-view-intro"
+        className="Book-view-intro tooltip"
         style={{ backgroundImage: `url("../../../icons/fullscreen.svg")` }}
         onClick={handleOpen}
-      ></div>
+      >
+        <span class="tooltip-text right">Xem Intro</span>
+      </div>
       <Modal
         open={open}
         onClose={handleClose}

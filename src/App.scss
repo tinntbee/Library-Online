@@ -179,3 +179,61 @@ a {
 .button-bee.outline:hover {
   border: 2px solid var(--primary-color-orange);
 }
+
+.tooltip {
+  position: relative;
+  & > .tooltip-text {
+    white-space: nowrap;
+    font-size: 14px;
+    padding: 5px 8px;
+    &.bottom {
+      visibility: hidden;
+      width: fit-content;
+      background-color: #5454547c;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      position: absolute;
+      z-index: 1;
+      top: 150%;
+      left: 50%;
+      transform: translateX(-50%);
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent #5454547c transparent;
+      }
+    }
+    &.right {
+      visibility: hidden;
+      min-width: fit-content;
+      background-color: #5454547c;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 120%;
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        margin-top: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent #5454547c transparent transparent;
+      }
+    }
+  }
+  &:hover .tooltip-text {
+    visibility: visible;
+  }
+}

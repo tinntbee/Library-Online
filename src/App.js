@@ -1,6 +1,6 @@
 import { Redirect, Route, Switch } from "react-router-dom";
 import React, { lazy, useEffect } from "react";
-import "./App.css";
+import "./App.scss";
 import SideBar from "./components/SideBar";
 import SnackbarCustom from "./components/SnackbarCustom";
 import BackdropLoading from "./components/BackdropLoading";

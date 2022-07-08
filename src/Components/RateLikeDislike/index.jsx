@@ -22,23 +22,25 @@ function RateLikeDislike(props) {
         >
           <div
             className={classNames({
-              "Rate-like": true,
+              "Rate-like tooltip": true,
               react: rate.react == 1,
             })}
             onClick={likeClickHandle}
           >
             <LikeIcon />
             <span>{rate.like}</span>
+            <label className="tooltip-text bottom">{rate.react === 1 ? "Bỏ thích" : "Yêu thích"}</label>
           </div>
           <div
             className={classNames({
-              "Rate-dislike": true,
+              "Rate-dislike tooltip": true,
               react: rate.react == -1,
             })}
             onClick={dislikeClickHandle}
           >
             <DislikeIcon />
             <span>{rate.dislike}</span>
+            <label className="tooltip-text bottom">{rate.react === -1 ? "Bỏ không thích" : "Không thích"}</label>
           </div>
         </div>
       )}
