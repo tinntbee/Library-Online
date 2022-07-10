@@ -41,10 +41,10 @@ function AccountDetailFeature(props) {
             <MyBooks />
             <AccountInformation />
           </div>
-          <div>
+          {/* <div>
             <TagFavorites />
             <Report />
-          </div>
+          </div> */}
         </BodyContent>
       </Body>
     </AccountDetail>

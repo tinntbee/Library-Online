@@ -88,6 +88,7 @@ function Controller(props) {
       className={classNames({
         ReadingSpace__book__control: true,
         hide: !translate.open,
+        notHide: translate.open,
       })}
     >
       <div className="left">
