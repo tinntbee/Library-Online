@@ -22,7 +22,7 @@ function SideBar(props) {
     "reading-space",
     "bookstore",
     "bookcase",
-    "flash-card",
+    // "flash-card",
     "pomodoro",
   ];
 
@@ -162,7 +162,7 @@ function SideBar(props) {
               <MusicIcon />
               <span>Bookcase</span>
             </li>
-            <li
+            {/* <li
               className={classNames({
                 "Sidebar-control": true,
                 active: pageCurrent === "flash-card",
@@ -170,7 +170,7 @@ function SideBar(props) {
             >
               <FlashcardIcon />
               <span>Flashcard</span>
-            </li>
+            </li> */}
             <li
               className={classNames({
                 "Sidebar-control": true,

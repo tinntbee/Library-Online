@@ -1,7 +1,7 @@
 .Sidebar {
   position: fixed;
   background: var(--white-color);
-  width: 62px!important;
+  width: 62px !important;
   height: 100vh;
   max-height: 100vh;
   transition: all 0.3s ease-in-out;
@@ -18,7 +18,7 @@
 }
 
 .Sidebar:hover {
-  width: 240px!important;
+  width: 240px !important;
 }
 
 .Sidebar .icon {
@@ -90,11 +90,14 @@
   align-items: center;
   margin: 12px 15px;
   cursor: pointer;
+  color: var(--text-black-color);
+  fill: var(--text-black-color);
+  font-weight: 400;
 }
 
 .Sidebar-control.active {
-  fill: var(--white-color);
-  color: var(--white-color);
+  fill: var(--white-color) !important;
+  color: var(--white-color) !important;
   font-weight: 600;
 }
 
@@ -136,6 +139,8 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  color: var(--text-black-color);
+  font-weight: 400;
 }
 
 .Sidebar-tabs-title p {

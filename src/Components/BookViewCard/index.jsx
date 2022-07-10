@@ -28,7 +28,9 @@ function BookViewCard(props) {
           <LikeIcon />
           <p>
             {data.totalLike + data.totalDislike > 0
-              ? (data.totalLike / (data.totalLike + data.totalDislike)) * 100 + "%"
+              ? Math.round(
+                  (data.totalLike / (data.totalLike + data.totalDislike)) * 100
+                ) + "%"
               : "-"}
           </p>
         </Link>
