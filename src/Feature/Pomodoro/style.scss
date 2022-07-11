@@ -10,7 +10,7 @@
 
     & > div {
       max-width: 100%;
-      width: 1000px;
+      width: 1300px;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -108,6 +108,7 @@
           flex-wrap: wrap;
           align-items: center;
           padding: 20px;
+          gap: 20px;
 
           & > .promodoro-report-statistic {
             display: flex;

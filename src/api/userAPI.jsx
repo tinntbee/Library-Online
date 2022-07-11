@@ -44,6 +44,14 @@ const userAPI = {
     const url = "/bookcases/refund";
     return axiosClient.get(url);
   },
+  getReportAllTime: () => {
+    const url = "pomodoro/getReportAllTime";
+    return axiosClient.get(url);
+  },
+  postReportByTime: ({ begin, end }) => {
+    const url = "pomodoro/postReportByTime";
+    return axiosClient.post(url, { begin, end });
+  },
 };
 
 export default userAPI;
