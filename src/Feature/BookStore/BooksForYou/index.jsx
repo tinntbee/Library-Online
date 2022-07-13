@@ -12,7 +12,7 @@ function BooksForYou(props) {
   return (
     <div className="Bookstore-content-container Book-for-you">
       <div className="Bookstore-content-container-header">
-        <p>FOR YOU</p>
+        <p>CÓ THỂ BẠN SẼ THÍCH</p>
       </div>
       <ScrollContainer className="Bookstore-content-container-body">
         {booksForYou.data &&

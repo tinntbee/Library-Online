@@ -143,7 +143,7 @@ function NotesContainer(props) {
       >
         <div className="container__header__title">
           <img alt="" src="icons/book.svg" />
-          <span>My Notes</span>
+          <span>GHI CHÚ</span>
         </div>
         <div className="container__header__search">
           <input type="text" onChange={handleFilterChange} />

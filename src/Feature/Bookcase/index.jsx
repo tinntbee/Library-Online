@@ -108,7 +108,7 @@ function Bookcase(props) {
         handleClose={handleDialogClose}
       />
       <div className="header">
-        <p className="title">BOOKCASE</p>
+        <p className="title">TỦ SÁCH CÁ NHÂN</p>
         <p className="hoa">
           <b>${user?.hoa}</b>
         </p>

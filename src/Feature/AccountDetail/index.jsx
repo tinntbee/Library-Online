@@ -25,7 +25,7 @@ function AccountDetailFeature(props) {
   return (
     <AccountDetail className="main-content">
       <Header>
-        <p className="title">ABOUT MEE</p>
+        <p className="title">THÔNG TIN TÀI KHOẢN</p>
         {user && (
           <button
             className="logout button-bee contained"

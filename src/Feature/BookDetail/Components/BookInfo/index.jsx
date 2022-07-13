@@ -141,6 +141,10 @@ function BookInfo(props) {
     });
   };
   useEffect(() => {
+    console.log({ book });
+    if (book.error && book.error.response && book.error.response.status === 404) {
+      history.replace("/bookstore");
+    }
     setState(book);
   }, [book]);
   useEffect(() => {

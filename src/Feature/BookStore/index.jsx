@@ -49,7 +49,7 @@ function BookStore(props) {
   return (
     <div className="Bookstore main-content">
       <div className="header">
-        <p className="title">BOOK STORE</p>
+        <p className="title">THƯ VIỆN</p>
         <p className="hoa">{user && "$" + user.hoa}</p>
       </div>
       <div className="body">

@@ -51,7 +51,7 @@ function BookDetail(props) {
     <>
       <div className="Book-detail main-content">
         <div className="header">
-          <p className="title">BOOK DETAIL</p>
+          <p className="title">CHI TIẾT SÁCH</p>
           <p className="hoa">{user?.hoa ? "$" + user.hoa : ""}</p>
         </div>
         <div className="body">

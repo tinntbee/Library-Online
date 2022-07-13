@@ -206,12 +206,12 @@ function AccountInformation(props) {
       </Backdrop>
       <Title>
         <p>
-          <b>INFORMATION</b>
+          <b>CÁ NHÂN</b>
         </p>
       </Title>
       <Content>
         <AvatarContainer>
-          <p className="part">Avatar</p>
+          <p className="part">Ảnh đại diện</p>
           <div
             className="avatar"
             style={user && { backgroundImage: `url(${state.avatar})` }}
@@ -254,6 +254,7 @@ function AccountInformation(props) {
                     component={InputField}
                     name="name"
                     label="Họ và tên"
+                    disabled
                   />
                 </Grid>
                 <Grid item xs={4} className={classes.field}>
@@ -286,6 +287,7 @@ function AccountInformation(props) {
                     name="faculty"
                     label="Khoa"
                     options={facultyOptions}
+                    disabled
                   />
                 </Grid>
                 <Grid item xs={4} className={classes.field}>

@@ -129,7 +129,7 @@ function YourComment(props) {
             <div className="user-detail">
               <p>
                 <ReadIcon />
-                Đã đọc: {user.totalBooks} quyển sách
+                Đã sở hữu: {user.totalBooks} quyển sách
               </p>
 
               <p>

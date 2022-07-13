@@ -4,7 +4,7 @@ const initialState = {
   book: {
     data: {},
     loading: true,
-    error: "",
+    error: {},
   },
   forum: {
     data: [],
@@ -26,7 +26,7 @@ export default function bookDetail(state = initialState, action) {
     case type.GET_BOOK_DETAIL_FAILED:
       return {
         ...state,
-        book: { ...state.book, loading: false, error: action.data },
+        book: { ...state.book, loading: false, error: action.error },
       };
     case type.CHANGE_BOOK_DETAIL:
       return {

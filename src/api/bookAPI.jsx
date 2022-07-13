@@ -17,8 +17,8 @@ const bookAPI = {
     return axiosClient.get(url);
   },
   getBooksForYou: () => {
-    //handle API
-    return booksForYou;
+    const url = `/books/recommend`;
+    return axiosClient.get(url);
   },
   getBooksByTags: (id) => {
     const url = `/books/bookByTag/${id}`;

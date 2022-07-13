@@ -110,55 +110,59 @@ function MyBooksList(props) {
           {books &&
             books.map((item, index) => {
               return (
-                <div
-                  key={item._id}
-                  className="book-view-box"
-                  style={{ backgroundImage: `url(${item.book.image})` }}
-                >
+                item.book && (
                   <div
-                    className="detail"
-                    onClick={() =>
-                      history.push(`/book-detail/${item.book._id}`)
-                    }
+                    key={item._id}
+                    className="book-view-box"
+                    style={{ backgroundImage: `url(${item.book.image})` }}
                   >
-                    <Box sx={{ position: "relative", display: "inline-flex" }}>
-                      <CircularProgress
-                        sx={{ color: "#fff" }}
-                        variant="determinate"
-                        value={item.progress}
-                      />
+                    <div
+                      className="detail"
+                      onClick={() =>
+                        history.push(`/book-detail/${item.book._id}`)
+                      }
+                    >
                       <Box
-                        sx={{
-                          top: 0,
-                          left: 0,
-                          bottom: 0,
-                          right: 0,
-                          position: "absolute",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
+                        sx={{ position: "relative", display: "inline-flex" }}
                       >
-                        <Typography
-                          variant="caption"
-                          component="div"
-                          color="#FFF"
+                        <CircularProgress
+                          sx={{ color: "#fff" }}
+                          variant="determinate"
+                          value={item.progress}
+                        />
+                        <Box
+                          sx={{
+                            top: 0,
+                            left: 0,
+                            bottom: 0,
+                            right: 0,
+                            position: "absolute",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
                         >
-                          {`${item.progress}%`}
-                        </Typography>
+                          <Typography
+                            variant="caption"
+                            component="div"
+                            color="#FFF"
+                          >
+                            {`${item.progress}%`}
+                          </Typography>
+                        </Box>
                       </Box>
-                    </Box>
-                    <p className="name">{item.book.name}</p>
+                      <p className="name">{item.book.name}</p>
+                    </div>
+                    <button
+                      className="read-btn"
+                      onClick={() => {
+                        history.push("/reading-space?bookId=" + item.book._id);
+                      }}
+                    >
+                      Đọc ngay
+                    </button>
                   </div>
-                  <button
-                    className="read-btn"
-                    onClick={() => {
-                      history.push("/reading-space?bookId=" + item.book._id);
-                    }}
-                  >
-                    Đọc ngay
-                  </button>
-                </div>
+                )
               );
             })}
         </ScrollContainer>

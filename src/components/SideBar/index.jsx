@@ -140,7 +140,7 @@ function SideBar(props) {
               onClick={() => history.replace("/reading-space")}
             >
               <ReadIcon />
-              <span>Reading Space</span>
+              <span>Không gian đọc</span>
             </li>
             <li
               className={classNames({
@@ -150,7 +150,7 @@ function SideBar(props) {
               onClick={() => history.replace("/bookstore")}
             >
               <LibraryIcon />
-              <span>Bookstore</span>
+              <span>Thư viện</span>
             </li>
             <li
               className={classNames({
@@ -160,7 +160,7 @@ function SideBar(props) {
               onClick={() => history.replace("/bookcase")}
             >
               <MusicIcon />
-              <span>Bookcase</span>
+              <span>Tủ sách</span>
             </li>
             {/* <li
               className={classNames({

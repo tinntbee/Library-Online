@@ -71,7 +71,7 @@ function CommendBox(props) {
         <div className="user-detail">
           <p>
             <ReadIcon />
-            Đã đọc: {data.user.totalBooks} quyển sách
+            Đã sở hữu: {data.user.totalBooks} quyển sách
           </p>
 
           <p>
