@@ -15,48 +15,7 @@ function MyBooks(props) {
     }
     return array;
   };
-  const [books, setBooks] = useState([
-    {
-      _id: 1,
-      image: "https://images.thuvienpdf.com/r3KxA0.webp",
-    },
-    {
-      _id: 2,
-      image: "https://images.thuvienpdf.com/lOFB9Ai9Gt.webp",
-    },
-    {
-      _id: 3,
-      image: "https://images.thuvienpdf.com/lflbuEXwK6.webp",
-    },
-    {
-      _id: 4,
-      image: "https://images.thuvienpdf.com/FTxes93cAK.webp",
-    },
-    {
-      _id: 5,
-      image: "https://images.thuvienpdf.com/Vidg87kBH8.webp",
-    },
-    {
-      _id: 6,
-      image: "https://images.thuvienpdf.com/ZA2ravzxbk.webp",
-    },
-    {
-      _id: 7,
-      image: "https://images.thuvienpdf.com/aVzFPuIS00.webp",
-    },
-    {
-      _id: 8,
-      image: "https://images.thuvienpdf.com/lhtcZTRsdW.webp",
-    },
-    {
-      _id: 9,
-      image: "https://images.thuvienpdf.com/xXT3chV4Pm.webp",
-    },
-    {
-      _id: 10,
-      image: "https://images.thuvienpdf.com/7WqRAWOX8l.webp",
-    },
-  ]);
+  const [books, setBooks] = useState([]);
   const [state, setState] = useState(createArray(books.length));
 
   const delayAutoSlide = 2000;
@@ -97,8 +56,12 @@ function MyBooks(props) {
     bookAPI
       .getBooksInBookcase()
       .then((res) => {
-        const newBooks = res.map(function (obj) {
-          return { _id: obj.book._id, image: obj.book.image };
+        console.log(res);
+        const newBooks = [];
+        res.forEach((bookInBookcase) => {
+          if (bookInBookcase.book) {
+            newBooks.push(bookInBookcase.book);
+          }
         });
         setBooks([...newBooks]);
         setState(createArray(newBooks.length));

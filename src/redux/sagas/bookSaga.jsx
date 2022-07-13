@@ -37,7 +37,7 @@ function* getBookDetail(action) {
     // yield delay(3000);
     yield put({ type: "GET_BOOK_DETAIL_SUCCESS", data: res });
   } catch (e) {
-    yield put({ type: "GET_BOOK_DETAIL_FAILED", message: e.message });
+    yield put({ type: "GET_BOOK_DETAIL_FAILED", error: e });
   }
 }
 

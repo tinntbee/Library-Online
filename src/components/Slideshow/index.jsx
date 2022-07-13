@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import bookActions from "../../redux/actions/bookActions";
 import "./style.scss";
 
@@ -8,10 +9,10 @@ Slideshow.propTypes = {};
 function Slideshow(props) {
   const booksSlide = useSelector((state) => state.bookStore.booksSlide);
   const data = {
-    listSlide: booksSlide
+    listSlide: booksSlide,
   };
   const delay = 400;
-  const delayAutoSlide = 4000;
+  const delayAutoSlide = 5000;
 
   const [state, setState] = useState([1, 2, 3, 4, 5]);
   const [rotate, setRotate] = useState(0);
@@ -66,18 +67,28 @@ function Slideshow(props) {
 
   return (
     <div className="Slideshow">
-      {data.listSlide.data && data.listSlide.data.map((item, index) => {
-        return (
-          <div
-            key={index}
-            style={{ backgroundImage: `url(${item.image})` }}
-            className={"SlideItem SlidePosition-" + state[index]}
-            onClick={() => {
-              slideItemClickHandle(state[index]);
-            }}
-          ></div>
-        );
-      })}
+      {data.listSlide.data &&
+        data.listSlide.data.map((item, index) => {
+          return (
+            <div
+              key={index}
+              className={"SlideItem SlidePosition-" + state[index]}
+              onClick={() => {
+                slideItemClickHandle(state[index]);
+              }}
+            >
+              <div
+                className="thumbnail"
+                style={{ backgroundImage: `url(${item.image})` }}
+              />
+              <div className="mask">
+                <button className="slide-btn">
+                  <Link to={`/book-detail/${item._id}`}>CHI TIẾT</Link>
+                </button>
+              </div>
+            </div>
+          );
+        })}
     </div>
   );
 }

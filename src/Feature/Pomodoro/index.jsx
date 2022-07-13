@@ -189,7 +189,7 @@ function Pomodoro(props) {
     <div className="pomodoro main-content">
       <div className="header">
         <p className="title">POMODORO</p>
-        <p className="hoa">$34</p>
+        {/* <p className="hoa">$34</p> */}
       </div>
       <div className="body">
         <div>
