@@ -134,9 +134,9 @@ function Pomodoro(props) {
         setData({
           labels: data.map(
             (item, index) =>
-              data[index].date.slice(0, 5) +
+              lastData[index].date.slice(0, 5) +
               " - " +
-              lastData[index].date.slice(0, 5)
+              data[index].date.slice(0, 5)
           ),
           datasets: [
             {
