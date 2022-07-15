@@ -1,6 +1,6 @@
 .SearchInBookstore {
-  width: 44px!important;
-  height: 111px!important;
+  width: 44px !important;
+  height: 111px !important;
   background: var(--text-gray100-color);
   border-radius: 10px 10px 10px 34px;
   position: fixed;
@@ -51,8 +51,8 @@
   }
 
   & .tags-box {
-    width: 200px;
-    height: 250px;
+    width: 40px;
+    height: 40px;
     background: transparent;
     border-radius: 10px;
     position: absolute;
@@ -60,6 +60,7 @@
     top: calc(10px * 2 + 24px);
     box-shadow: none;
     z-index: 10;
+    transition: all 0.4s ease-in-out;
 
     & > .tags-icon {
       position: absolute;
@@ -106,6 +107,8 @@
     }
 
     &.active {
+      width: 200px;
+      height: 250px;
       background: var(--white-color);
       box-shadow: 0 3px 6px var(--base-gray-color);
 
@@ -130,13 +133,18 @@
   }
 
   & > .result-container {
-    max-width: 1500px;
-    min-width: 1500px;
-    margin-top: 20px;
+    flex-grow: 1;
+    width: 100%;
+    // max-height: calc(100% - 180px);
+    flex-basis: 0;
+    margin-top: 40px;
+    padding: 0 20px;
     visibility: hidden;
     opacity: 0;
     position: relative;
     z-index: 8;
+    display: flex;
+    flex-direction: column;
 
     & > .result-container__header {
       width: 100%;
@@ -173,24 +181,64 @@
     }
 
     & > .result-container__body {
+      flex-grow: 1;
       width: 100%;
       max-height: 760px;
       margin-top: 20px;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      flex-wrap: wrap;
       overflow-x: hidden;
       overflow-y: auto;
+
+      & > .books {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+      & > .load-more-btn {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-radius: 15px;
+        border: none;
+        stroke: none;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        padding: 10px 20px;
+        font-weight: 400;
+        font-size: 20px;
+        color: #ffffff;
+        background-image: linear-gradient(
+          90deg,
+          #ee3866 0%,
+          #e1aa00 50%,
+          #ee3866 100%
+        );
+        background-position: 0%;
+        background-size: 200%;
+        background-repeat: no-repeat;
+
+        & > a {
+          color: #ffffff;
+        }
+
+        &:hover {
+          // background-position: 100%;
+          padding: 10px 40px !important;
+        }
+
+        &:active {
+          padding: 10px 30px !important;
+        }
+      }
     }
   }
 
   &.active {
     top: 55px;
     right: 0;
-    width: 100%!important;
+    width: 100% !important;
     padding-left: 62px;
-    height: 100%!important;
+    height: 100% !important;
+    max-height: 100% !important;
     border-radius: 0;
     background: linear-gradient(
       var(--text-gray100-color-90),

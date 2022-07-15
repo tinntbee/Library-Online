@@ -23,14 +23,30 @@ function* SignInWithGoogle(action) {
   try {
     // const user = yield call(getUser);
     const res = yield userAPI.signInWithGoogle(action.payload);
-    yield delay(1000);
+    // yield delay(1000);
     // console.log(res);
     yield put({ type: "SIGN_IN_WITH_GOOGLE_SUCCESS", res: res });
   } catch (e) {
-    yield put({
-      type: "SIGN_IN_WITH_GOOGLE_FAILED",
-      message: "Đăng nhập bị từ chối, thử lại sau !",
-    });
+    switch (e.response.status) {
+      case 406:
+        yield put({
+          type: "SIGN_IN_WITH_GOOGLE_FAILED",
+          message: "Đăng nhập bị từ chối, tài khoản đã bị khóa !",
+        });
+        break;
+      case 404:
+        yield put({
+          type: "SIGN_IN_WITH_GOOGLE_FAILED",
+          message: "Đăng nhập bị từ chối, tài khoản chưa được đăng kí !",
+        });
+        break;
+      default:
+        yield put({
+          type: "SIGN_IN_WITH_GOOGLE_FAILED",
+          message: "Đăng nhập bị từ chối, thử lại sau !",
+        });
+        break;
+    }
   }
 }
 
