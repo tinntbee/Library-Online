@@ -13,6 +13,7 @@
 
 .Books-view-by-categories-intro > img {
   max-width: 600px;
+  max-height: 400px;
 }
 
 .Books-view-by-categories-intro p {

@@ -175,21 +175,27 @@ function AccountInformation(props) {
 
   const handleAvatarInputChange = async (e) => {
     const acceptedImageTypes = ["image/gif", "image/jpeg", "image/png"];
-    if (acceptedImageTypes.includes(e.target.files[0].type)) {
-      const pathName = `public/user-${state._id}/`;
-      const fileName = `avatar-${Date.now()}`;
-      try {
-        const url = await filesService.uploadTaskPromise(
-          pathName + fileName,
-          e.target.files[0]
-        );
-        setState({
-          ...state,
-          avatar: url.toString(),
-        });
-      } catch (e) {
-        console.log({ e });
+    try {
+      if (acceptedImageTypes.includes(e.target.files[0].type)) {
+        const pathName = `public/user-${state._id}/`;
+        const fileName = `avatar-${Date.now()}`;
+        try {
+          const url = await filesService.uploadTaskPromise(
+            pathName + fileName,
+            e.target.files[0]
+          );
+          setState({
+            ...state,
+            avatar: url.toString(),
+          });
+        } catch (e) {
+          console.log({ e });
+        }
       }
+    } catch (error) {
+      enqueueSnackbar("Tải ảnh lên thất bại", {
+        variant: "error",
+      });
     }
   };
   const handleFormSubmit = () => {
@@ -223,7 +229,11 @@ function AccountInformation(props) {
           </div>
           <div className="controller">
             <div className="avatar-box upload">
-              <input type="file" onChange={handleAvatarInputChange} />
+              <input
+                type="file"
+                accept={".jpg,.png,.gif"}
+                onChange={handleAvatarInputChange}
+              />
             </div>
             <div
               className="avatar-box"

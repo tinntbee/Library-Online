@@ -25,7 +25,7 @@ function BooksViewByCategories(props) {
       {data && data?.tags.length !== 0 && (
         <div
           className="Books-view-by-categories"
-          id={data._id}
+          id={data.name?.toLowerCase().replaceAll(" ", "_")}
           style={{ "--color": data.color }}
         >
           <div className="Books-view-by-categories-intro">

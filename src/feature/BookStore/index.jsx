@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
+import ScrollContainer from "react-indiana-drag-scroll";
 import { useDispatch, useSelector } from "react-redux";
 import SearchInBookstore from "../../components/SearchInBookstore";
 import Slideshow from "../../components/Slideshow";
@@ -13,11 +14,15 @@ import ToTopIcon from "../../static/ToTopIcon";
 import AllCategories from "./AllCategories";
 import BooksForYou from "./BooksForYou";
 import OtherTags from "./OtherTags";
-import "./style.css";
+import "./style.scss";
 
 BookStore.propTypes = {};
 
 function BookStore(props) {
+  const categories = useSelector(
+    (state) => state.bookStore.tagsByCategories.data
+  );
+  console.log({ categories });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -62,15 +67,16 @@ function BookStore(props) {
           <Slideshow />
           <BooksForYou />
           <div className="Hot-categories-container">
-            <a href="#life-style">
-              <img alt="" src={life_style_image} />
-            </a>
-            <a href="#program">
-              <img alt="" src={program_image} />
-            </a>
-            <a href="#science-space">
-              <img alt="" src={science_space_image} />
-            </a>
+            <ScrollContainer className="categories-list-scroll">
+              {categories &&
+                categories.map((item, index) => {
+                  return (
+                    <a href={`#${item.name?.toLowerCase().replaceAll(" ", "_")}`}>
+                      <img alt="" src={item.thumbnail} />
+                    </a>
+                  );
+                })}
+            </ScrollContainer>
           </div>
           <AllCategories />
           <OtherTags />

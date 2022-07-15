@@ -30,23 +30,15 @@ function Login(props) {
   const responseGoogle = (res) => {
     setDirty(true);
     console.log(res);
-    // if (res.Wu.Nv.includes("@student.hcmute.edu.vn")) {
-    //   dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
-    // } else {
-    //   enqueueSnackbar(
-    //     "Vui lòng đăng nhập với tài khoản có đuôi student.hcmute.edu.vn",
-    //     {
-    //       variant: "info",
-    //     }
-    //   );
-    // }
     dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
     //history.push("/bookstore");
   };
   useEffect(() => {
     if (dirty) {
       if (user.loading === false && !user.error && user.user) {
-        console.log({ history });
+        enqueueSnackbar("Đăng nhập thành công! Đang chuyển hướng...", {
+          variant: "success",
+        });
         if (history.action !== "POP") {
           history.goBack();
         } else {
@@ -54,7 +46,6 @@ function Login(props) {
         }
       } else {
         if (user?.error) {
-          console.log({ user });
           enqueueSnackbar(user.error, {
             variant: "error",
           });
@@ -71,7 +62,9 @@ function Login(props) {
         <div className="login__container">
           <img className="logo" alt="logo" src="assets/svg/logo.svg" />
           <h1>SIGN IN</h1>
-          <h2>Sử dụng tài khoản <b>Thư viện trực tuyến</b></h2>
+          <h2>
+            Sử dụng tài khoản <b>Thư viện trực tuyến</b>
+          </h2>
           {message && (
             <div className="message">
               <i class="icon fas fa-exclamation-triangle"></i>

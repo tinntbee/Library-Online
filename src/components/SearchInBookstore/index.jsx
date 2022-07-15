@@ -10,10 +10,13 @@ import BookViewCard from "../BookViewCard";
 import { useParams } from "react-router-dom";
 import SearchBookViewCard from "../SearchBookViewCard";
 import "./style.scss";
+import { books } from "../../api/fake-api";
+import LoadingAnimationIcon from "../Animation/LoadingAnimationIcon";
 
 SearchInBookstore.propTypes = {};
 
 function SearchInBookstore(props) {
+  const [pending, setPending] = React.useState(false);
   const [state, setState] = useState({
     search: "",
     tagId: props.tag,
@@ -48,6 +51,7 @@ function SearchInBookstore(props) {
       .catch((e) => console.log({ e }));
   };
   const fetchDataSearch = async () => {
+    setPending(true);
     searchRef.current.blur();
     const { search, tagId, filter, sort, page, size } = state;
     // console.log(state);
@@ -58,22 +62,35 @@ function SearchInBookstore(props) {
         // console.log({ res });
         setState({
           ...state,
-          books: res.books,
+          books: page === 1 ? res.books : [...state.books, ...res.books],
           page: res.page,
           size: res.size,
           limit: res.limit,
         });
+        setPending(false);
       })
       .catch((e) => console.log({ e }));
+  };
+  const handleLoadMore = () => {
+    setState({ ...state, page: state.page + 1 });
   };
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     fetchTags();
   }, []);
+
   useEffect(() => {
     fetchDataSearch();
-  }, [state.search, state.tagId, state.filter, state.sort, state.page]);
+  }, [state.page]);
+
+  useEffect(() => {
+    if (state.page !== 1) {
+      setState({ ...state, page: 1 });
+    } else {
+      fetchDataSearch();
+    }
+  }, [state.search, state.tagId, state.filter, state.sort]);
 
   return (
     <div
@@ -82,19 +99,17 @@ function SearchInBookstore(props) {
         active: visible,
       })}
     >
-      <Link to="#">
-        <input
-          ref={searchRef}
-          className="search-box"
-          type="text"
-          placeholder="Tìm kiếm.."
-          onKeyPress={(e) =>
-            e.key === "Enter" && setState({ ...state, search: e.target.value })
-          }
-          onClick={() => searchRef.current.select()}
-        />
-        <SearchIcon onClick={() => searchClickHandle()} />
-      </Link>
+      <input
+        ref={searchRef}
+        className="search-box"
+        type="text"
+        placeholder="Tìm kiếm.."
+        onKeyPress={(e) =>
+          e.key === "Enter" && setState({ ...state, search: e.target.value })
+        }
+        onClick={() => searchRef.current.select()}
+      />
+      <SearchIcon onClick={() => searchClickHandle()} />
       <div
         ref={tagsBoxRef}
         className={classNames({
@@ -168,12 +183,20 @@ function SearchInBookstore(props) {
           </div>
         </div>
         <div className="result-container__body">
-          {state.books &&
-            state.books.map((item, index) => {
-              return <SearchBookViewCard data={item} key={index} />;
-            })}
+          <div className="books">
+            {state.books &&
+              state.books.map((item, index) => {
+                return <SearchBookViewCard data={item} key={index} />;
+              })}
+          </div>
+          {state.books.length < state.limit && (
+            <button className="load-more-btn" onClick={handleLoadMore}>
+              Tải thêm
+            </button>
+          )}
         </div>
       </div>
+      {pending && <LoadingAnimationIcon className="absolute" />}
     </div>
   );
 }
