@@ -33,6 +33,10 @@ function Login(props) {
     dispatch(userActions.signInWithGoogle({ tokenId: res.tokenId }));
     //history.push("/bookstore");
   };
+  const loginGoogleFailure = (err) => {
+    console.log({ err });
+    enqueueSnackbar("Đăng nhập thất bại", { variant: "error" });
+  };
   useEffect(() => {
     if (dirty) {
       if (user.loading === false && !user.error && user.user) {
@@ -119,7 +123,7 @@ function Login(props) {
                 </button>
               )}
               onSuccess={responseGoogle}
-              onFailure={null}
+              onFailure={loginGoogleFailure}
               cookiePolicy={"single_host_origin"}
             />
             <button className="sign-in-with-facebook">
