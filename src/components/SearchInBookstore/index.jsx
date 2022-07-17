@@ -94,6 +94,7 @@ function SearchInBookstore(props) {
 
   return (
     <div
+      id="search-in-bookstore"
       className={classNames({
         SearchInBookstore: true,
         active: visible,
